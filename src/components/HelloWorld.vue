@@ -22,11 +22,6 @@
       @input="mkFormula"      
       ></v-text-field>
     <v-text-field
-      v-model="syousuten"
-      label="小数点を入力"
-      @input="mkcalcs();mkFormula();"
-      ></v-text-field>      
-    <v-text-field
       v-for="(i,n) in calcs" :key="n"
       v-model="calcs[n]"
       label="数式"
@@ -73,8 +68,8 @@ export default {
 	return {
 	    debug : false,
 	    msg: "About Page",
-	    formula1 : "500/4",
-	    answer1 : "125",
+	    formula1 : "500.00/4",
+	    answer1 : "125.54",
 	    amari1 : "0",
 	    syousuten : '0',
 	    calcs : [],
@@ -95,47 +90,50 @@ export default {
     methods: {
 	mkcalcs() {
 	    let moji = this.formula1.trim().split('/');
-	    this.oya = parseInt(moji[0]);
-	    this.ko = parseInt(moji[1]);
-	    this.nagasa=String(Math.floor(this.oya/this.ko)).length;
-	    this.nagasa += parseInt(this.syousuten);
+	    this.oya = moji[0];
+	    this.ko = moji[1];
+	    this.nagasa=String(Math.floor(parseInt(this.oya)/parseInt(this.ko))).length;
+
+	    if(this.answer1.indexOf('.')>0) {
+		let dotPos = this.answer1.length-this.answer1.indexOf('.');
+		this.syousuten = dotPos-1;
+		this.nagasa += this.syousuten;
+	    }
 	    this.nagasa = this.nagasa*2 -1;
 	    this.calcs=null;
 	    this.calcs=Array(this.nagasa).fill(0);
 	},
 	mkFormula() {
 	    function zeroPadding(_nagasa){
-		return ( (_nagasa-1)*10 );
+		return ( Array(_nagasa).join('1') );
 	    }
 
 	    this.formula = '$$ \\require{enclose} \\begin{array}{r}' + this.answer1 + ' \\\\ ' + this.ko + ' \\enclose{longdiv}{' + this.oya + '}\\kern-.2ex \\\\[-3pt] ';
 	    let i=0;
 	    const self=this;
 	    this.calcs.forEach(n => {
-		if(i===(parseInt(self.nagasa)-1)) {
-		    let headpad=String(self.oya).length-String(self.answer1).length + String(self.oya).length-String(n).length;
+		if(i===(self.nagasa-1)) {
+		    let headpad=self.oya.length-String(n).length;
+
 		    self.formula += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
 		} else if(i % 2 == 0) {
-		    let nokori = String(self.oya).length-String(self.answer1).length + String(self.oya).length-String(n).length-(Math.floor(i/2));
-		    let headpad = String(self.oya).length-String(self.answer1).length + String(self.oya).length-nokori-String(n)-1;
+		    let nokori = self.oya.length-Math.floor(i/2)-1;
+		    let headpad = self.oya.length-String(n).length-nokori;
 
 		    self.formula+= '\\' + 'underline{';
 		    if(headpad > 0) {
-			self.formula+='\\phantom{' + zeroPadding(headpad)+ '}'
+			self.formula+='\\phantom{' + zeroPadding(headpad+1) + '}'
+			console.log(i,headpad,self.formula);
 		    }
+
 		    self.formula += n;
 		    if(nokori > 0) {
 			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
 		    }		    
 		    self.formula += '} \\\\[-3pt]';
 		} else {
-		    let headpad = String(self.oya).length-String(self.answer1).length + ((i+1)/2) - (String(n).length-1)
-		    let nokori = String(self.answer1).length - headpad - (String(n).length)
-
-		    if(headpad > 0) {
-			self.formula+='\\phantom{' + zeroPadding(headpad)+ '}'
-
-		    }
+		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2) - (String(n).length-1)
+		    let nokori = self.answer1.length - headpad - (String(n).length) + this.syousuten
 		    self.formula += n;
 		    if(nokori > 0) {
 			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
