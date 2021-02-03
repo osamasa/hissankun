@@ -9,12 +9,12 @@
     <v-text-field
       v-model="formula1"
       label="数式を入力"
-      @input="mkFormula"
+      @input="mkcalcs();mkFormula()"
       ></v-text-field>
     <v-text-field
       v-model="answer1"
       label="回答を入力"
-            @input="mkFormula"
+      @input="mkFormula"
       ></v-text-field>
     <v-text-field
       v-model="amari1"
@@ -68,8 +68,8 @@ export default {
 	return {
 	    debug : false,
 	    msg: "About Page",
-	    formula1 : "500.00/4",
-	    answer1 : "125.54",
+	    formula1 : "500.15/20",
+	    answer1 : "25.25",
 	    amari1 : "0",
 	    syousuten : '0',
 	    calcs : [],
@@ -77,7 +77,8 @@ export default {
 	    testImg: "",
 	    nagasa :0,
 	    oya : 0,
-	    ko : 0
+	    ko : 0,
+	    kurisagari : 0
 	};
     },
     mounted: function () {
@@ -93,6 +94,7 @@ export default {
 	    this.oya = moji[0];
 	    this.ko = moji[1];
 	    this.nagasa=String(Math.floor(parseInt(this.oya)/parseInt(this.ko))).length;
+	    this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
 
 	    if(this.answer1.indexOf('.')>0) {
 		let dotPos = this.answer1.length-this.answer1.indexOf('.');
@@ -100,6 +102,7 @@ export default {
 		this.nagasa += this.syousuten;
 	    }
 	    this.nagasa = this.nagasa*2 -1;
+
 	    this.calcs=null;
 	    this.calcs=Array(this.nagasa).fill(0);
 	},
@@ -117,13 +120,12 @@ export default {
 
 		    self.formula += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
 		} else if(i % 2 == 0) {
-		    let nokori = self.oya.length-Math.floor(i/2)-1;
+		    let nokori = self.oya.length-Math.floor(i/2)-1-this.kurisagari;
 		    let headpad = self.oya.length-String(n).length-nokori;
 
 		    self.formula+= '\\' + 'underline{';
 		    if(headpad > 0) {
 			self.formula+='\\phantom{' + zeroPadding(headpad+1) + '}'
-			console.log(i,headpad,self.formula);
 		    }
 
 		    self.formula += n;
@@ -132,7 +134,7 @@ export default {
 		    }		    
 		    self.formula += '} \\\\[-3pt]';
 		} else {
-		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2) - (String(n).length-1)
+		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2) - (String(n).length-1)-this.kurisagari;
 		    let nokori = self.answer1.length - headpad - (String(n).length) + this.syousuten
 		    self.formula += n;
 		    if(nokori > 0) {
