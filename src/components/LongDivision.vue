@@ -4,13 +4,13 @@
       <v-text-field
 	v-model="amari1"
 	label="あまりを入力"
-	@input="mkFormula"      
+	@input="divMkFormula"      
 	></v-text-field>
       <v-text-field
 	v-for="(i,n) in calcs" :key="n"
 	v-model="calcs[n]"
 	label="数式"
-	@input="mkFormula"      
+	@input="divMkFormula"      
 	></v-text-field>
     </v-form>
   </div>
@@ -18,20 +18,6 @@
 <script>
   export default {
   name: "About",
-  props : {
-  oya : {
-  type : String
-  },
-  ko: {
-  type : String
-  },
-  formula : {
-  type : String
-  },
-  answer1 : {
-    type : String
-  }
-  },
   data() {
 	return {
 	    amari1 : "0",
@@ -43,14 +29,54 @@
     },
     mounted: function () {
 	this.mkcalcs();
-	this.mkFormula();	
-  },
-computed: {
-  },  
-    methods: {
-	mkcalcs() {
-	    this.nagasa=String(Math.floor(parseInt(this.oya)/parseInt(this.ko))).length;
-	    this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
+	this.divMkFormula();	
+    },
+    computed: {
+	formula1: {
+	    get () {
+		return this.$store.state.formula1
+	    },
+	    set (value) {
+		this.$store.commit('setFormula1', value)
+	    }
+	},
+	answer1: {
+	    get () {
+		return this.$store.state.answer1
+	    },
+	    set (value) {
+		this.$store.commit('setAnswer1', value)
+	    }
+	},
+	oya: {
+	    get () {
+		return this.$store.state.oya
+	    },
+	    set (value) {
+		this.$store.commit('setOya', value)
+	    }
+	},
+	ko: {
+	    get () {
+		return this.$store.state.ko
+	    },
+	    set (value) {
+		this.$store.commit('setKo', value)
+	    }
+	},
+	formula: {
+	    get () {
+		return this.$store.state.formula
+	    },
+	    set (value) {
+		this.$store.commit('setFormula', value)
+	    }
+	}
+     },
+     methods: {
+        mkcalcs : function() {
+            this.nagasa=this.answer1.length;
+            this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
 
 	    if(this.answer1.indexOf('.')>0) {
 		let dotPos = this.answer1.length-this.answer1.indexOf('.');
@@ -62,7 +88,7 @@ computed: {
 	    this.calcs=null;
 	    this.calcs=Array(this.nagasa).fill(0);
 	},
-	mkFormula() {
+        divMkFormula() {
 	    function zeroPadding(_nagasa){
 		if(_nagasa > 1)
 		    return ( Array(_nagasa).join('1') );
@@ -108,9 +134,32 @@ computed: {
 	    })
 	    _formura += '\\phantom{00}' + this.amari1
             _formura += '\\end{array} $$'
-            this.$emit('update:formula', _formura);
+            this.formula=_formura;
 	}
+  },
+  watch: {
+  oya: function(n,o) {
+       if(n !== o) {
+       this.oya = n;
+       this.mkcalcs();
+  this.divMkFormula();
+  }
+    },
+  ko: function(n,o) {
+     if(n !== o) {
+       this.ko = n;
+       this.mkcalcs();
+  this.divMkFormula();
+     }
+    },
+  answer1: function(n,o) {
+       if(n !== o) {
+       this.answer1 = n;
+       this.mkcalcs();
+  this.divMkFormula();
+  }
     }
+  }
 }
 </script>
 

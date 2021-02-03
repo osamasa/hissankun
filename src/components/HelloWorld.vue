@@ -16,7 +16,7 @@
       label="回答を入力"
       ></v-text-field>
 	</v-form>
-	<LongDivision :oya="oya" :ko="ko" :answer1="answer1" :formula.sync="formula"></LongDivision>
+	<LongDivision></LongDivision>
       </v-col>
       <v-col>
 	<v-row>
@@ -57,14 +57,51 @@ export default {
     data() {
 	return {
 	    debug : false,
-	    formula1 : "500/4",
-	    answer1 : "125",
-	    oya : '0',
-	    ko : '0',
-	    formula : '',
 	    testImg : ''
 	};
     },
+    computed: {
+	formula1: {
+	    get () {
+		return this.$store.state.formula1
+	    },
+	    set (value) {
+		this.$store.commit('setFormula1', value)
+	    }
+	},
+	answer1: {
+	    get () {
+		return this.$store.state.answer1
+	    },
+	    set (value) {
+		this.$store.commit('setAnswer1', value)
+	    }
+	},
+	oya: {
+	    get () {
+		return this.$store.state.oya
+	    },
+	    set (value) {
+		this.$store.commit('setOya', value)
+	    }
+	},
+	ko: {
+	    get () {
+		return this.$store.state.ko
+	    },
+	    set (value) {
+		this.$store.commit('setKo', value)
+	    }
+	},
+	formula: {
+	    get () {
+		return this.$store.state.formula
+	    },
+	    set (value) {
+		this.$store.commit('setFormula', value)
+	    }
+	},	
+    },    
     mounted: function () {
 	this.mkcalcs();
 	MathJax.Hub.Config({
