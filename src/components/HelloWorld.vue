@@ -9,7 +9,6 @@
     <v-text-field
       v-model="formula1"
       label="数式を入力"
-      @input="mkcalcs()"
       ></v-text-field>
     <v-text-field
       v-model="answer1"

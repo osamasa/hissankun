@@ -62,8 +62,8 @@
      methods: {
         mkcalcs : function() {
   	    let moji = this.formula1.trim().split('/');
-	    this.oya = moji[0];
-	    this.ko = moji[1];
+	    this.oya = moji[0].trim();
+	    this.ko = moji[1].trim();
             this.nagasa=this.answer1.length;
             this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
 
