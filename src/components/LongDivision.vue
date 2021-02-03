@@ -17,9 +17,11 @@
 </template>
 <script>
   export default {
-  name: "About",
+  name: "Longdivsion",
   data() {
-	return {
+  return {
+  oya : '',
+  ko : '',
 	    amari1 : "0",
 	    syousuten : 0,
 	    calcs : [],
@@ -48,22 +50,6 @@
 		this.$store.commit('setAnswer1', value)
 	    }
 	},
-	oya: {
-	    get () {
-		return this.$store.state.oya
-	    },
-	    set (value) {
-		this.$store.commit('setOya', value)
-	    }
-	},
-	ko: {
-	    get () {
-		return this.$store.state.ko
-	    },
-	    set (value) {
-		this.$store.commit('setKo', value)
-	    }
-	},
 	formula: {
 	    get () {
 		return this.$store.state.formula
@@ -75,6 +61,9 @@
      },
      methods: {
         mkcalcs : function() {
+  	    let moji = this.formula1.trim().split('/');
+	    this.oya = moji[0];
+	    this.ko = moji[1];
             this.nagasa=this.answer1.length;
             this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
 
@@ -138,20 +127,14 @@
 	}
   },
   watch: {
-  oya: function(n,o) {
+  formula1: function(n,o) {
        if(n !== o) {
-       this.oya = n;
+       this.formula1 = n;
        this.mkcalcs();
   this.divMkFormula();
   }
     },
-  ko: function(n,o) {
-     if(n !== o) {
-       this.ko = n;
-       this.mkcalcs();
-  this.divMkFormula();
-     }
-    },
+
   answer1: function(n,o) {
        if(n !== o) {
        this.answer1 = n;

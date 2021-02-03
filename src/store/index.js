@@ -5,10 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-	formula1 : "500/4",
-	answer1 : "12",
-	oya : '0',
-	ko : '0',
+	formula1 : "67/63",
+	answer1 : "1",
 	formula : ''
     },
     mutations: {
@@ -17,12 +15,6 @@ export default new Vuex.Store({
 	},
 	setAnswer1 (state, n) {
 	    state.answer1 = n;
-	},
-	setOya (state, n) {
-	    state.oya = n;
-	},
-	setKo (state, n) {
-	    state.ko = n;
 	},
 	setFormula (state, n) {
 	    state.formula = n;

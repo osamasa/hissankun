@@ -16,7 +16,10 @@
       label="回答を入力"
       ></v-text-field>
 	</v-form>
-	<LongDivision></LongDivision>
+	<LongDivision v-if="ope==='/'"></LongDivision>
+	<Multiplication v-else-if="ope==='*'"></Multiplication>
+	<Addition v-else-if="ope==='+'" ope='+'></Addition>
+	<Addition v-else ope='-'></Addition>	
       </v-col>
       <v-col>
 	<v-row>
@@ -47,17 +50,22 @@
 import { VueMathjax } from "vue-mathjax";
 import html2canvas from "html2canvas";
 import LongDivision from './LongDivision.vue'
+import Multiplication from './Multiplication.vue'
+import Addition from './Addition.vue'
 
 export default {
     name: "About",
     components: {
 	"vue-mathjax": VueMathjax,
-	"LongDivision" : LongDivision
+	"LongDivision" : LongDivision,
+	"Multiplication" : Multiplication,
+	"Addition" : Addition
     },
     data() {
 	return {
 	    debug : false,
-	    testImg : ''
+	    testImg : '',
+	    ope : '/'
 	};
     },
     computed: {
@@ -77,22 +85,6 @@ export default {
 		this.$store.commit('setAnswer1', value)
 	    }
 	},
-	oya: {
-	    get () {
-		return this.$store.state.oya
-	    },
-	    set (value) {
-		this.$store.commit('setOya', value)
-	    }
-	},
-	ko: {
-	    get () {
-		return this.$store.state.ko
-	    },
-	    set (value) {
-		this.$store.commit('setKo', value)
-	    }
-	},
 	formula: {
 	    get () {
 		return this.$store.state.formula
@@ -102,18 +94,14 @@ export default {
 	    }
 	},	
     },    
-    mounted: function () {
-	this.mkcalcs();
+    created: function () {
 	MathJax.Hub.Config({
 	});
-
+	const pat = /[-\+\*\/]/
+	let matchope=this.formula1.match(pat);
+	this.ope=this.formula1[matchope.index];
     },
     methods: {
-	mkcalcs() {
-	    let moji = this.formula1.trim().split('/');
-	    this.oya = moji[0];
-	    this.ko = moji[1];
-	},
 	bntClick() {
 	    var dom = document.querySelector("#ff"); 
 	    html2canvas(dom).then(canvas => {
