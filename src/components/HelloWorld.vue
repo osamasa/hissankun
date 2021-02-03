@@ -9,10 +9,12 @@
     <v-text-field
       v-model="formula1"
       label="数式を入力"
+      @input="mkcalcs()"
       ></v-text-field>
     <v-text-field
       v-model="answer1"
       label="回答を入力"
+      @input="mkcalcs()"
       ></v-text-field>
 	</v-form>
 	<LongDivision v-if="ope==='/'"></LongDivision>
@@ -96,11 +98,16 @@ export default {
     created: function () {
 	MathJax.Hub.Config({
 	});
-	const pat = /[-\+\*\/]/
-	let matchope=this.formula1.match(pat);
-	this.ope=this.formula1[matchope.index];
+	this.mkcalcs();
     },
     methods: {
+	mkcalcs() {
+	    const pat = /[-\+\*\/]/;
+	    let matchope=this.formula1.match(pat);
+	    if(matchope) {
+		this.ope=this.formula1[matchope.index];
+	    }
+	},
 	bntClick() {
 	    var dom = document.querySelector("#ff"); 
 	    html2canvas(dom).then(canvas => {

@@ -60,12 +60,13 @@
 	}
      },
      methods: {
-        mkcalcs : function() {
-  	    let moji = this.formula1.trim().split('/');
-	    this.oya = moji[0].trim();
-	    this.ko = moji[1].trim();
-            this.nagasa=this.answer1.length;
-            this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
+  mkcalcs : function() {
+   if(this.formula1.indexOf('/')<0) return;
+               let moji = this.formula1.trim().split('/');
+	       this.oya = moji[0].trim();
+	       this.ko = moji[1].trim();
+               this.nagasa=this.answer1.length;
+               this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
 
 	    if(this.answer1.indexOf('.')>0) {
 		let dotPos = this.answer1.length-this.answer1.indexOf('.');
