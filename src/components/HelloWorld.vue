@@ -9,27 +9,15 @@
     <v-text-field
       v-model="formula1"
       label="数式を入力"
-      @input="mkcalcs();mkFormula()"
+      @input="mkcalcs()"
       ></v-text-field>
     <v-text-field
       v-model="answer1"
       label="回答を入力"
-      @input="mkFormula"
-      ></v-text-field>
-    <v-text-field
-      v-model="amari1"
-      label="あまりを入力"
-      @input="mkFormula"      
-      ></v-text-field>
-    <v-text-field
-      v-for="(i,n) in calcs" :key="n"
-      v-model="calcs[n]"
-      label="数式"
-      @input="mkFormula"      
       ></v-text-field>
 	</v-form>
+	<LongDivision :oya="oya" :ko="ko" :answer1="answer1" :formula.sync="formula"></LongDivision>
       </v-col>
-      
       <v-col>
 	<v-row>
 	  <v-col>
@@ -58,32 +46,27 @@
 <script>
 import { VueMathjax } from "vue-mathjax";
 import html2canvas from "html2canvas";
+import LongDivision from './LongDivision.vue'
 
 export default {
     name: "About",
     components: {
-	"vue-mathjax": VueMathjax
+	"vue-mathjax": VueMathjax,
+	"LongDivision" : LongDivision
     },
     data() {
 	return {
 	    debug : false,
-	    msg: "About Page",
 	    formula1 : "500/4",
 	    answer1 : "125",
-	    amari1 : "0",
-	    syousuten : 0,
-	    calcs : [],
-	    formula: "",
-	    testImg: "",
-	    nagasa :0,
-	    oya : 0,
-	    ko : 0,
-	    kurisagari : 0
+	    oya : '0',
+	    ko : '0',
+	    formula : '',
+	    testImg : ''
 	};
     },
     mounted: function () {
 	this.mkcalcs();
-	this.mkFormula();	
 	MathJax.Hub.Config({
 	});
 
@@ -93,64 +76,6 @@ export default {
 	    let moji = this.formula1.trim().split('/');
 	    this.oya = moji[0];
 	    this.ko = moji[1];
-	    this.nagasa=String(Math.floor(parseInt(this.oya)/parseInt(this.ko))).length;
-	    this.kurisagari=String(parseInt(this.oya)).length-this.nagasa;
-
-	    if(this.answer1.indexOf('.')>0) {
-		let dotPos = this.answer1.length-this.answer1.indexOf('.');
-		this.syousuten = dotPos-1;
-		this.nagasa += this.syousuten;
-	    }
-	    this.nagasa = this.nagasa*2 -1;
-
-	    this.calcs=null;
-	    this.calcs=Array(this.nagasa).fill(0);
-	},
-	mkFormula() {
-	    function zeroPadding(_nagasa){
-		if(_nagasa > 1)
-		    return ( Array(_nagasa).join('1') );
-		else
-		    return "1";
-	    }
-
-	    this.formula = '$$ \\require{enclose} \\begin{array}{r}' + this.answer1 + ' \\\\ ' + this.ko + ' \\enclose{longdiv}{' + this.oya + '}\\kern-.2ex \\\\[-3pt] ';
-	    let i=0;
-	    const self=this;
-	    this.calcs.forEach(n => {
-		if(i===(self.nagasa-1)) {
-		    let headpad=self.oya.length-String(n).length;
-
-		    self.formula += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
-		} else if(i % 2 == 0) {
-
-		    let nokori = self.oya.length-Math.floor(i/2)-self.kurisagari;
-		    let headpad = self.oya.length-String(n).length-nokori;
-
-		    self.formula+= '\\' + 'underline{';
-		    if(headpad > 0) {
-			self.formula+='\\phantom{' + zeroPadding(headpad+1) + '}'
-		    }
-
-		    self.formula += n;
-		    if(nokori > 0) {
-			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
-		    }		    
-		    self.formula += '} \\\\[-3pt]';
-		} else {
-		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2)-(String(n).length-1)-self.kurisagari;
-		    let nokori = self.answer1.length - headpad - (String(n).length) + self.syousuten
-		    self.formula += n;
-		    if(nokori > 0) {
-			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
-		    }		    		    
-		    self.formula += ' \\\\[-3pt]'
-		}
-		i++;
-	    })
-	    this.formula += '\\phantom{00}' + this.amari1
-	    this.formula += '\\end{array} $$'
-	    
 	},
 	bntClick() {
 	    var dom = document.querySelector("#ff"); 
