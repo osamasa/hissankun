@@ -22,44 +22,38 @@
       @input="mkFormula"      
       ></v-text-field>
     <v-text-field
-      v-model="calc1"
-      label="数式1を入力"
+      v-model="syousuten"
+      label="小数点を入力"
+      @input="mkcalcs();mkFormula();"
+      ></v-text-field>      
+    <v-text-field
+      v-for="(i,n) in calcs" :key="n"
+      v-model="calcs[n]"
+      label="数式"
       @input="mkFormula"      
       ></v-text-field>
-    <v-text-field
-      v-model="calc2"
-      label="数式2を入力"
-      @input="mkFormula"      
-      ></v-text-field>
-    <v-text-field
-      v-model="calc3"
-      label="数式3を入力"
-      @input="mkFormula"      
-      ></v-text-field>
-    <v-text-field
-      v-model="calc4"
-      label="数式4を入力"
-      @input="mkFormula"      
-      ></v-text-field>
-    <v-text-field
-      v-model="calc5"
-      label="数式5を入力"
-      @input="mkFormula"      
-      ></v-text-field>        
 	</v-form>
       </v-col>
+      
       <v-col>
+	<v-row>
+	  <v-col>
 	<div ref="ff" id="ff">
 	  <vue-mathjax :formula="formula"></vue-mathjax>
 	</div>
 	<div v-show="debug">
 	  <textarea v-model="formula" cols="30" rows="10"></textarea>
-	  <h3>イメージ作成</h3>
-	  <button @click="bntClick">PUSH</button>
+	</div>
+	  </v-col>
+	</v-row>
+	<v-row>
+	  <v-col>
+	<v-btn color="success" @click="bntClick">イメージ作成</v-btn>
 	  <br />
 	  <img :src="testImg" alt />
 	  <br />
-	</div>
+	  </v-col>
+	</v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -82,48 +76,74 @@ export default {
 	    formula1 : "500/4",
 	    answer1 : "125",
 	    amari1 : "0",
-	    calc1 : "4",
-	    calc2 : "10",
-	    calc3 : "8",
-	    calc4 : "20",
-	    calc5 : "20",	    
+	    syousuten : '0',
+	    calcs : [],
 	    formula: "",
-	    testImg: ""
+	    testImg: "",
+	    nagasa :0,
+	    oya : 0,
+	    ko : 0
 	};
     },
     mounted: function () {
-	this.mkFormula();
+	this.mkcalcs();
+	this.mkFormula();	
 	MathJax.Hub.Config({
+	});
 
-	    })
-    },
-    computed : {	
     },
     methods: {
+	mkcalcs() {
+	    let moji = this.formula1.trim().split('/');
+	    this.oya = parseInt(moji[0]);
+	    this.ko = parseInt(moji[1]);
+	    this.nagasa=String(Math.floor(this.oya/this.ko)).length;
+	    this.nagasa += parseInt(this.syousuten);
+	    this.nagasa = this.nagasa*2 -1;
+	    this.calcs=null;
+	    this.calcs=Array(this.nagasa).fill(0);
+	},
 	mkFormula() {
-	    let moji = this.formula1.split('/');
-	    let nagasa = moji[0].length
+	    function zeroPadding(_nagasa){
+		return ( (_nagasa-1)*10 );
+	    }
 
-	    function zeroPadding(_moji){
-		return ( Array(nagasa-_moji.length).join('0') );
-	    }
-	    
-	    this.formula = '$$ \\require{enclose} \\begin{array}{r}' + this.answer1 + ' \\\\ ' + moji[1] + ' \\enclose{longdiv}{' + moji[0] + '}\\kern-.2ex \\\\[-3pt] ';
-	    if(this.calc1 !== '') {
-		this.formula+= '\\' + 'underline{' + this.calc1 +'\\phantom{00}} \\\\[-3pt]';
-	    }
-	    if(this.calc2 !== '') {
-		this.formula += this.calc2 + '\\phantom{0} \\\\[-3pt]'
-	    }
-	    if(this.calc3 !== '') {
-		this.formula += '\\' + 'underline{\\phantom{0}' + this.calc3 + '\\phantom{0}} \\\\[-3pt]'
-	    }
-	    if(this.calc4 !== '') {
-		this.formula += '\\phantom{0}' + this.calc4 + ' \\\\[-3pt]'
-	    }
-	    if(this.calc5 !== '') {
-		this.formula += '\\' + 'underline{\\phantom{0}' + this.calc5 + '} \\\\[-3pt]'
-	    }	    
+	    this.formula = '$$ \\require{enclose} \\begin{array}{r}' + this.answer1 + ' \\\\ ' + this.ko + ' \\enclose{longdiv}{' + this.oya + '}\\kern-.2ex \\\\[-3pt] ';
+	    let i=0;
+	    const self=this;
+	    this.calcs.forEach(n => {
+		if(i===(parseInt(self.nagasa)-1)) {
+		    let headpad=String(self.oya).length-String(self.answer1).length + String(self.oya).length-String(n).length;
+		    self.formula += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
+		} else if(i % 2 == 0) {
+		    let nokori = String(self.oya).length-String(self.answer1).length + String(self.oya).length-String(n).length-(Math.floor(i/2));
+		    let headpad = String(self.oya).length-String(self.answer1).length + String(self.oya).length-nokori-String(n)-1;
+
+		    self.formula+= '\\' + 'underline{';
+		    if(headpad > 0) {
+			self.formula+='\\phantom{' + zeroPadding(headpad)+ '}'
+		    }
+		    self.formula += n;
+		    if(nokori > 0) {
+			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
+		    }		    
+		    self.formula += '} \\\\[-3pt]';
+		} else {
+		    let headpad = String(self.oya).length-String(self.answer1).length + ((i+1)/2) - (String(n).length-1)
+		    let nokori = String(self.answer1).length - headpad - (String(n).length)
+
+		    if(headpad > 0) {
+			self.formula+='\\phantom{' + zeroPadding(headpad)+ '}'
+
+		    }
+		    self.formula += n;
+		    if(nokori > 0) {
+			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
+		    }		    		    
+		    self.formula += ' \\\\[-3pt]'
+		}
+		i++;
+	    })
 	    this.formula += '\\phantom{00}' + this.amari1
 	    this.formula += '\\end{array} $$'
 	    
