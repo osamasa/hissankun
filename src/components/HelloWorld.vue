@@ -68,10 +68,10 @@ export default {
 	return {
 	    debug : false,
 	    msg: "About Page",
-	    formula1 : "500.15/20",
-	    answer1 : "25.25",
+	    formula1 : "500/4",
+	    answer1 : "125",
 	    amari1 : "0",
-	    syousuten : '0',
+	    syousuten : 0,
 	    calcs : [],
 	    formula: "",
 	    testImg: "",
@@ -108,7 +108,10 @@ export default {
 	},
 	mkFormula() {
 	    function zeroPadding(_nagasa){
-		return ( Array(_nagasa).join('1') );
+		if(_nagasa > 1)
+		    return ( Array(_nagasa).join('1') );
+		else
+		    return "1";
 	    }
 
 	    this.formula = '$$ \\require{enclose} \\begin{array}{r}' + this.answer1 + ' \\\\ ' + this.ko + ' \\enclose{longdiv}{' + this.oya + '}\\kern-.2ex \\\\[-3pt] ';
@@ -120,7 +123,8 @@ export default {
 
 		    self.formula += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
 		} else if(i % 2 == 0) {
-		    let nokori = self.oya.length-Math.floor(i/2)-1-this.kurisagari;
+
+		    let nokori = self.oya.length-Math.floor(i/2)-self.kurisagari;
 		    let headpad = self.oya.length-String(n).length-nokori;
 
 		    self.formula+= '\\' + 'underline{';
@@ -134,8 +138,8 @@ export default {
 		    }		    
 		    self.formula += '} \\\\[-3pt]';
 		} else {
-		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2) - (String(n).length-1)-this.kurisagari;
-		    let nokori = self.answer1.length - headpad - (String(n).length) + this.syousuten
+		    let headpad = self.oya.length+self.syousuten-self.answer1.length + ((i+1)/2)-(String(n).length-1)-self.kurisagari;
+		    let nokori = self.answer1.length - headpad - (String(n).length) + self.syousuten
 		    self.formula += n;
 		    if(nokori > 0) {
 			self.formula+='\\phantom{' + zeroPadding(nokori)+ '}'
