@@ -25,7 +25,7 @@
       <v-col>
 	<v-row>
 	  <v-col>
-	<div ref="ff" id="ff">
+	<div ref="ff" id="ff" class="pr-10 pt-5">
 	  <vue-mathjax :formula="formula"></vue-mathjax>
 	</div>
 	<div v-show="debug">
@@ -37,7 +37,7 @@
 	  <v-col>
 	<v-btn color="success" @click="bntClick">イメージ作成</v-btn>
 	  <br />
-	  <img :src="testImg" alt />
+	  <img :src="testImg"/>
 	  <br />
 	  </v-col>
 	</v-row>
@@ -109,11 +109,17 @@ export default {
 	    }
 	},
 	bntClick() {
-	    var dom = document.querySelector("#ff"); 
-	    html2canvas(dom).then(canvas => {
+	    let dom = document.querySelector("#ff");
+	    let self=this
+	    html2canvas(dom, {
+		scale : 0.5,
+		imageTimeout : 30000
+	    }).then(function(canvas) {
 		let dataUrl = canvas.toDataURL("image/png");
-		this.testImg = dataUrl;
-	    });
+		self.testImg = dataUrl;
+	    }).catch(function(error) {
+		console.log(error);
+	    })
 	}
     }
 }

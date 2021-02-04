@@ -61,13 +61,16 @@
 	},
         mulMkFormula: function() {
 	    function zeroPadding(_nagasa){
-		if(_nagasa > 1)
-		    return ( Array(_nagasa).join('1') );
-		else
-		    return "1";
-             }
-            let _formura='';
+		let ret ;
+		if(_nagasa > 0) {
+		    ret = new Array(_nagasa).fill(1).join('')
+		    return ret;		    
+		} else {
+		    return '';
+		}
 
+            }
+            let _formura='';
             _formura = '$$ \\begin{array}{r}';
 	    
 	    let i=0;
@@ -87,9 +90,10 @@
 		if(i===(self.nagasa-1)) {
 		    let headpad=maxlength-String(n).length+(this.calcs.length-1)
 		    
-		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + n + '\\phantom{' +  zeroPadding(this.calcs.length-1) + '}} \\\\[-3pt]'
+		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + n + '\\phantom{' +  zeroPadding(i) + '}} \\\\[-3pt]'
 		} else  {
-		    let nokori = Math.floor(i/2)
+		    let nokori = i
+
 		    _formura += n;
 		    if(nokori > 0) {
                        _formura +='\\phantom{' + zeroPadding(nokori)+ '}'
