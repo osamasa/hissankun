@@ -1,6 +1,7 @@
 <template>
 </template>
 <script>
+import { zeroPadding } from './zeroPadding.js'  
   export default {
       name: "Addition",
       props :　['ope'],
@@ -45,12 +46,6 @@
 	     this.moji = this.formula1.trim().split(this.ope);
 	},
         mulMkFormula: function() {
-	    function zeroPadding(_nagasa){
-		if(_nagasa > 1)
-		    return ( Array(_nagasa).join('1') );
-		else
-		    return "1";
-             }
             let _formura='';
 
             _formura = '$$ \\begin{array}{r}';

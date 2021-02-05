@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { zeroPadding } from './zeroPadding.js'  
   export default {
   name: "Multiplication",
   data() {
@@ -60,16 +61,6 @@
 	     this.calcs=Array(this.nagasa).fill(0);
 	},
         mulMkFormula: function() {
-	    function zeroPadding(_nagasa){
-		let ret ;
-		if(_nagasa > 0) {
-		    ret = new Array(_nagasa).fill(1).join('')
-		    return ret;		    
-		} else {
-		    return '';
-		}
-
-            }
             let _formura='';
             _formura = '$$ \\begin{array}{r}';
 	    
@@ -88,7 +79,7 @@
 
 	    this.calcs.forEach(n => {
 		if(i===(self.nagasa-1)) {
-		    let headpad=maxlength-String(n).length+(this.calcs.length-1)
+		    let headpad=maxlength-String(n).length-(this.calcs.length-1)+1
 		    
 		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + n + '\\phantom{' +  zeroPadding(i) + '}} \\\\[-3pt]'
 		} else  {

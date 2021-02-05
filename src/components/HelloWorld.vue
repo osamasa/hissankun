@@ -25,7 +25,7 @@
       <v-col>
 	<v-row>
 	  <v-col>
-	<div ref="ff" id="ff" class="pr-5 pt-10">
+	<div ref="ff" id="ff">
 	  <vue-mathjax :formula="formula"></vue-mathjax>
 	</div>
 	<div v-show="debug">
@@ -129,7 +129,7 @@ export default {
 #ff {
     width: auto;
     margin: 0 auto;
-    padding: 10px 10px;
+    padding: 20px 10px;
     display:inline-block;
 }
 </style>
