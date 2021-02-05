@@ -25,7 +25,7 @@
       <v-col>
 	<v-row>
 	  <v-col>
-	<div ref="ff" id="ff" class="pr-10 pt-5">
+	<div ref="ff" id="ff" class="pr-5 pt-10">
 	  <vue-mathjax :formula="formula"></vue-mathjax>
 	</div>
 	<div v-show="debug">
@@ -51,7 +51,6 @@
 import { VueMathjax } from "vue-mathjax";
 import html2canvas from "html2canvas";
 import LongDivision from './LongDivisionWithDot.vue'
-// import LongDivision from './LongDivision.vue'
 import Multiplication from './Multiplication.vue'
 import Addition from './Addition.vue'
 
