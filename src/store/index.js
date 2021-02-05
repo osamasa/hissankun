@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-	formula1 : "67/63",
-	answer1 : "1",
+	formula1 : "127.1/63",
+	answer1 : "222",
 	formula : ''
     },
     mutations: {

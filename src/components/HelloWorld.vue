@@ -50,7 +50,8 @@
 <script>
 import { VueMathjax } from "vue-mathjax";
 import html2canvas from "html2canvas";
-import LongDivision from './LongDivision.vue'
+import LongDivision from './LongDivisionWithDot.vue'
+// import LongDivision from './LongDivision.vue'
 import Multiplication from './Multiplication.vue'
 import Addition from './Addition.vue'
 
