@@ -35,8 +35,8 @@ export default {
 	    calcs : [],
 	    nagasa :0,
 	    kurisagari : 0,
-	    answerdot : 0,
-	    oyadot : 0
+	    answerdot : -1,
+	    oyadot : -1
 	};
     },
     mounted: function () {
@@ -78,15 +78,15 @@ export default {
 	    if(this.answer1.indexOf('.') > -1) {
 		this.answerdot = this.answer1.length-this.answer1.indexOf('.')-1;
 		if(this.oya.indexOf('.')>-1) {
-		    let karipos = this.oya.length-this.oya.indexOf('.')-1
-		    if(this.answerdot > karipos) {
-			this.oya = this.oya + zeroPadding(this.answerdot - karipos);
+		    this.oyadot = this.oya.length-this.oya.indexOf('.')-1
+		    if(this.answerdot > this.oyadot) {
+			this.oya = this.oya + zeroPadding(this.answerdot - this.oyadot);
 		    }
 		} else {
 		    this.oya = this.oya + '.' + zeroPadding(this.answerdot);
 		}
 	    }
-            this.nagasa=this.answer1.length-(this.answerdot > 0 ? 1 : 0);
+            this.nagasa=this.answer1.length-(this.answerdot > -1 ? 1 : 0);
 	    this.nagasa = this.nagasa*2 -1;
 
 	    if(this.nagasa < 0) {
@@ -104,6 +104,9 @@ export default {
 	    const self=this;
 	    let nokori = this.answer1.length-1
 	    let headpad=0;
+	    if(this.oyadot>-1) {
+		nokori--;
+	    }
 	    this.calcs.forEach(n => {
 		if(i===(self.nagasa-1)) {
 		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
@@ -129,7 +132,7 @@ export default {
 		i++;
 		if(i % 2 == 1) {
 		    nokori--;
-		    if((self.answerdot>0) && (self.answer1.length-nokori,self.answer1.slice(self.answer1.length-nokori-1,self.answer1.length-nokori)==='.')) {
+		    if((self.answerdot>-1) && (self.answer1.length-nokori,self.answer1.slice(self.answer1.length-nokori-1,self.answer1.length-nokori)==='.')) {
 			nokori--
 		    }
 		}
