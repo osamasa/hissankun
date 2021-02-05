@@ -20,6 +20,7 @@ import { zeroPadding } from './zeroPadding.js'
   
 export default {
     name: "LongdivsionWithDot",
+    props :　['ope', 'formula1', 'answer1', '_formula'],    
     data() {
 	return {
 	    oya : '',
@@ -38,30 +39,14 @@ export default {
 	this.divMkFormula();	
     },
     computed: {
-	formula1: {
-	    get () {
-		return this.$store.state.formula1
-	    },
-	    set (value) {
-		this.$store.commit('setFormula1', value)
-	    }
-	},
-	answer1: {
-	    get () {
-		return this.$store.state.answer1
-	    },
-	    set (value) {
-		this.$store.commit('setAnswer1', value)
-	    }
-	},
 	formula: {
 	    get () {
-		return this.$store.state.formula
+		return this._formula;
 	    },
 	    set (value) {
-		this.$store.commit('setFormula', value)
+		this.$emit('update:_formula', value)
 	    }
-	}
+	}	
     },
     methods: {
 	mkcalcs : function() {

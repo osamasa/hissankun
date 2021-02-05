@@ -17,10 +17,10 @@
       @input="mkcalcs()"
       ></v-text-field>
 	</v-form>
-	<LongDivision v-if="ope==='/'"></LongDivision>
-	<Multiplication v-else-if="ope==='*'"></Multiplication>
-	<Addition v-else-if="ope==='+'" ope='+'></Addition>
-	<Addition v-else ope='-'></Addition>	
+	<LongDivision :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-if="ope==='/'"></LongDivision>
+	<Multiplication :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='*'"></Multiplication>
+	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
+	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else ope='-'></Addition>	
       </v-col>
       <v-col>
 	<v-row>
@@ -64,36 +64,15 @@ export default {
     },
     data() {
 	return {
+	    formula1 : '1.5/3',
+	    answer1 : '0.5',
+	    formula : '',
 	    debug : false,
 	    testImg : '',
 	    ope : '/'
 	};
     },
     computed: {
-	formula1: {
-	    get () {
-		return this.$store.state.formula1
-	    },
-	    set (value) {
-		this.$store.commit('setFormula1', value)
-	    }
-	},
-	answer1: {
-	    get () {
-		return this.$store.state.answer1
-	    },
-	    set (value) {
-		this.$store.commit('setAnswer1', value)
-	    }
-	},
-	formula: {
-	    get () {
-		return this.$store.state.formula
-	    },
-	    set (value) {
-		this.$store.commit('setFormula', value)
-	    }
-	},	
     },    
     created: function () {
 	MathJax.Hub.Config({
@@ -121,7 +100,7 @@ export default {
 		console.log(error);
 	    })
 	}
-    }
+    },
 }
 </script>
 
