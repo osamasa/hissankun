@@ -11,13 +11,8 @@
       label="数式を入力"
       @input="mkcalcs()"
       ></v-text-field>
-    <v-text-field
-      v-model="answer1"
-      label="回答を入力"
-      @input="mkcalcs()"
-      ></v-text-field>
 	</v-form>
-	<LongDivision :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-if="ope==='/'"></LongDivision>
+	<LongDivision :formula1="formula1" :_formula.sync="formula" v-if="ope==='/'"></LongDivision>
 	<Multiplication :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='*'"></Multiplication>
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else ope='-'></Addition>	
