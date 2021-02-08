@@ -59,10 +59,10 @@ export default {
     },
     data() {
 	return {
-	    formula1 : '1.5/3',
+	    formula1 : '1.35/3',
 	    answer1 : '0.5',
 	    formula : '',
-	    debug : false,
+	    debug : true,
 	    testImg : '',
 	    ope : '/'
 	};

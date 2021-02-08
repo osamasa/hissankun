@@ -22,6 +22,7 @@
       </v-col>	
       <v-col>
 	<v-btn
+	  v-show="n>0"
 	  class="mx-2"
 	  fab
 	  dark
@@ -29,7 +30,7 @@
 	  @click="delAnswers(n);divMkFormula()"
 	   color="primary"
 	   >
-	  <v-icon dark>
+	  <v-icon dark v-show="n>0">
              mdi-minus
 	   </v-icon>
 	</v-btn>
@@ -41,7 +42,7 @@
 	  color="warning"
 	  @click="addAnasers(n);divMkFormula()"
 	   >
-	   <v-icon dark>
+	   <v-icon>
              mdi-plus
 	   </v-icon>
 	</v-btn>
@@ -128,16 +129,16 @@ export default {
 	    this.dotflg=false;
 	    this.dcols.forEach(n => {
 		if(n.isDot==true) {
-		    this.dotflg=true;
+		    self.dotflg=true;
 		}
 		if(i % 2 == 0)  {
-		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1) + (self.dotflg ? '.' : '')+ '}' + '\\' + 'underline{'+ zeroPadding(i%2)+ n.midformula +  '} \\\\[-3pt]';
+		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1 + parseInt(i/2)-(n.midformula.length-1)) + (self.dotflg ? '.' : '') + '}' + '\\' + 'underline{'+ n.midformula +  '} \\\\[-3pt]';
 		} else {
-		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1+(i%2)-(n.midformula.length-1)) + (self.dotflg ? '.' : '') + '}' + n.midformula +  ' \\\\[-3pt]';
+		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1+parseInt(i/2)-(n.midformula.length-1)+1) + (self.dotflg ? '.' : '') + '}' + n.midformula +  ' \\\\[-3pt]';
 		}
 		i++;
 	    })
-	    _formura += '\\phantom{'+ zeroPadding(this.dcols.length+this.ko.length-this.amari1.length) + (self.dotflg ? '.' : '') + '}' + this.amari1;
+	    _formura += '\\phantom{'+ zeroPadding(this.dcols.length+this.ko.length-this.amari1.length-1) + (self.dotflg ? '.' : '') + '}' + this.amari1;
             _formura += '\\end{array} $$'
 	    this.formula=_formura;
 	}
@@ -146,14 +147,6 @@ export default {
 	formula1: function(n,o) {
 	    if(n !== o) {
 		this.formula1 = n;
-		this.mkcalcs();
-		this.divMkFormula();
-	    }
-	},
-	
-	answer1: function(n,o) {
-	    if(n !== o) {
-		this.answer1 = n;
 		this.mkcalcs();
 		this.divMkFormula();
 	    }
