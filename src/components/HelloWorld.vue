@@ -2,7 +2,7 @@
 <div class="hello">
   <v-container>
     <v-row>
-      <v-col cols="8">
+      <v-col>
 	<v-form
     ref="form"
     >
@@ -17,28 +17,26 @@
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else ope='-'></Addition>	
       </v-col>
-      <v-col  cols="4">
-	<v-row>
-	  <v-col>
-	    <div ref="ff" id="ff">
-	      <vue-mathjax :formula="formula"></vue-mathjax>
-	    </div>
-	    <div v-show="debug">
-	      <textarea v-model="formula" cols="30" rows="10"></textarea>
-	    </div>
-	  </v-col>
-	</v-row>
-	<v-row>
-	  <v-col>
-	<v-btn color="success" @click="bntClick">イメージ作成</v-btn>
-	  <br />
-	  <img :src="testImg"/>
-	  <br />
-	  </v-col>
-	</v-row>
-      </v-col>
     </v-row>
   </v-container>
+  <div v-move-drag style="top: 10vh; left: 50vw">
+    <v-card>
+      <v-toolbar
+	color="indigo"
+	dark
+	>
+	<v-toolbar-title>数式イメージ</v-toolbar-title>
+      </v-toolbar>      
+      <v-card-text>
+      <div ref="ff" id="ff">
+	<vue-mathjax :formula="formula"></vue-mathjax>
+      </div>
+      <div v-show="debug">
+	<textarea v-model="formula" cols="30" rows="10"></textarea>
+      </div>
+      </v-card-text>
+    </v-card>
+  </div>
 </div>
 </template>
 

@@ -20,7 +20,7 @@
       <v-col>
 	<v-checkbox @change="divMkFormula" label="小数点" v-model="dcols[n].isDot"></v-checkbox>
       </v-col>	
-      <v-col cols="4">
+      <v-col >
 	<v-btn
 	  v-show="n>0"
 	  class="mx-2"
