@@ -2,7 +2,7 @@
 <div class="hello">
   <v-container>
     <v-row>
-      <v-col>
+      <v-col cols="8">
 	<v-form
     ref="form"
     >
@@ -17,15 +17,15 @@
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
 	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else ope='-'></Addition>	
       </v-col>
-      <v-col>
+      <v-col  cols="4">
 	<v-row>
 	  <v-col>
-	<div ref="ff" id="ff">
-	  <vue-mathjax :formula="formula"></vue-mathjax>
-	</div>
-	<div v-show="debug">
-	  <textarea v-model="formula" cols="30" rows="10"></textarea>
-	</div>
+	    <div ref="ff" id="ff">
+	      <vue-mathjax :formula="formula"></vue-mathjax>
+	    </div>
+	    <div v-show="debug">
+	      <textarea v-model="formula" cols="30" rows="10"></textarea>
+	    </div>
 	  </v-col>
 	</v-row>
 	<v-row>
@@ -62,7 +62,7 @@ export default {
 	    formula1 : '1.35/3',
 	    answer1 : '0.5',
 	    formula : '',
-	    debug : true,
+	    debug : false,
 	    testImg : '',
 	    ope : '/'
 	};
