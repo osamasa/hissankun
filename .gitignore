@@ -3,6 +3,7 @@ node_modules
 /dist
 # Gatsby files
 .cache/
+.firebase/
 
 # local env files
 .env.local
