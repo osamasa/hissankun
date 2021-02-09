@@ -1,13 +1,19 @@
 <template>
+  <v-text-field
+    v-model="answer1"
+    label="回答"
+    @input="mulMkFormula"      
+    ></v-text-field>        
 </template>
 <script>
 import { zeroPadding } from './zeroPadding.js'  
   export default {
       name: "Addition",
-      props :　['ope', 'formula1', 'answer1', '_formula'],
+      props :　['ope', 'formula1', '_formula'],
   data() {
       return {
 	  moji : [],
+	  answer1 : '0'
       };
     },
     mounted: function () {
@@ -57,13 +63,6 @@ import { zeroPadding } from './zeroPadding.js'
           this.mkcalcs();
           this.mulMkFormula();
         }
-    },
-    answer1: function(n,o) {
-       if(n !== o) {
-          this.answer1 = n;
-          this.mkcalcs();
-          this.mulMkFormula();
-       }
     }
   }
 }

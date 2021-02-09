@@ -7,6 +7,11 @@
 	label="数式"
 	@input="mulMkFormula"      
 	></v-text-field>
+      <v-text-field
+	v-model="answer1"
+	label="回答"
+	@input="mulMkFormula"      
+	></v-text-field>      
     </v-form>
   </div>
 </template>
@@ -14,13 +19,14 @@
 import { zeroPadding } from './zeroPadding.js'  
 export default {    
     name: "Multiplication",
-    props :　['ope', 'formula1', 'answer1', '_formula'],    
+    props :　['ope', 'formula1',  '_formula'],    
     data() {
       return {
 	  calcs : [],
 	  moji : [],
 	  nagasa :0,
-	  kurisagari : 0
+	  kurisagari : 0,
+	  answer1 : '0'
       };
     },
     mounted: function () {
@@ -41,16 +47,21 @@ export default {
          mkcalcs : function() {
 	     this.moji=[];
 	     this.moji = this.formula1.trim().split('*');
-             this.nagasa=(this.moji[this.moji.length-1]).length;
-	     this.calcs=null;
-	     this.calcs=Array(this.nagasa).fill(0);
+             this.nagasa=(this.moji[this.moji.length-1]).replace('.','').length;
+	     this.calcs=[];
+	     this.calcs=Array(this.nagasa).fill('0');
 	},
         mulMkFormula: function() {
             let _formura='';
             _formura = '$$ \\begin{array}{r}';
 	    
 	    let i=0;
-	    let maxlength = this.answer1.length;
+	    
+	    let mojimaxlength = this.moji.reduce(function(a, b) {
+		return Math.max(a.replace('.','').length, b.replace('.','').length);
+	    });
+
+	    let maxlength = Math.max(mojimaxlength, this.answer1.replace('.','').length);
 	    this.moji.forEach( m => {
 		if(++i != this.moji.length) {
 		    _formura += m + ' \\\\[-3pt]';
@@ -90,13 +101,6 @@ export default {
           this.mkcalcs();
           this.mulMkFormula();
         }
-    },
-    answer1: function(n,o) {
-       if(n !== o) {
-          this.answer1 = n;
-          this.mkcalcs();
-          this.mulMkFormula();
-       }
     }
   }
 }

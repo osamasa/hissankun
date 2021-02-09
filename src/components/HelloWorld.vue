@@ -13,9 +13,9 @@
       ></v-text-field>
 	</v-form>
 	<LongDivision :formula1="formula1" :_formula.sync="formula" v-if="ope==='/'"></LongDivision>
-	<Multiplication :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='*'"></Multiplication>
-	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
-	<Addition :formula1="formula1" :answer1="answer1" :_formula.sync="formula" v-else ope='-'></Addition>	
+	<Multiplication :formula1="formula1" :_formula.sync="formula" v-else-if="ope==='*'"></Multiplication>
+	<Addition :formula1="formula1" :_formula.sync="formula" v-else-if="ope==='+'" ope='+'></Addition>
+	<Addition :formula1="formula1" :_formula.sync="formula" v-else ope='-'></Addition>	
       </v-col>
     </v-row>
   </v-container>
@@ -32,7 +32,7 @@
 	<vue-mathjax :formula="formula"></vue-mathjax>
       </div>
       <div v-show="debug">
-	<textarea v-model="formula" cols="30" rows="10"></textarea>
+	<textarea v-model="getDecodeMoji" cols="30" rows="10"></textarea>
       </div>
       </v-card-text>
     </v-card>
@@ -57,15 +57,18 @@ export default {
     },
     data() {
 	return {
-	    formula1 : '1.35/3',
+	    formula1 : '13.3*33.45',
 	    answer1 : '0.5',
 	    formula : '',
-	    debug : false,
+	    debug : true,
 	    testImg : '',
-	    ope : '/'
+	    ope : '*'
 	};
     },
     computed: {
+	getDecodeMoji() {
+	    return encodeURI(this.formula);
+	}
     },    
     created: function () {
 	MathJax.Hub.Config({

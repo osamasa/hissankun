@@ -5,7 +5,7 @@
       <v-col>
 	<v-text-field
 	  v-if="n % 2==0"
-	  v-model="dcols[n].answer"
+	  v-model="calcs[n].answer"
 	  :label="'答え'+(n+1)"
 	  @input="divMkFormula"      
 	  ></v-text-field>
@@ -68,10 +68,10 @@ export default {
     props :　['ope', 'formula1', '_formula'],    
     data() {
 	return {
-	    oya : '',
-	    ko : '',
-	    dcols : [],
+	    moji :[],
+	    calcs : [],
 	    amari1 : '',
+	    answer1 : '0',
 	    dotflg : false,
 	};
     },
@@ -90,7 +90,7 @@ export default {
 	},
 	joinAnswers() {
 	    let ret=''
-	    this.dcols.forEach((n,i)=> {
+	    this.calcs.forEach((n,i)=> {
 		if(i%2==0) {
 		    if(n.isDot) {
 			ret +='.';
@@ -98,47 +98,48 @@ export default {
 		    ret += n.answer;
 		}
 	    })
-	    return ret;
+	    this.answer1 = ret;
+	    return this.answer1;
 	}
     },
     methods: {
 	addAnasers : function(n) {
-	    if(this.dcols.length-1 == n) {
-		this.dcols.push({'isDot' : false,'answer':'0','midformula':'0'})
+	    if(this.calcs.length-1 == n) {
+		this.calcs.push({'isDot' : false,'answer':'0','midformula':'0'})
 	    } else {
-		this.dcols.splice(n,0, {'isDot' : false,'answer':'0','midformula':'0'})
+		this.calcs.splice(n,0, {'isDot' : false,'answer':'0','midformula':'0'})
 	    }
 	},
 	delAnswers : function(n) {
-	    this.dcols.splice(n,1);
+	    this.calcs.splice(n,1);
 	},	
 	mkcalcs : function() {
 	    if(this.formula1.indexOf('/')<0) return;
 	    let moji = this.formula1.trim().split('/');
-	    this.oya = moji[0].trim();
-	    this.ko = moji[1].trim();
+	    this.moji[0] = moji[0].trim();
+	    this.moji[1] = moji[1].trim();
 	    this.nagasa = 1;
-	    this.dcols=[];
-	    this.dcols.push({'isDot' : false,'answer':'0','midformula':'0'});
+	    this.calcs=[];
+	    this.calcs.push({'isDot' : false,'answer':'0','midformula':'0'});
 	},
 	divMkFormula : function() {
 	    let _formura='';
-            _formura = '$$ \\require{enclose} \\begin{array}{l}' + '\\phantom{'+ zeroPadding(this.ko.length+1) +'}' + this.joinAnswers + ' \\\\ ' + this.ko + ' \\enclose{longdiv}{' + this.oya + '}\\kern-.2ex \\\\[-3pt] ';
+            _formura = '$$ \\require{enclose} \\begin{array}{l}' + '\\phantom{'+ zeroPadding(this.moji[1].length+1) +'}' + this.joinAnswers + ' \\\\ ' + this.moji[1] + ' \\enclose{longdiv}{' + this.moji[0] + '}\\kern-.2ex \\\\[-3pt] ';
 	    let i=0;
 	    const self=this;
 	    this.dotflg=false;
-	    this.dcols.forEach(n => {
+	    this.calcs.forEach(n => {
 		if(n.isDot==true) {
 		    self.dotflg=true;
 		}
 		if(i % 2 == 0)  {
-		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1 + parseInt(i/2)-(n.midformula.length-1)) + (self.dotflg ? '.' : '') + '}' + '\\' + 'underline{'+ n.midformula +  '} \\\\[-3pt]';
+		    _formura += '\\phantom{'+ zeroPadding(this.moji[1].length+1 + parseInt(i/2)-(n.midformula.length-1)) + (self.dotflg ? '.' : '') + '}' + '\\' + 'underline{'+ n.midformula +  '} \\\\[-3pt]';
 		} else {
-		    _formura += '\\phantom{'+ zeroPadding(this.ko.length+1+parseInt(i/2)-(n.midformula.length-1)+1) + (self.dotflg ? '.' : '') + '}' + n.midformula +  ' \\\\[-3pt]';
+		    _formura += '\\phantom{'+ zeroPadding(this.moji[1].length+1+parseInt(i/2)-(n.midformula.length-1)+1) + (self.dotflg ? '.' : '') + '}' + n.midformula +  ' \\\\[-3pt]';
 		}
 		i++;
 	    })
-	    _formura += '\\phantom{'+ zeroPadding(this.dcols.length+this.ko.length-this.amari1.length-1) + (self.dotflg ? '.' : '') + '}' + this.amari1;
+	    _formura += '\\phantom{'+ zeroPadding(this.calcs.length+this.moji[1].length-this.amari1.length-1) + (self.dotflg ? '.' : '') + '}' + this.amari1;
             _formura += '\\end{array} $$'
 	    this.formula=_formura;
 	}
