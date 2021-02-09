@@ -1,24 +1,25 @@
 <template>
-  <v-text-field
-    v-model="answer1"
-    label="回答"
-    @input="mulMkFormula"      
-    ></v-text-field>        
+<v-text-field
+  v-model="answer1"
+  label="回答"
+  @input="divMkFormula"      
+  ></v-text-field>        
 </template>
 <script>
 import { zeroPadding } from './zeroPadding.js'  
-  export default {
-      name: "Addition",
-      props :　['ope', 'formula1', '_formula'],
-  data() {
-      return {
-	  moji : [],
-	  answer1 : '0'
-      };
+export default {
+    name: "Addition",
+    props :　['id', 'formula1', '_formula','ope'],    
+    data() {
+	return {
+	    moji : [],
+	    answer1 : '0'
+	};
     },
     mounted: function () {
+	this.reloadFromDB()
 	this.mkcalcs();
-	this.mulMkFormula();	
+	this.divMkFormula()
     },
     computed: {
 	formula: {
@@ -29,15 +30,34 @@ import { zeroPadding } from './zeroPadding.js'
 		this.$emit('update:_formula', value)
 	    }
 	}
-     },
-     methods: {
-         mkcalcs : function() {
-	     this.moji=[];
-	     this.moji = this.formula1.trim().split(this.ope);
+    },
+    methods: {
+	reloadFromDB : function() {
+	    this.initFromDB();
+	},		  
+	saveMath : function() {
+	    this.$store.commit('setFormulas', {
+		'id' : this.id,
+		'moji' : this.moji,
+		'answer1' : this.answer1
+	    });
+	},	  
+        mkcalcs : function() {
+	    if((!this.ope) || (this.formula1.indexOf(this.ope)<0)) return;
+	    let moji = this.formula1.split(this.ope);
+	    if(!((moji[0]===this.moji[0]) && (moji[1]===this.moji[1]))) {
+		this.moji = moji.slice();
+		this.answer1=''
+	    }
 	},
-        mulMkFormula: function() {
+	initFromDB : function() {
+	    this.moji = this.$store.getters.getFormulas({'id':this.id}).moji.slice()
+	    this.calcs = this.$store.getters.getFormulas({'id':this.id}).calcs.slice()
+	    this.answer1 = this.$store.getters.getFormulas({'id':this.id}).answer1	    
+	},	  
+        divMkFormula: function() {
             let _formura='';
-
+	    
             _formura = '$$ \\begin{array}{r}';
 	    
 	    let i=0;
@@ -55,16 +75,14 @@ import { zeroPadding } from './zeroPadding.js'
             _formura += '\\end{array} $$';
             this.formula=_formura;
 	}
-  },
-  watch: {
-     formula1: function(n,o) {
-        if(n !== o) {
-          this.formula1 = n;
-          this.mkcalcs();
-          this.mulMkFormula();
-        }
+    },
+    watch: {
+	formula1: function(n,o) {
+            if(n !== o) {
+		this.mkcalcs();
+		this.divMkFormula();
+            }
+	}
     }
-  }
 }
 </script>
-

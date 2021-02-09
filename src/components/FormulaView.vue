@@ -117,9 +117,7 @@ export default {
     methods: {
 	mkcalcs() {
 	    const pat = /[-\+\*\/]/;
-	    console.log(1);
 	    let matchope=this.formula1.match(pat);
-	    console.log(2);	    
 	    if(matchope) {
 		console.log(3);
 		this.ope=this.formula1[matchope.index];

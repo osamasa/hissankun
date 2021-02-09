@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-form ref="divform">
-    <v-row v-for="(i,n) in dcols" :key="n">
+    <v-row v-for="(i,n) in calcs" :key="n">
       <v-col>
 	<v-text-field
 	  v-if="n % 2==0"
@@ -12,13 +12,13 @@
       </v-col>
       <v-col>
 	<v-text-field	  
-	  v-model="dcols[n].midformula"
+	  v-model="calcs[n].midformula"
 	  :label="'数式'+(n+1)"
 	  @input="divMkFormula"      
 	  ></v-text-field>
       </v-col>
       <v-col>
-	<v-checkbox @change="divMkFormula" label="小数点" v-model="dcols[n].isDot"></v-checkbox>
+	<v-checkbox @change="divMkFormula" label="小数点" v-model="calcs[n].isDot"></v-checkbox>
       </v-col>	
       <v-col >
 	<v-btn
@@ -65,7 +65,7 @@ import { zeroPadding } from './zeroPadding.js'
   
 export default {
     name: "LongdivsionWithDot",
-    props :　['ope', 'formula1', '_formula'],    
+    props :　['formula1', '_formula','id','ope'],    
     data() {
 	return {
 	    moji :[],
@@ -76,8 +76,9 @@ export default {
 	};
     },
     mounted: function () {
+	this.reloadFromDB();
 	this.mkcalcs();
-	this.divMkFormula();	
+	this.divMkFormula()	
     },
     computed: {
 	formula: {
@@ -103,6 +104,25 @@ export default {
 	}
     },
     methods: {
+	reloadFromDB : function() {
+	    this.initFromDB();
+	},
+	saveMath : function() {
+	    this.$store.commit('setFormulas', {
+		'id' : this.id,
+		'calcs' : this.calcs,
+		'moji' : this.moji,
+		'amari' : this.amari,
+		'answer1' : this.answer1,
+	    });
+	},	
+
+	initFromDB : function() {
+	    this.moji = this.$store.getters.getFormulas({'id':this.id}).moji.slice();
+	    this.calcs = this.$store.getters.getFormulas({'id':this.id}).calcs.slice();
+	    this.amari1 = this.$store.getters.getFormulas({'id':this.id}).amari1
+	    this.answer1 = this.$store.getters.getFormulas({'id':this.id}).answer1
+	},
 	addAnasers : function(n) {
 	    if(this.calcs.length-1 == n) {
 		this.calcs.push({'isDot' : false,'answer':'0','midformula':'0'})
@@ -114,13 +134,15 @@ export default {
 	    this.calcs.splice(n,1);
 	},	
 	mkcalcs : function() {
-	    if(this.formula1.indexOf('/')<0) return;
-	    let moji = this.formula1.trim().split('/');
-	    this.moji[0] = moji[0].trim();
-	    this.moji[1] = moji[1].trim();
-	    this.nagasa = 1;
-	    this.calcs=[];
-	    this.calcs.push({'isDot' : false,'answer':'0','midformula':'0'});
+	    if((!this.ope) || (this.formula1.indexOf(this.ope)<0)) return;
+	    let moji = this.formula1.split(this.ope);
+	    if(!((moji[0]===this.moji[0]) && (moji[1]===this.moji[1]))) {
+		this.amari1='0'
+		this.moji=moji.slice();
+		this.calcs=[];
+		this.calcs.push({'isDot' : false,'answer':'0','midformula':'0'});
+		this.answer1=''
+	    }
 	},
 	divMkFormula : function() {
 	    let _formura='';
@@ -147,7 +169,6 @@ export default {
     watch: {
 	formula1: function(n,o) {
 	    if(n !== o) {
-		this.formula1 = n;
 		this.mkcalcs();
 		this.divMkFormula();
 	    }
