@@ -21,6 +21,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export default firebase;
 
+Vue.use(vueMoveDrag)
+
 new Vue({
   router,
   store,
