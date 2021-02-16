@@ -33,22 +33,23 @@ export default {
 	size : 6,
 	inputbox : false,
 	formula : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$',
-	debug : false, 
-	calc : [
-	    [{chr:'',isActive:true},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
-	    [{chr:'5',isActive:false},{chr:')',isActive:false},{chr:'1',isActive:false},{chr:'2',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
-	],
+	debug : false,
     }),
     created: function () {
 	MathJax.Hub.Config({
 	});
+	this.$store.commit('registerMediator', {'x': 0, 'y':0 });
 	this.divMkFormula()
     },
     computed : {
+	calc : {
+	    get () {
+		return this.$store.state.calc
+	    },
+	    set (value) {
+		this.$store.commit('updateCaclc',value);
+	    }
+	},
 	isLongDivBorder : function() {
 	    return (y,x) => {
 		let _ret = '';

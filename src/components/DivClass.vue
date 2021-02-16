@@ -1,24 +1,41 @@
 <template>
-<div @click="d_flg=!d_flg" v-bind:class="d_flg ? 'isActive' : 'notActive'">
+<div @click="clickDiv()" v-bind:class="d_flg ? 'isActive' : 'notActive'">
   {{ ip }}
 </div>
 </template>
 
 <script>
 export default {
-    props : [ 'd_data', 'x', 'y' ],
+    props : [ 'x', 'y' ],
     name: 'divclass',
     data: () => ({
-	d_flg : false,
-	ip : ''
     }),
     mounted :function() {
-	this.ip=this.d_data.chr;
-	this.d_flg=this.d_data.isActive;	
     },
     methods : {
+	clickDiv() {
+	    this.$store.commit('registerMediator', {'x': this.x, 'y': this.y});
+	}
     },
     computed : {
+	ip : {
+	    get : function() {
+		return this.$store.state.calc[parseInt(this.y)][parseInt(this.x)].chr;
+	    },
+	    set : function(value) {
+		this.$store.commit('setCalc',{x : this.x, y: this.y , 'chr' : value});
+	    }
+	},
+	d_flg :  {
+	    get : function() {
+		return this.$store.state.calc[parseInt(this.y)][parseInt(this.x)].isActive;
+	    },
+	    set : function(value) {
+		this.$store.commit('setCalc',{x : this.x, y: this.y , 'isActive' : value});
+	    }	    
+	}
+    },
+    watch : {
     }
 }
 </script>
