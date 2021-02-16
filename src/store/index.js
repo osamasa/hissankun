@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	sep : '',
 	formula : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$',	
 	mediator : {
 	    last : null
@@ -24,11 +25,15 @@ export default new Vuex.Store({
 	}
     },
     mutations: {
+	setSep : (state, payload) => {
+	    console.log(payload.sep);
+	    state.sep = payload.sep;
+	},
 	updateFormula : (state, payload) => {
 	    state.formula = payload.formula;
 	},
 	updateCalc : (state,payload) => {
-	    state.calc = payload;
+	    state.calc = payload.calc.concat();
 	},
 	updateChrCalc : (state,payload) => {
 	    state.calc[parseInt(payload.y)][parseInt(payload.x)].chr = payload.chr;

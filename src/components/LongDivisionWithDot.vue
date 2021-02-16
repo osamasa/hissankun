@@ -43,6 +43,14 @@ export default {
 	    set (value) {
 		this.$store.commit('updateFormula',{'formula' : value});
 	    }
+	},
+	sep: {
+	    get () {
+		return this.$store.state.sep;
+	    },
+	    set (value) {
+		this.$store.commit('setSep',{ 'sep' : value });
+	    }
 	}
     },
     methods: {
@@ -50,10 +58,11 @@ export default {
             let _formura='';	    
 	    const _answer1=this.calc[0].map(c => c.chr).join('');	    
 	    let [_ko, _oya] = this.calc[1].map(c => c.chr).join('').split(')');
-
+	    
 	    let _oyadot = _oya.length - _oya.indexOf('.')-1
+
 	    let _answerdot=0
-	    const _karikaitou = String(parseFloat(_oya) / parseFloat(_ko));
+	    const _karikaitou = '0'
 	    if(_karikaitou.indexOf('.') > -1) {
 		_answerdot = _karikaitou.length-_karikaitou.indexOf('.')-1;
 		if(_oya.indexOf('.')>-1) {
@@ -118,6 +127,11 @@ export default {
 	}
     },
     watch: {
+	formula : function(n,o) {
+	    if(n!==o) {
+		this.divMkFormula();
+	    }
+	}
     }
 }
 </script>

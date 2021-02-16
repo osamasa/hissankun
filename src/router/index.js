@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import HelloWorld from '../components/HelloWorld.vue'
+import NewPadKun from '../components/NewPadKun.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+      path: '/',
+      name: 'Home',
+      component: Home,
+      children : [
+	  {  name : 'input', path: '', component: HelloWorld },
+	  {  name : 'calc' , path: 'calc', component: NewPadKun }
+      ]
   },
   {
     path: '/about',

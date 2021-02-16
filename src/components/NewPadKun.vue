@@ -7,7 +7,7 @@
       </td>
     </tr>
   </table>
-  <LongDivisionWithDot ref="longdivision"></LongDivisionWithDot>
+  <LongDivisionWithDot v-if="this.sep==='/'" ref="longdivision"></LongDivisionWithDot>
   <v-text-field
     ref="focusThis"
     v-model="message"
@@ -56,7 +56,7 @@ export default {
 		    _ret += 'border-bottom: 1px solid #000;';
 		}		  
 		for(let i=0;i<x;i++) {
-		    if((this.calc[i][y].chr === ')') && (this.calc[y][x].chr)) {
+		    if((this.calc[y][i].chr === ')') && (this.calc[y][x].chr)) {
 			_ret += 'border-top: 1px solid #000;';
 		    }
 		}
@@ -65,7 +65,15 @@ export default {
 		}
 		return _ret;
 	    }
-	}
+	},
+	sep: {
+	    get () {
+		return this.$store.state.sep;
+	    },
+	    set (value) {
+		this.$store.commit('setSep',{ 'sep' : value });
+	    }
+	}	
 	
     },
     methods : {
@@ -75,14 +83,14 @@ export default {
 	pushYellow() {
 	    this.$store.dispatch('pushNumeric',{chr : this.message});
 	    this.message=this.$store.state.mediator.last.chr;
-	    this.$refs.longdivision.divMkFormula();
+	    this.$store.commit('updateFormula',{'formula':''});
 	    this.$refs.focusThis.focus();
 	    
 	},
 	deleteYellow() {
 	    this.$store.dispatch('deleteNumeric');
 	    this.message='';
-	    this.$refs.longdivision.divMkFormula();
+	    this.$store.commit('updateFormula',{'formula':''});
 	    this.$refs.focusThis.focus();
 	},
 	setPress() {
