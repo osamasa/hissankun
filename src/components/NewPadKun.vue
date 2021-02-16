@@ -35,7 +35,7 @@ export default {
 	formula : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$',
 	debug : false, 
 	calc : [
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
+	    [{chr:'',isActive:true},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
 	    [{chr:'5',isActive:false},{chr:')',isActive:false},{chr:'1',isActive:false},{chr:'2',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
 	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
 	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
@@ -154,10 +154,5 @@ table {
 }
 td {
     border: 1px dashed #999;
-    background: #f0f0f0;
-    height: 60px;
-    width: 60px;  
-    text-align: center;
-    vertical-align: middle;
 }
 </style>
