@@ -119,11 +119,8 @@ export default {
 	    const pat = /[-\+\*\/]/;
 	    let matchope=this.formula1.match(pat);
 	    if(matchope) {
-		console.log(3);
 		this.ope=this.formula1[matchope.index];
-		console.log(4);		
 	    }
-	    console.log(5);	    
 	},
 	openDialog() {
 	    this.f_dialog=!this.f_dialog;

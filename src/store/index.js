@@ -55,6 +55,48 @@ export default new Vuex.Store({
 	}
     },
     actions: {
+	moveUpNumeric(context) {
+	    const _x = context.state.mediator.last.x;
+	    let _y = context.state.mediator.last.y;
+	    _y--;
+	    if(_y < 0)
+		_y=0;
+	    context.commit('registerMediator',context.state.calc[_y][_x]);
+	},
+	moveDownNumeric(context) {
+	    const _x = context.state.mediator.last.x;
+	    let _y = context.state.mediator.last.y;
+	    _y++;
+	    if(!(_y < context.state.calc.length)) {
+		_y=context.state.calc.length-1;
+	    }
+	    context.commit('registerMediator',context.state.calc[_y][_x]);
+	},
+	moveLeftNumeric(context) {
+	    let _x = context.state.mediator.last.x;
+	    const _y = context.state.mediator.last.y;
+	    _x--;
+	    if(_x < 0)
+		_x=0;
+	    context.commit('registerMediator',context.state.calc[_y][_x]);
+	},
+	moveRightNumeric(context) {
+	    let _x = context.state.mediator.last.x;
+	    const _y = context.state.mediator.last.y;
+	    _x++;
+	    if(!(_x < context.state.calc[0].length)) {
+		_x=context.state.calc[0].length-1;
+	    }
+	    context.commit('registerMediator',context.state.calc[_y][_x]);
+	},		
+	deleteBackNumeric(context) {
+	    let _x = context.state.mediator.last.x;
+	    const _y = context.state.mediator.last.y;
+	    _x--
+	    if(_x<0)
+		_x=0;
+	    context.commit('updateChrCalc', {chr : '', x: _x, y:_y});
+	    context.commit('registerMediator',context.state.calc[_y][_x]);		},	
 	deleteNumeric(context) {
 	    const _x = context.state.mediator.last.x;
 	    const _y = context.state.mediator.last.y;

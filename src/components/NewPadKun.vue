@@ -7,16 +7,23 @@
       </td>
     </tr>
   </table>
-  <LongDivisionWithDot v-if="this.sep==='/'" ref="longdivision"></LongDivisionWithDot>
+  <LongDivisionWithDot ref="longdivision"></LongDivisionWithDot>
   <v-text-field
     ref="focusThis"
+    @keyup.enter="pushYellow"
+    @keyup.delete="deleteBack"
+    @keyup.up="upYellow"
+    @keyup.down="downYellow"
+    @keyup.left="leftYellow"
+    @keyup.right="rightYellow"
+    @keyup.space="deleteYellow"
     v-model="message"
     label="数字を入力"
     type="text"
     >
     <template v-slot:append-outer >
       <v-btn @click="pushYellow" color="primary">入力</v-btn>
-      <v-btn @click="deleteYellow" class="ml-2" color="primary">削除</v-btn>      
+      <v-btn @click="deleteYellow" class="ml-2" color="primary">削除</v-btn>
     </template>
   </v-text-field>
   </div>
@@ -39,6 +46,9 @@ export default {
     }),
     created: function () {
 	this.$store.commit('registerMediator', {'x': 0, 'y':0 });
+    },
+    mounted : function() {
+	this.$refs.focusThis.focus();
     },
     computed : {
 	calc : {
@@ -77,6 +87,26 @@ export default {
 	
     },
     methods : {
+	upYellow() {
+	    this.$store.dispatch('moveUpNumeric');
+	    this.message=this.$store.state.mediator.last.chr;
+	    this.$refs.focusThis.focus();
+	},
+	downYellow() {
+	    this.$store.dispatch('moveDownNumeric');
+	    this.message=this.$store.state.mediator.last.chr;
+	    this.$refs.focusThis.focus();
+	},
+	rightYellow() {
+	    this.$store.dispatch('moveRightNumeric');
+	    this.message=this.$store.state.mediator.last.chr;
+	    this.$refs.focusThis.focus();
+	},
+	leftYellow() {
+	    this.$store.dispatch('moveLeftNumeric');
+	    this.message=this.$store.state.mediator.last.chr;
+	    this.$refs.focusThis.focus();
+	},		
 	setValue( chr ) {
 	    this.message = chr;
 	},
@@ -86,6 +116,9 @@ export default {
 	    this.$store.commit('updateFormula',{'formula':''});
 	    this.$refs.focusThis.focus();
 	    
+	},
+	deleteBack() {
+	    this.$store.dispatch('deleteBackNumeric');		
 	},
 	deleteYellow() {
 	    this.$store.dispatch('deleteNumeric');

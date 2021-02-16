@@ -25,7 +25,7 @@ export default {
     mounted: function () {
 	MathJax.Hub.Config({
 	});
-	this.divMkFormula()
+	this.mkFormula()
     },
     computed: {
 	calc : {
@@ -54,6 +54,11 @@ export default {
 	}
     },
     methods: {
+	mkFormula() {
+	    if(this.sep === '/') {
+		this.divMkFormula();
+	    }
+	},
 	divMkFormula() {
             let _formura='';	    
 	    const _answer1=this.calc[0].map(c => c.chr).join('');	    
@@ -129,7 +134,7 @@ export default {
     watch: {
 	formula : function(n,o) {
 	    if(n!==o) {
-		this.divMkFormula();
+		this.mkFormula();
 	    }
 	}
     }
