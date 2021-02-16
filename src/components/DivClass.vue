@@ -1,5 +1,5 @@
 <template>
-<div @click="clickDiv()" v-bind:class="d_flg ? 'isActive' : 'notActive'">
+<div @dblclick="dialog_f=!dialog_f" @click="clickDiv()" v-bind:class="d_flg ? 'isActive' : 'notActive'">
   {{ ip }}
 </div>
 </template>
@@ -9,12 +9,15 @@ export default {
     props : [ 'x', 'y' ],
     name: 'divclass',
     data: () => ({
+	dialog_f : false
     }),
     mounted :function() {
     },
     methods : {
 	clickDiv() {
 	    this.$store.commit('registerMediator', {'x': this.x, 'y': this.y});
+	    this.$parent.setValue(this.ip);
+	    this.$parent.$refs.focusThis.focus();
 	}
     },
     computed : {
