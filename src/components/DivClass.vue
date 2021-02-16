@@ -1,9 +1,9 @@
 <template>
 <div v-if="d_flg" @click="d_flg=!d_flg">
-  {{ ip }}
+  {{ ip.chr }}
 </div>
 <div v-else>
-  <input v-model="ip"  @input="chgData()" size="1"/>
+  <input v-model="ip"  @input="chgData().chr" size="1"/>
 </div>  
 </template>
 
@@ -16,11 +16,13 @@ export default {
 	ip : ''
     }),
     mounted :function() {
-	this.ip=this.d_data;
+	this.ip=this.d_data.chr;
     },
     methods : {
 	chgData : function() {
-	    this.$parent.calc[this.y].splice(this.x,1, this.ip);
+	    let _tmp=this.$parent.calc.splice(this.y,1);
+	    _tmp.splice(this.x,1,this.ip);
+	    this.$parent.calc.splice(this.y,1,_tmp);
 	}
     },
     computed : {

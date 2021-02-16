@@ -1,9 +1,9 @@
 <template>
   <div>
   <table>
-    <tr v-for="y in size">
-      <td v-for="x in size" :style="isLongDivBorder(y-1,x-1)">
-        <divclass :d_data="calc[y-1][x-1]" :x="x-1" :y="y-1" />
+    <tr v-for="c,i in calc" :key="i">
+      <td v-for="d,l in c" :style="isLongDivBorder(i,l)" :kye="l">
+        <divclass :d_data="d" :x="l" :y="i" />
       </td>
     </tr>
   </table>
@@ -35,13 +35,12 @@ export default {
 	formula : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$',
 	debug : false, 
 	calc : [
-	    ['','','','','',''],
-	    ['5',')','1','2','',''],
-	    ['','','','','',''],
-	    ['','','','','',''],
-	    ['','','','','',''],
-	    ['','','','','','']
-	    
+	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
+	    [{chr:'5',isActive:false},{chr:')',isActive:false},{chr:'1',isActive:false},{chr:'2',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
+	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
+	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
+	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
+	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
 	],
     }),
     created: function () {
@@ -53,15 +52,15 @@ export default {
 	isLongDivBorder : function() {
 	    return (y,x) => {
 		let _ret = '';
-		if((y==0) &&  (this.calc[y][x])) {
+		if((y==0) &&  (this.calc[y][x].chr)) {
 		    _ret += 'border-bottom: 1px solid #000;';
 		}		  
 		for(let i=0;i<x;i++) {
-		    if((this.calc[i][y] === ')') && (this.calc[y][x])) {
+		    if((this.calc[i][y].chr === ')') && (this.calc[y][x].chr)) {
 			_ret += 'border-top: 1px solid #000;';
 		    }
 		}
-		if((y>1) && (y%2==0) && (this.calc[y][x])) {
+		if((y>1) && (y%2==0) && (this.calc[y][x].chr)) {
 		    _ret += 'border-bottom: 1px solid #000;';
 		}
 		return _ret;
@@ -72,8 +71,9 @@ export default {
     methods : {
 	divMkFormula() {
             let _formura='';	    
-	    const _answer1=this.calc[0].join('');
-	    let [_ko, _oya] = this.calc[1].join('').split(')');
+	    const _answer1=this.calc[0].map(c => c.chr).join('');	    
+	    let [_ko, _oya] = this.calc[1].map(c => c.chr).join('').split(')');
+
 	    let _oyadot = _oya.length - _oya.indexOf('.')-1
 	    let _answerdot=0
 	    const _karikaitou = String(parseFloat(_oya) / parseFloat(_ko));
@@ -103,8 +103,9 @@ export default {
 		nokori--;
 	    }
 	    this.calc.slice(2).forEach(_n => {
-		let n = _n.join('');
-		
+
+		let n = _n.map(c => c.chr).join('');
+
 		if(i===(_nagasa-1)) {
 		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
 		} else if(i % 2 == 0) {
