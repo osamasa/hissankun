@@ -16,6 +16,7 @@
 <script>
 export default {
     name: 'HelloWorld',
+    props : ['_id'],    
     components : {
     },
     data: () => ({
@@ -31,26 +32,26 @@ export default {
     computed : {
 	lawFormula : {
 	    get () {
-		return this.$store.getters.getLawformula({'id': this.$route.params.id});
+		return this.$store.getters.getLawformula({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('setLawformula',{'lawFormula' : value, 'id' : this.$route.params.id});
+		this.$store.commit('setLawformula',{'lawFormula' : value, 'id' : this._id});
 	    }
 	},
 	calc : {
 	    get () {
-		return this.$store.getters.getCalc({'id': this.$route.params.id});
+		return this.$store.getters.getCalc({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('updateCalc',{'calc' : value, 'id' : this.$route.params.id});
+		this.$store.commit('updateCalc',{'calc' : value, 'id' : this._id});
 	    }
 	},
 	sep: {
 	    get () {
-		return this.$store.getters.getSep({'id': this.$route.params.id});
+		return this.$store.getters.getSep({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('setSep',{ 'sep' : value , 'id' : this.$route.params.id});
+		this.$store.commit('setSep',{ 'sep' : value , 'id' : this._id});
 	    }
 	}	
     },
@@ -119,7 +120,6 @@ export default {
 	    this.lawFormula = this._lawFormula;
 	    this.sep = this._sep;	    
 	    this.calc = _calc;
-	    this.$router.push({name : 'calc', params: { id : this.$route.params.id }});
 	},
     },
     watch: {

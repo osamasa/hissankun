@@ -6,12 +6,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
 	lastno : 0,
+	bairitsu : [{'id': 0, 'cd' : 100}],
 	sep : [{'id': 0, 'cd' : '/'}],
 	formula : [{'id': 0, 'cd' : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$'}],
 	mediator : {
 	    last : null
 	},
-	lawformula : [{'id': 0, 'cd' : '190/25'}],
+	lawformula : [{'id': 0, 'cd' : '12/5'}],
 	calc : [{'id': 0, 'cd' : [
 	    [{x:0,y:0,chr:'',isActive:false},{x:1,y:0,chr:'',isActive:false},{x:2,y:0,chr:'',isActive:false},{x:3,y:0,chr:'',isActive:false},{x:4,y:0,chr:'',isActive:false},{x:5,y:0,chr:'',isActive:false}],	    
 	    [{chr:'5',isActive:false},{chr:')',isActive:false},{chr:'1',isActive:false},{chr:'2',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
@@ -22,6 +23,10 @@ export default new Vuex.Store({
 	]}],
     },
     getters: {
+	getBairitsu: (state) => (payload) => {
+	    let _id = parseInt(payload.id);
+	    return state.bairitsu.find( a => a.id == _id ).cd;
+	},
 	getCalc : (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    return state.calc.find( a => a.id == _id ).cd;
@@ -29,6 +34,9 @@ export default new Vuex.Store({
 	getLawformula :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    return state.lawformula.find( a => a.id == _id ).cd;
+	},
+	getAllFormula : (state) => {
+	    return state.formula;
 	},
 	getformula :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
@@ -40,6 +48,20 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	setBairitsu: (state, payload) => {
+	    let _id = parseInt(payload.id);
+	    let i = state.lawformula.findIndex( a => a.id == _id );
+	    let bairitsu = state.bairitsu[i].cd;
+	    if(payload.command==='+') {
+		bairitsu += 10;
+	    } else {
+		bairitsu -= 10;
+		if(bairitsu < 10) {
+		    bairitsu = 10
+		}
+	    }
+	    state.bairitsu[i].cd=bairitsu;
+	},	
 	setLawformula : (state, payload) => {
 	    let _id = parseInt(payload.id);
 	    let i = state.lawformula.findIndex( a => a.id == _id );

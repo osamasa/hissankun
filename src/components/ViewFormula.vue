@@ -1,12 +1,9 @@
 <template>
   <div>
-        <div class="d-flex ma-2">
-	  <v-btn @click="backtoformula" class="ml-2" color="primary">筆算に戻る</v-btn>
-	</div>
-    <div>
-<vue-mathjax :formula="formula"></vue-mathjax>
-</div>
-</div>
+    <div :style="'font-size : ' + bairtsu + '%'">
+      <vue-mathjax :formula="formula"></vue-mathjax>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -14,27 +11,34 @@ import { zeroPadding } from './zeroPadding.js'
 import { VueMathjax } from "vue-mathjax";
 
 export default {
+    props : ['_id'],
     name: "LongdivsionWithDot",
     components : {
 	"vue-mathjax": VueMathjax,
     },
     data() {
 	return {
-	    _id : 0
 	};
     },
     mounted: function () {
-	this._id = this.$route.params.id;
 	MathJax.Hub.Config({
 	});
     },
     computed: {
-	formula : {
+	bairtsu : {
 	    get () {
-		return this.$store.getters.getformula({ 'id': this.$route.params.id })
+		return this.$store.getters.getBairitsu({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('updateFormula',{'formula' : value, 'id': this.$route.params.id });
+		this.$store.commit('updatebairitsu',{'id': this._id });
+	    }	
+	},
+	formula : {
+	    get () {
+		return this.$store.getters.getformula({ 'id': this._id })
+	    },
+	    set (value) {
+		this.$store.commit('updateFormula',{'formula' : value, 'id': this._id });
 	    }	
 	}
     },

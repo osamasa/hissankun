@@ -82,11 +82,11 @@ export default {
 	    _formura += '\\' + 'underline{\\times';
 	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
 
-
 	    const self=this;
 	    for(let i=3;i<_anspos;i++) {
 		let nokori = i-3
-		if(i==_anspos-1) {
+
+		if((nokori>0) && (i==_anspos-1)) {
 		    let headpad=-(self.calc.length)-_answer1.length;
 		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + this.calc[i].map(c => c.chr).join('') + '\\phantom{' +  zeroPadding(nokori) + '}} \\\\[-3pt]'		    
 		} else {
