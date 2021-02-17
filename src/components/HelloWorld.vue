@@ -19,7 +19,7 @@ export default {
     components : {
     },
     data: () => ({
-	lawFormula : '244/32',
+	lawFormula : '244*92',
 	_sep : '',
 	_oya : '',
 	_ko : '',
@@ -49,11 +49,12 @@ export default {
 	parseFormula() {
 	    [this._oya, this._sep, this._ko] = this.lawFormula.split(/([-+*/])/);
 	    this.sep = this._sep;
+	    let _calc = [];
 	    
 	    switch(this._sep) {
 	    case  '/' :
 		this._size=this._oya.length + this._ko.length + 5
-		let _calc = [];
+
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
 		    for(let x=0;x<this._size;x++) {
@@ -71,51 +72,41 @@ export default {
 		    _calc[1][i].chr=o;
 		    i++;
 		})
-		this.calc = _calc;
 		break;
 	    case  '+' :
-		this._size= (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 3;
-		for(let y=0;y<this._size;y++) {
-		    _calc.push([]);
-		    for(let x=0;x<this._size;x++) {
-			_calc[y].push({x:x,y:y,chr:'',isActive:false});
-		    }
-		}
-		i=2;
-		this._oya.forEach( k => {
-		    _calc[1][i].chr=k;
-		    i++;
-		})
-		_calc[2][2].chr='+';
-		i=3;		
-		this._ko.forEach( o => {
-		    _calc[3][i].chr=o;
-		    i++;
-		})
-		break;
-	    case  '*' :
-		break;
 	    case  '-' :
-		this._size= (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 3;
+	    case  '*' :
+		if(this.sep === '*') {
+		    let _oyakonagasa = (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 2;
+		    let _tenkai = this._ko.length + 1 + 3;
+		    let _saidai = this._oya.length + (this._ko.length-1)+1;
+
+		    console.log(_oyakonagasa, _tenkai, _saidai);
+		    
+		    this._size = Math.max(_oyakonagasa, _tenkai, _saidai);
+		} else {
+		    this._size= (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 2;
+		}
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
 		    for(let x=0;x<this._size;x++) {
 			_calc[y].push({x:x,y:y,chr:'',isActive:false});
 		    }
 		}
-		i=2;
-		this._oya.forEach( k => {
+		i=this._size-this._oya.length;
+		this._oya.split('').forEach( k => {
 		    _calc[1][i].chr=k;
 		    i++;
 		})
-		_calc[2][2].chr='-';
-		i=3;		
-		this._ko.forEach( o => {
-		    _calc[3][i].chr=o;
+		_calc[2][1].chr=this._sep;
+		i=this._size-this._ko.length;
+		this._ko.split('').forEach( o => {
+		    _calc[2][i].chr=o;
 		    i++;
 		})
-		break;		
+		break;
 	    }
+	    this.calc = _calc;	    
 	    this.$router.push({name : 'calc'});
 	},
     },

@@ -9,14 +9,14 @@
   </table>
   <LongDivisionWithDot ref="longdivision"></LongDivisionWithDot>
   <v-text-field
-    ref="focusThis"
     @keyup.enter="pushYellow"
     @keyup.delete="deleteBack"
     @keyup.up="upYellow"
     @keyup.down="downYellow"
     @keyup.left="leftYellow"
     @keyup.right="rightYellow"
-    @keyup.space="deleteYellow"
+    @keyup.space="deleteYellow"    
+    ref="focusThis"
     v-model="message"
     label="数字を入力"
     type="text"
@@ -59,6 +59,14 @@ export default {
 		this.$store.commit('updateCaclc',value);
 	    }
 	},
+	sep: {
+	    get () {
+		return this.$store.state.sep;
+	    },
+	    set (value) {
+		this.$store.commit('setSep',{ 'sep' : value });
+	    }
+	},
 	isLongDivBorder : function() {
 	    return (y,x) => {
 		let _ret = '';
@@ -70,20 +78,19 @@ export default {
 			_ret += 'border-top: 1px solid #000;';
 		    }
 		}
-		if((y>1) && (y%2==0) && (this.calc[y][x].chr)) {
+		if(((y>1) && (y%2==0) && (this.sep==='/') && (this.calc[y][x].chr))) {
 		    _ret += 'border-bottom: 1px solid #000;';
+		}
+		if(((y==2) && (this.sep!=='/') && (x>0))) {
+		    _ret += 'border-bottom: 1px solid #000;';
+		}
+		if((this.sep==='*') && (y==this.calc.length-1) && (this.calc[y][x].chr))
+		{
+		    _ret += 'border-top: 1px solid #000;';
 		}
 		return _ret;
 	    }
 	},
-	sep: {
-	    get () {
-		return this.$store.state.sep;
-	    },
-	    set (value) {
-		this.$store.commit('setSep',{ 'sep' : value });
-	    }
-	}	
 	
     },
     methods : {
@@ -118,7 +125,10 @@ export default {
 	    
 	},
 	deleteBack() {
-	    this.$store.dispatch('deleteBackNumeric');		
+	    this.$store.dispatch('deleteNumeric');
+	    this.message='';
+	    this.$store.commit('updateFormula',{'formula':''});
+	    this.$refs.focusThis.focus();	    
 	},
 	deleteYellow() {
 	    this.$store.dispatch('deleteNumeric');

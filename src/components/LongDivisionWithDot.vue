@@ -57,7 +57,71 @@ export default {
 	mkFormula() {
 	    if(this.sep === '/') {
 		this.divMkFormula();
+	    } else if((this.sep === '+') || (this.sep === '-')) {
+		this.divPlusMkFormula();
+	    } else if(this.sep === '*') {
+		this.divMkMultiFormula()
 	    }
+	},
+
+        divMkMultiFormula: function() {
+            let _formura='';
+	    let _oya = this.calc[1].map(c => c.chr).join('');
+	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[*]/,'');
+	    let _anspos = (_ko.length)+3;
+	    console.log(_oya,_ko,_anspos);
+	    const _answer1=this.calc[ _anspos ].map(c => c.chr).join('');
+	    
+            _formura = '$$ \\begin{array}{r}';
+	    
+	    let i=0;
+	    
+	    let maxlength = this.calc.length;
+
+	    _formura += _oya + ' \\\\[-3pt]';
+	    _formura += '\\' + 'underline{\\times';
+	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
+
+
+	    const self=this;
+	    for(let i=3;i<_anspos;i++) {
+		let nokori = i-3
+		if(i==_anspos-1) {
+		    let headpad=-(self.calc.length)-_answer1.length;
+		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + this.calc[i].map(c => c.chr).join('') + '\\phantom{' +  zeroPadding(nokori) + '}} \\\\[-3pt]'		    
+		} else {
+		    _formura += this.calc[i].map(c => c.chr).join('');
+		    if(nokori > 0) {
+			_formura +='\\phantom{' + zeroPadding(nokori)+ '}'
+		    }
+		    _formura += ' \\\\[-3pt]'		
+		}
+		
+	    }
+	    _formura += _answer1;
+            _formura += '\\end{array} $$';
+            this.formula=_formura;
+	},
+	
+	divPlusMkFormula: function() {
+            let _formura='';
+	    const _answer1=this.calc[3].map(c => c.chr).join('');	    
+	    let _oya = this.calc[1].map(c => c.chr).join('');
+	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[+-]/,'');
+	    
+            _formura = '$$ \\begin{array}{r}';
+	    
+	    let i=0;
+	    let maxlength = this.calc[0].length;
+	    const self = this;
+
+	    _formura += _oya + ' \\\\[-3pt]';
+	    _formura += '\\' + 'underline{' + this.sep;
+	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
+	    _formura += _answer1;
+            _formura += '\\end{array} $$';
+	    
+            this.formula=_formura;
 	},
 	divMkFormula() {
             let _formura='';	    
