@@ -69,7 +69,6 @@ export default {
 	    let _oya = this.calc[1].map(c => c.chr).join('');
 	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[*]/,'');
 	    let _anspos = (_ko.length)+3;
-	    console.log(_oya,_ko,_anspos);
 	    const _answer1=this.calc[ _anspos ].map(c => c.chr).join('');
 	    
             _formura = '$$ \\begin{array}{r}';

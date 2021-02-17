@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import NewPadKun from '../components/NewPadKun.vue'
+import ViewFormula from '../components/ViewFormula.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +14,8 @@ const routes = [
       component: Home,
       children : [
 	  {  name : 'input', path: '', component: HelloWorld },
-	  {  name : 'calc' , path: 'calc', component: NewPadKun }
+	  {  name : 'calc' , path: 'calc', component: NewPadKun },
+	  {  name : 'view' , path: 'view', component: ViewFormula }
       ]
   },
   {

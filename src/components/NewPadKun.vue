@@ -1,5 +1,9 @@
 <template>
-  <div>
+<div>
+  <div class="d-flex ma-2">
+    <v-btn @click="viewformula" color="primary">画像のみ表</v-btn>
+    <v-btn @click="backtoformula" class="ml-2" color="primary">数式に戻る</v-btn>
+  </div>
   <table>
     <tr v-for="c,i in calc" :key="i">
       <td v-for="d,l in c" :style="isLongDivBorder(i,l)" :key="l">
@@ -9,6 +13,7 @@
   </table>
   <LongDivisionWithDot ref="longdivision"></LongDivisionWithDot>
   <v-text-field
+    @keyup.esc="backtoformula"
     @keyup.enter="pushYellow"
     @keyup.delete="deleteBack"
     @keyup.up="upYellow"
@@ -94,6 +99,12 @@ export default {
 	
     },
     methods : {
+	viewformula() {
+	    this.$router.push({name : 'view'});
+	},
+	backtoformula() {
+	    this.$router.go(-1)
+	},	
 	upYellow() {
 	    this.$store.dispatch('moveUpNumeric');
 	    this.message=this.$store.state.mediator.last.chr;
