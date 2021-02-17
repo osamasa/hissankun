@@ -106,7 +106,7 @@ export default {
 	    this.$router.push({name : 'view', params: {'id': this._id}});
 	},
 	backtoformula() {
-	    this.$router.go(-1)
+	    this.$router.push({name : 'input', params: {'id': this._id}});
 	},	
 	upYellow() {
 	     this.$store.dispatch('moveUpNumeric',{'id': this._id});
