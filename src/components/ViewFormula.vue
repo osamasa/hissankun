@@ -20,21 +20,23 @@ export default {
     },
     data() {
 	return {
+	    _id : 0
 	};
     },
     mounted: function () {
+	this._id = this.$route.params.id;
 	MathJax.Hub.Config({
 	});
     },
     computed: {
 	formula : {
 	    get () {
-		return this.$store.state.formula
+		return this.$store.getters.getformula({ 'id': this.$route.params.id })
 	    },
 	    set (value) {
-		this.$store.commit('updateFormula',{'formula' : value});
-	    }
-	},
+		this.$store.commit('updateFormula',{'formula' : value, 'id': this.$route.params.id });
+	    }	
+	}
     },
     methods: {
 	backtoformula() {

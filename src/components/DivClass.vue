@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    props : [ 'x', 'y' ],
+    props : [ 'x', 'y' , 'id'],
     name: 'divclass',
     data: () => ({
 	dialog_f : false
@@ -15,7 +15,7 @@ export default {
     },
     methods : {
 	clickDiv() {
-	    this.$store.commit('registerMediator', {'x': this.x, 'y': this.y});
+	    this.$store.commit('registerMediator', {'x': this.x, 'y': this.y, 'id': this.id});
 	    this.$parent.setValue(this.ip);
 	    this.$parent.$refs.focusThis.focus();
 	}
@@ -23,18 +23,18 @@ export default {
     computed : {
 	ip : {
 	    get : function() {
-		return this.$store.state.calc[parseInt(this.y)][parseInt(this.x)].chr;
+		return this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].chr;
 	    },
 	    set : function(value) {
-		this.$store.commit('setCalc',{x : this.x, y: this.y , 'chr' : value});
+		this.$store.commit('setCalc',{x : this.x, y: this.y , 'id':this.id, 'chr' : value});
 	    }
 	},
 	d_flg :  {
 	    get : function() {
-		return this.$store.state.calc[parseInt(this.y)][parseInt(this.x)].isActive;
+		return this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].isActive;
 	    },
 	    set : function(value) {
-		this.$store.commit('setCalc',{x : this.x, y: this.y , 'isActive' : value});
+		this.$store.commit('setCalc',{x : this.x, y: this.y , 'id':this.id , 'isActive' : value});
 	    }	    
 	}
     },

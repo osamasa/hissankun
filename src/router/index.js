@@ -13,9 +13,9 @@ const routes = [
       name: 'Home',
       component: Home,
       children : [
-	  {  name : 'input', path: '', component: HelloWorld },
-	  {  name : 'calc' , path: 'calc', component: NewPadKun },
-	  {  name : 'view' , path: 'view', component: ViewFormula }
+	  {  name : 'input', path: ':id', component: HelloWorld },
+	  {  name : 'calc' , path: 'calc/:id', component: NewPadKun },
+	  {  name : 'view' , path: 'view/:id', component: ViewFormula }
       ]
   },
   {

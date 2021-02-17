@@ -7,11 +7,11 @@
   <table>
     <tr v-for="c,i in calc" :key="i">
       <td v-for="d,l in c" :style="isLongDivBorder(i,l)" :key="l">
-        <divclass :d_data="d" :x="l" :y="i" />
+        <divclass :d_data="d" :x="l" :y="i" :id="_id" />
       </td>
     </tr>
   </table>
-  <LongDivisionWithDot ref="longdivision"></LongDivisionWithDot>
+  <LongDivisionWithDot ref="longdivision" :id="_id"></LongDivisionWithDot>
   <v-text-field
     @keyup.esc="backtoformula"
     @keyup.enter="pushYellow"
@@ -38,7 +38,8 @@
 import { VueMathjax } from "vue-mathjax";  
 import divclass from './DivClass.vue';
 import LongDivisionWithDot from './LongDivisionWithDot.vue';
-  
+import Vuex from "vuex";
+
 export default {
     name: 'HelloWorld',
     components : {
@@ -47,10 +48,12 @@ export default {
 	'LongDivisionWithDot' : LongDivisionWithDot
     },
     data: () => ({
+	_id : 0,
 	message : ''
     }),
     created: function () {
-	this.$store.commit('registerMediator', {'x': 0, 'y':0 });
+	this._id = this.$route.params.id;
+	this.$store.commit('registerMediator', {'x': 0, 'y':0 , 'id': this._id});
     },
     mounted : function() {
 	this.$refs.focusThis.focus();
@@ -58,18 +61,18 @@ export default {
     computed : {
 	calc : {
 	    get () {
-		return this.$store.state.calc
+		return this.$store.getters.getCalc({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('updateCaclc',value);
+		this.$store.commit('updateCalc',{'calc' : value, 'id' : this._id});
 	    }
 	},
 	sep: {
 	    get () {
-		return this.$store.state.sep;
+		return this.$store.getters.getSep({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('setSep',{ 'sep' : value });
+		this.$store.commit('setSep',{ 'sep' : value , 'id' : this._id});
 	    }
 	},
 	isLongDivBorder : function() {
@@ -100,28 +103,28 @@ export default {
     },
     methods : {
 	viewformula() {
-	    this.$router.push({name : 'view'});
+	    this.$router.push({name : 'view', params: {'id': this._id}});
 	},
 	backtoformula() {
 	    this.$router.go(-1)
 	},	
 	upYellow() {
-	    this.$store.dispatch('moveUpNumeric');
+	     this.$store.dispatch('moveUpNumeric',{'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
 	    this.$refs.focusThis.focus();
 	},
 	downYellow() {
-	    this.$store.dispatch('moveDownNumeric');
+	     this.$store.dispatch('moveDownNumeric',{'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
 	    this.$refs.focusThis.focus();
 	},
 	rightYellow() {
-	    this.$store.dispatch('moveRightNumeric');
+	     this.$store.dispatch('moveRightNumeric',{'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
 	    this.$refs.focusThis.focus();
 	},
 	leftYellow() {
-	    this.$store.dispatch('moveLeftNumeric');
+	    this.$store.dispatch('moveLeftNumeric',{'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
 	    this.$refs.focusThis.focus();
 	},		
@@ -129,22 +132,22 @@ export default {
 	    this.message = chr;
 	},
 	pushYellow() {
-	    this.$store.dispatch('pushNumeric',{chr : this.message});
+	    this.$store.dispatch('pushNumeric',{chr : this.message, 'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
-	    this.$store.commit('updateFormula',{'formula':''});
+	    this.$store.commit('updateFormula',{'formula':'', 'id': this._id});
 	    this.$refs.focusThis.focus();
 	    
 	},
 	deleteBack() {
-	    this.$store.dispatch('deleteNumeric');
+	    this.$store.dispatch('deleteNumeric',{'id': this._id});
 	    this.message='';
-	    this.$store.commit('updateFormula',{'formula':''});
+	    this.$store.commit('updateFormula',{'formula':'','id': this._id});
 	    this.$refs.focusThis.focus();	    
 	},
 	deleteYellow() {
-	    this.$store.dispatch('deleteNumeric');
+	     this.$store.dispatch('deleteNumeric',{'id': this._id});
 	    this.message='';
-	    this.$store.commit('updateFormula',{'formula':''});
+	    this.$store.commit('updateFormula',{'formula':'','id': this._id});
 	    this.$refs.focusThis.focus();
 	},
 	setPress() {

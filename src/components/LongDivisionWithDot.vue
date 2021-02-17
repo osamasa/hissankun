@@ -13,6 +13,7 @@ import { zeroPadding } from './zeroPadding.js'
 import { VueMathjax } from "vue-mathjax";
 
 export default {
+    props : ['id'],    
     name: "LongdivsionWithDot",
     components : {
 	"vue-mathjax": VueMathjax,
@@ -30,27 +31,27 @@ export default {
     computed: {
 	calc : {
 	    get () {
-		return this.$store.state.calc
+		return this.$store.getters.getCalc({ 'id':this.id })
 	    },
 	    set (value) {
-		this.$store.commit('updateCaclc',value);
+		this.$store.commit('updateCalc',{'calc': value,'id':this.id} );
 	    }
 	},
 	formula : {
 	    get () {
-		return this.$store.state.formula
+		return this.$store.getters.getformula({ 'id':this.id })
 	    },
 	    set (value) {
-		this.$store.commit('updateFormula',{'formula' : value});
+		this.$store.commit('updateFormula',{'formula' : value, 'id':this.id });
 	    }
 	},
 	sep: {
 	    get () {
-		return this.$store.state.sep;
+		return this.$store.getters.getSep({ 'id':this.id })
 	    },
 	    set (value) {
-		this.$store.commit('setSep',{ 'sep' : value });
-	    }
+		this.$store.commit('setSep',{ 'sep' : value,'id':this.id });
+	    }	    
 	}
     },
     methods: {

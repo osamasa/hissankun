@@ -2,7 +2,7 @@
   <div>
     <v-text-field
     ref="focusThis"
-    v-model="lawFormula"
+    v-model="_lawFormula"
     label="数式を入力"
     type="text"
     >
@@ -19,41 +19,50 @@ export default {
     components : {
     },
     data: () => ({
-	lawFormula : '244*92',
 	_sep : '',
 	_oya : '',
 	_ko : '',
-	_size : 0
+	_size : 0,
+	_lawFormula : ''
     }),
     created: function () {
+	this._lawFormula = this.lawFormula;
     },
     computed : {
-	calc : {
+	lawFormula : {
 	    get () {
-		return this.$store.state.calc;
+		return this.$store.getters.getLawformula({'id': this.$route.params.id});
 	    },
 	    set (value) {
-		this.$store.commit('updateCalc',{'calc' : value});
+		this.$store.commit('setLawformula',{'lawFormula' : value, 'id' : this.$route.params.id});
+	    }
+	},
+	calc : {
+	    get () {
+		return this.$store.getters.getCalc({'id': this.$route.params.id});
+	    },
+	    set (value) {
+		this.$store.commit('updateCalc',{'calc' : value, 'id' : this.$route.params.id});
 	    }
 	},
 	sep: {
 	    get () {
-		return this.$store.state.sep;
+		return this.$store.getters.getSep({'id': this.$route.params.id});
 	    },
 	    set (value) {
-		this.$store.commit('setSep',{ 'sep' : value });
+		this.$store.commit('setSep',{ 'sep' : value , 'id' : this.$route.params.id});
 	    }
 	}	
     },
     methods : {
 	parseFormula() {
-	    [this._oya, this._sep, this._ko] = this.lawFormula.split(/([-+*/])/);
-	    this.sep = this._sep;
+	    [this._oya, this._sep, this._ko] = this._lawFormula.split(/([-+*/])/);
 	    let _calc = [];
-	    
+
 	    switch(this._sep) {
 	    case  '/' :
 		this._size=this._oya.length + this._ko.length + 5
+
 
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
@@ -76,17 +85,18 @@ export default {
 	    case  '+' :
 	    case  '-' :
 	    case  '*' :
-		if(this.sep === '*') {
+		if(this._sep === '*') {
 		    let _oyakonagasa = (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 2;
 		    let _tenkai = this._ko.length + 1 + 3;
 		    let _saidai = this._oya.length + (this._ko.length-1)+1;
 
-		    console.log(_oyakonagasa, _tenkai, _saidai);
 		    
 		    this._size = Math.max(_oyakonagasa, _tenkai, _saidai);
+
 		} else {
 		    this._size= (this._oya.length > this._ko.length ? this._oya.length : this._ko.length) + 2;
 		}
+
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
 		    for(let x=0;x<this._size;x++) {
@@ -106,8 +116,10 @@ export default {
 		})
 		break;
 	    }
-	    this.calc = _calc;	    
-	    this.$router.push({name : 'calc'});
+	    this.lawFormula = this._lawFormula;
+	    this.sep = this._sep;	    
+	    this.calc = _calc;
+	    this.$router.push({name : 'calc', params: { id : this.$route.params.id }});
 	},
     },
     watch: {
