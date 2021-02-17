@@ -152,7 +152,7 @@ export default {
 
             _formura = '$$ \\require{enclose} \\begin{array}{r}' + _answer1 + ' \\\\ ' + _ko + ' \\enclose{longdiv}{' + _oya + '}\\kern-.2ex \\\\[-3pt] ';
 	    let i=0;
-	    let nokori = _karikaitou.length-1
+	    let nokori = _ko.length+1+_oya.length-_answer1.length+1
 	    let headpad=0;
 	    if(_oyadot>-1) {
 		nokori--;
@@ -161,10 +161,7 @@ export default {
 
 		let n = _n.map(c => c.chr).join('');
 
-		if(i===(_nagasa-1)) {
-		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) +'}' + n + '} \\\\[-3pt]'
-		} else if(i % 2 == 0) {
-		    
+		if(i % 2 == 0) {
 		    _formura+= '\\' + 'underline{';
 		    if(headpad > 0) {
 			_formura+='\\phantom{' + zeroPadding(headpad+1) + '}'
