@@ -152,38 +152,40 @@ export default {
 
             _formura = '$$ \\require{enclose} \\begin{array}{r}' + _answer1 + ' \\\\ ' + _ko + ' \\enclose{longdiv}{' + _oya + '}\\kern-.2ex \\\\[-3pt] ';
 	    let i=0;
-	    let nokori = _ko.length+1+_oya.length-_answer1.length+1
+	    let nokori = _answer1.length;
 	    let headpad=0;
-	    if(_oyadot>-1) {
+//	    if(_oyadot>-1) {
 		nokori--;
-	    }
+	    //	    }
+
 	    this.calc.slice(2).forEach(_n => {
 
 		let n = _n.map(c => c.chr).join('');
-
-		if(i % 2 == 0) {
-		    _formura+= '\\' + 'underline{';
-		    if(headpad > 0) {
-			_formura+='\\phantom{' + zeroPadding(headpad+1) + '}'
-		    }
+		if(n) {
+		    if(i % 2 == 0) {
+			_formura+= '\\' + 'underline{';
+			if(headpad > 0) {
+			    _formura+='\\phantom{' + zeroPadding(headpad+1) + '}'
+			}
 		    
-		    _formura += n;
-		    if(nokori > 0) {
-			_formura +='\\phantom{' + zeroPadding(nokori)+ '}'
-		    }		    
-		    _formura += '} \\\\[-3pt]';
-		} else {
-		    _formura += n;
-		    if(nokori > 0) {
-			_formura +='\\phantom{' + zeroPadding(nokori)+ '}'
-		    }		    		    
-		    _formura += ' \\\\[-3pt]'
-		}		
-		i++;
-		if(i % 2 == 1) {
-		    nokori--;
-		    if((_answerdot>-1) && (_answer1.length-nokori,_answer1.slice(_answer1.length-nokori-1,_answer1.length-nokori)==='.')) {
-			nokori--
+			_formura += n;
+			if(nokori > 0) {
+			    _formura +='\\phantom{' + zeroPadding(nokori)+ '}'
+			}		    
+			_formura += '} \\\\[-3pt]';
+		    } else {
+			_formura += n;
+			if(nokori > 0) {
+			    _formura +='\\phantom{' + zeroPadding(nokori)+ '}'
+			}		    		    
+			_formura += ' \\\\[-3pt]'
+		    }
+		    i++;
+		    if(i % 2 == 1) {
+			nokori--;
+			if((_answerdot>-1) && (_answer1.length-nokori,_answer1.slice(_answer1.length-nokori-1,_answer1.length-nokori)==='.')) {
+			    nokori--
+			}
 		    }
 		}
 	    })
