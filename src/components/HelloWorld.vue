@@ -2,7 +2,7 @@
   <div>
     <v-text-field
     ref="focusThis"
-    v-model="_lawFormula"
+    v-model="lawformula"
     label="数式を入力"
     type="text"
     >
@@ -24,18 +24,14 @@ export default {
 	_oya : '',
 	_ko : '',
 	_size : 0,
-	_lawFormula : ''
     }),
-    created: function () {
-	this._lawFormula = this.lawFormula;
-    },
     computed : {
-	lawFormula : {
+	lawformula : {
 	    get () {
 		return this.$store.getters.getLawformula({'id': this._id});
 	    },
 	    set (value) {
-		this.$store.commit('setLawformula',{'lawFormula' : value, 'id' : this._id});
+		this.$store.commit('setLawformula',{'lawformula' : value, 'id' : this._id});
 	    }
 	},
 	calc : {
@@ -55,9 +51,11 @@ export default {
 	    }
 	}	
     },
+
     methods : {
 	parseFormula() {
-	    [this._oya, this._sep, this._ko] = this._lawFormula.split(/([-+*/])/);
+	    let locallawfoula = this.$store.getters.getLawformula({'id':this._id});
+	    [this._oya, this._sep, this._ko] = locallawfoula.split(/([-+*/])/);
 	    let _calc = [];
 
 	    switch(this._sep) {
@@ -117,7 +115,6 @@ export default {
 		})
 		break;
 	    }
-	    this.lawFormula = this._lawFormula;
 	    this.sep = this._sep;	    
 	    this.calc = _calc;
 	},

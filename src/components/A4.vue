@@ -9,10 +9,10 @@
       <h2>{{ title }}</h2>      
       <div class="mt-8">
 	<div v-for="v in this.getFormula">
-	  <vue-draggable-resizable :w="100" :h="100" @dragging="onDrag" @resizing="onResize" >
+	  <vue-draggable-resizable :w="100" :h="100" >
 	    <viewFormula :_id=v.id></viewFormula>
 	    <div class="d-flex">
-	    <v-btn @click="calc_dialg=!calc_dialg" class="mh-5">計算</v-btn>
+	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="mh-5">計算</v-btn>
 	    <v-btn @click="chgFontsizePlus(v.id)" class="mh-5">+</v-btn>
 	    <v-btn @click="chgFontsizeMinuse(v.id)" class="mh-5">-</v-btn>
 	    </div>
@@ -21,6 +21,18 @@
       </div>
     </div>
   </div>
+  <v-layout>
+    <v-btn
+      @click="addNewCalc();calc_dialg=!calc_dialg"
+      fixed fab
+      bottom
+      right
+      color="red darken-2"
+      dark
+      >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-layout>
   <v-dialog
     v-model="calc_dialg"
     persistent
@@ -34,7 +46,7 @@
 	<v-container>
 	  <v-row>
 	    <v-col>
-	      <HelloWorld :_id="curid"></HelloWorld>
+	      <HelloWorld :_id="curid" ></HelloWorld>
 	    </v-col>
 	  </v-row>
 	  <v-row>	  
@@ -185,6 +197,13 @@ export default {
 	document.title = 'タイトルをいい感じに設定する'
     },
     methods: {
+	resetMediator( _id ) {
+	    this.$store.dispatch('resetLastno',{'id': _id});
+	},
+	addNewCalc() {
+	    this.$store.dispatch('addNewNumber');
+	    this.curid = this.$store.state.lastno;
+	},
 	handlePrint() {
 	    window.print()
 	},

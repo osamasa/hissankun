@@ -7,20 +7,28 @@ export default new Vuex.Store({
     state: {
 	lastno : 0,
 	bairitsu : [{'id': 0, 'cd' : 100}],
-	sep : [{'id': 0, 'cd' : '/'}],
-	formula : [{'id': 0, 'cd' : '$$\\require{enclose} \\begin{array}{r}7.6 \\\\[-3pt]25\\enclose{longdiv}{190\\phantom{0}} \\\\[-3pt]\\' + 'underline{175\\phantom{.0}} \\\\[-3pt]15\\phantom{.}0 \\\\[-3pt]\\' +'underline{15\\phantom{.}0} \\\\[-3pt]\\phantom{000}0\\end{array}$$'}],
+	sep : [{'id': 0, 'cd' : ''}],
+	formula : [{'id': 0, 'cd' : '$$$$'}],
 	mediator : {
 	    last : null
 	},
-	lawformula : [{'id': 0, 'cd' : '12/5'}],
-	calc : [{'id': 0, 'cd' : [
-	    [{x:0,y:0,chr:'',isActive:false},{x:1,y:0,chr:'',isActive:false},{x:2,y:0,chr:'',isActive:false},{x:3,y:0,chr:'',isActive:false},{x:4,y:0,chr:'',isActive:false},{x:5,y:0,chr:'',isActive:false}],	    
-	    [{chr:'5',isActive:false},{chr:')',isActive:false},{chr:'1',isActive:false},{chr:'2',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],
-	    [{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false},{chr:'',isActive:false}],	    
-	]}],
+	lawformula : [{'id': 0, 'cd' : ''}],
+	calc : [{'id': 0, 'cd' :[
+		[
+		    { x:0,y:0,chr:'',isActive:false }, { x:1,y:0,chr:'',isActive:false }, { x:2,y:0,chr:'',isActive:false }, { x:3,y:0,chr:'',isActive:false }, { x:4,y:0,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:1,chr:'',isActive:false }, { x:1,y:1,chr:'',isActive:false }, { x:2,y:1,chr:'',isActive:false }, { x:3,y:1,chr:'',isActive:false }, { x:4,y:1,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:2,chr:'',isActive:false }, { x:1,y:2,chr:'',isActive:false }, { x:2,y:2,chr:'',isActive:false }, { x:3,y:2,chr:'',isActive:false }, { x:4,y:2,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:3,chr:'',isActive:false }, { x:1,y:3,chr:'',isActive:false }, { x:2,y:3,chr:'',isActive:false }, { x:3,y:3,chr:'',isActive:false }, { x:4,y:3,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:4,chr:'',isActive:false }, { x:1,y:4,chr:'',isActive:false }, { x:2,y:4,chr:'',isActive:false }, { x:3,y:4,chr:'',isActive:false }, { x:4,y:4,chr:'',isActive:false }
+		]] }],
     },
     getters: {
 	getBairitsu: (state) => (payload) => {
@@ -48,6 +56,30 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	addLastNo : (state) => {
+	    state.lastno = state.lastno + 1;
+	    state.bairitsu.push({'id': state.lastno, 'cd' : 100});
+	    state.sep.push({'id': state.lastno, 'cd' : ''});
+	    state.formula.push({'id': state.lastno, 'cd' : '$$$$'});
+	    state.lawformula.push({'id': state.lastno, 'cd' : ''})
+	    state.calc.push({'id': state.lastno, 'cd' : [
+		[
+		    { x:0,y:0,chr:'',isActive:false }, { x:1,y:0,chr:'',isActive:false }, { x:2,y:0,chr:'',isActive:false }, { x:3,y:0,chr:'',isActive:false }, { x:4,y:0,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:1,chr:'',isActive:false }, { x:1,y:1,chr:'',isActive:false }, { x:2,y:1,chr:'',isActive:false }, { x:3,y:1,chr:'',isActive:false }, { x:4,y:1,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:2,chr:'',isActive:false }, { x:1,y:2,chr:'',isActive:false }, { x:2,y:2,chr:'',isActive:false }, { x:3,y:2,chr:'',isActive:false }, { x:4,y:2,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:3,chr:'',isActive:false }, { x:1,y:3,chr:'',isActive:false }, { x:2,y:3,chr:'',isActive:false }, { x:3,y:3,chr:'',isActive:false }, { x:4,y:3,chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:4,chr:'',isActive:false }, { x:1,y:4,chr:'',isActive:false }, { x:2,y:4,chr:'',isActive:false }, { x:3,y:4,chr:'',isActive:false }, { x:4,y:4,chr:'',isActive:false }
+		]
+	    ]});
+	},
 	setBairitsu: (state, payload) => {
 	    let _id = parseInt(payload.id);
 	    let i = state.lawformula.findIndex( a => a.id == _id );
@@ -93,6 +125,7 @@ export default new Vuex.Store({
 		state.mediator.last.isActive=false;
 	    }
 	    let i = state.calc.findIndex( a => a.id == _id );
+
 	    state.mediator.last = state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)];
 	    state.mediator.last.isActive=true;
 	},
@@ -108,6 +141,13 @@ export default new Vuex.Store({
 	}
     },
     actions: {
+	resetLastno : (context,payload) => {
+	    context.commit('registerMediator',{ 'id' : payload.id, 'x':0, 'y':0});
+	},	
+	addNewNumber(context) {
+	    context.commit('addLastNo');
+	    context.commit('registerMediator',{ 'id' : context.state.lastno, 'x':0, 'y':0});
+	},
 	moveUpNumeric(context,payload) {
 	    const _id = parseInt(payload.id);
 	    const _x = context.state.mediator.last.x;
@@ -165,7 +205,7 @@ export default new Vuex.Store({
 	    context.commit('updateChrCalc', {chr : '', x: _x, y:_y, 'id' : _id});		
 	},
 	pushNumeric (context,payload) {
-	    const _id = parseInt(payload.id);	    
+	    const _id = parseInt(payload.id);
 	    let _x = context.state.mediator.last.x;
 	    const _y = context.state.mediator.last.y;
 	    let l = context.state.calc.findIndex( a => a.id == _id );	    

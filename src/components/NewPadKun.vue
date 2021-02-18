@@ -84,7 +84,7 @@ export default {
 		if(((y>1) && (y%2==0) && (this.sep==='/') && (this.calc[y][x].chr))) {
 		    _ret += 'border-bottom: 1px solid #000;';
 		}
-		if(((y==2) && (this.sep!=='/') && (x>0))) {
+		if(((y==2) && (this.sep!=='/') && (this.sep!='') && (x>0))) {
 		    _ret += 'border-bottom: 1px solid #000;';
 		}
 		if((this.sep==='*') && (y==this.calc.length-1) && (this.calc[y][x].chr))
