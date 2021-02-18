@@ -9,7 +9,7 @@
       <h2>{{ title }}</h2>      
       <div class="mt-8">
 	<div v-for="v in this.getFormula">
-	  <vue-draggable-resizable :w="100" :h="100" >
+	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
 	    <viewFormula :_id=v.id></viewFormula>
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="mh-5">計算</v-btn>
@@ -194,7 +194,7 @@ export default {
 	}	
     },
     mounted() {
-	document.title = 'タイトルをいい感じに設定する'
+	document.title = '筆算君2.0'
     },
     methods: {
 	resetMediator( _id ) {

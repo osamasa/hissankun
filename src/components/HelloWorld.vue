@@ -1,10 +1,11 @@
 <template>
   <div>
     <v-text-field
-    ref="focusThis"
-    v-model="lawformula"
-    label="数式を入力"
-    type="text"
+      @keyup.enter="parseFormula"
+      ref="focusThis"
+      v-model="lawformula"
+      label="数式を入力"
+      type="text"
     >
     <template v-slot:append-outer >
       <v-btn @click="parseFormula" color="primary">入力</v-btn>
