@@ -83,22 +83,30 @@ export default {
 	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
 
 	    const self=this;
-	    for(let i=3;i<_anspos;i++) {
+	    for(let i=3;i<_anspos+1;i++) {
 		let nokori = i-3
-
+		let gyou='';
+		for(let l=0;l<this.calc[i].length;l++) {
+		    if(this.calc[i][l].kuri) {
+			gyou+=this.calc[i][l].chr + '^'+ this.calc[i][l].kuri;
+		    } else {
+			gyou+=this.calc[i][l].chr;
+		    }
+		}
 		if((nokori>0) && (i==_anspos-1)) {
 		    let headpad=-(self.calc.length)-_answer1.length;
-		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + this.calc[i].map(c => c.chr).join('') + '\\phantom{' +  zeroPadding(nokori) + '}} \\\\[-3pt]'		    
+		    _formura += '\\' + 'underline{\\phantom{'+ zeroPadding(headpad) + '}' + gyou + '\\phantom{' +  zeroPadding(nokori) + '}} \\\\[-3pt]'
+		} else if(i==_anspos) {
+		    _formura += gyou;
 		} else {
-		    _formura += this.calc[i].map(c => c.chr).join('');
+		    _formura += gyou;
 		    if(nokori > 0) {
 			_formura +='\\phantom{' + zeroPadding(nokori)+ '}'
 		    }
 		    _formura += ' \\\\[-3pt]'		
 		}
-		
 	    }
-	    _formura += _answer1;
+
             _formura += '\\end{array} $$';
             this.formula=_formura;
 	},

@@ -1,7 +1,7 @@
 <template>
 <div @dblclick="dialog_f=!dialog_f" @click="clickDiv()" v-bind:class="d_flg ? 'isActive' : 'notActive'">
   <div class="absolute_center">{{ ip }}</div>
-  <div class="absolute_kuri">{{ kuri }}</div>
+  <div v-if="kuri" class="absolute_kuri">{{ kuri }}</div>
 </div>
 </template>
 
