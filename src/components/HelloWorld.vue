@@ -67,7 +67,7 @@ export default {
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
 		    for(let x=0;x<this._size;x++) {
-			_calc[y].push({x:x,y:y,chr:'',isActive:false});
+			_calc[y].push({x:x,y:y,kuri:'',chr:'',isActive:false});
 		    }
 		}
 		let i=0;
@@ -100,7 +100,7 @@ export default {
 		for(let y=0;y<this._size;y++) {
 		    _calc.push([]);
 		    for(let x=0;x<this._size;x++) {
-			_calc[y].push({x:x,y:y,chr:'',isActive:false});
+			_calc[y].push({x:x,y:y,kuri:'',chr:'',isActive:false});
 		    }
 		}
 		i=this._size-this._oya.length;

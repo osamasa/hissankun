@@ -10,13 +10,14 @@
   <LongDivisionWithDot ref="longdivision" :id="_id"></LongDivisionWithDot>
   <v-text-field
     @keyup.esc="backtoformula"
-    @keyup.enter="pushYellow"
+    @keyup.enter="pushYellow"    
     @keyup.delete="deleteBack"
     @keyup.up="upYellow"
     @keyup.down="downYellow"
     @keyup.left="leftYellow"
     @keyup.right="rightYellow"
-    @keyup.space="deleteYellow"    
+    @keyup.space="deleteYellow"
+    @keydown.enter.shift="kuriageNumeric"
     ref="focusThis"
     v-model="message"
     label="数字を入力"
@@ -126,8 +127,18 @@ export default {
 	setValue( chr ) {
 	    this.message = chr;
 	},
+	kuriageNumeric() {
+	    if(this.sep==='*' || this.sep==='+' || this.sep==='-') {
+		this.$store.dispatch('kuriageNumeric',{mess : this.message, 'id': this._id});
+	    } else {
+		this.$store.dispatch('pushNumeric',{mess : this.message, 'id': this._id});	
+	    }
+	    this.message=this.$store.state.mediator.last.chr;
+	    this.$store.commit('updateFormula',{'formula':'', 'id': this._id});
+	    this.$refs.focusThis.focus();
+	},
 	pushYellow() {
-	    this.$store.dispatch('pushNumeric',{chr : this.message, 'id': this._id});
+	    this.$store.dispatch('pushNumeric',{mess : this.message, 'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
 	    this.$store.commit('updateFormula',{'formula':'', 'id': this._id});
 	    this.$refs.focusThis.focus();

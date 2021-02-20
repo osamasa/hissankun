@@ -15,19 +15,19 @@ export default new Vuex.Store({
 	lawformula : [{'id': 0, 'cd' : ''}],
 	calc : [{'id': 0, 'cd' :[
 		[
-		    { x:0,y:0,chr:'',isActive:false }, { x:1,y:0,chr:'',isActive:false }, { x:2,y:0,chr:'',isActive:false }, { x:3,y:0,chr:'',isActive:false }, { x:4,y:0,chr:'',isActive:false }
+		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:1,chr:'',isActive:false }, { x:1,y:1,chr:'',isActive:false }, { x:2,y:1,chr:'',isActive:false }, { x:3,y:1,chr:'',isActive:false }, { x:4,y:1,chr:'',isActive:false }
+		    { x:0,y:1,kuri:'',chr:'',isActive:false }, { x:1,y:1,kuri:'',chr:'',isActive:false }, { x:2,y:1,kuri:'',chr:'',isActive:false }, { x:3,y:1,kuri:'',chr:'',isActive:false }, { x:4,y:1,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:2,chr:'',isActive:false }, { x:1,y:2,chr:'',isActive:false }, { x:2,y:2,chr:'',isActive:false }, { x:3,y:2,chr:'',isActive:false }, { x:4,y:2,chr:'',isActive:false }
+		    { x:0,y:2,kuri:'',chr:'',isActive:false }, { x:1,y:2,kuri:'',chr:'',isActive:false }, { x:2,y:2,kuri:'',chr:'',isActive:false }, { x:3,y:2,kuri:'',chr:'',isActive:false }, { x:4,y:2,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:3,chr:'',isActive:false }, { x:1,y:3,chr:'',isActive:false }, { x:2,y:3,chr:'',isActive:false }, { x:3,y:3,chr:'',isActive:false }, { x:4,y:3,chr:'',isActive:false }
+		    { x:0,y:3,kuri:'',chr:'',isActive:false }, { x:1,y:3,kuri:'',chr:'',isActive:false }, { x:2,y:3,kuri:'',chr:'',isActive:false }, { x:3,y:3,kuri:'',chr:'',isActive:false }, { x:4,y:3,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:4,chr:'',isActive:false }, { x:1,y:4,chr:'',isActive:false }, { x:2,y:4,chr:'',isActive:false }, { x:3,y:4,chr:'',isActive:false }, { x:4,y:4,chr:'',isActive:false }
+		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
 		]] }],
     },
     getters: {
@@ -64,19 +64,19 @@ export default new Vuex.Store({
 	    state.lawformula.push({'id': state.lastno, 'cd' : ''})
 	    state.calc.push({'id': state.lastno, 'cd' : [
 		[
-		    { x:0,y:0,chr:'',isActive:false }, { x:1,y:0,chr:'',isActive:false }, { x:2,y:0,chr:'',isActive:false }, { x:3,y:0,chr:'',isActive:false }, { x:4,y:0,chr:'',isActive:false }
+		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:1,chr:'',isActive:false }, { x:1,y:1,chr:'',isActive:false }, { x:2,y:1,chr:'',isActive:false }, { x:3,y:1,chr:'',isActive:false }, { x:4,y:1,chr:'',isActive:false }
+		    { x:0,y:1,kuri:'',chr:'',isActive:false }, { x:1,y:1,kuri:'',chr:'',isActive:false }, { x:2,y:1,kuri:'',chr:'',isActive:false }, { x:3,y:1,kuri:'',chr:'',isActive:false }, { x:4,y:1,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:2,chr:'',isActive:false }, { x:1,y:2,chr:'',isActive:false }, { x:2,y:2,chr:'',isActive:false }, { x:3,y:2,chr:'',isActive:false }, { x:4,y:2,chr:'',isActive:false }
+		    { x:0,y:2,kuri:'',chr:'',isActive:false }, { x:1,y:2,kuri:'',chr:'',isActive:false }, { x:2,y:2,kuri:'',chr:'',isActive:false }, { x:3,y:2,kuri:'',chr:'',isActive:false }, { x:4,y:2,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:3,chr:'',isActive:false }, { x:1,y:3,chr:'',isActive:false }, { x:2,y:3,chr:'',isActive:false }, { x:3,y:3,chr:'',isActive:false }, { x:4,y:3,chr:'',isActive:false }
+		    { x:0,y:3,kuri:'',chr:'',isActive:false }, { x:1,y:3,kuri:'',chr:'',isActive:false }, { x:2,y:3,kuri:'',chr:'',isActive:false }, { x:3,y:3,kuri:'',chr:'',isActive:false }, { x:4,y:3,kuri:'',chr:'',isActive:false }
 		],
 		[
-		    { x:0,y:4,chr:'',isActive:false }, { x:1,y:4,chr:'',isActive:false }, { x:2,y:4,chr:'',isActive:false }, { x:3,y:4,chr:'',isActive:false }, { x:4,y:4,chr:'',isActive:false }
+		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
 		]
 	    ]});
 	},
@@ -117,7 +117,11 @@ export default new Vuex.Store({
 	updateChrCalc : (state,payload) => {
 	    let _id = parseInt(payload.id);
 	    let i = state.calc.findIndex( a => a.id == _id );
-	    state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].chr = payload.chr;
+	    if(payload.chr) {
+		state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].chr = payload.chr;
+	    } else if(payload.kuri) {
+		state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].kuri = payload.kuri;
+	    }
 	},
 	registerMediator: (state, payload) => {
 	    let _id = parseInt(payload.id);
@@ -195,14 +199,34 @@ export default new Vuex.Store({
 	    _x--
 	    if(_x<0)
 		_x=0;
-	    context.commit('updateChrCalc', {chr : '', x: _x, y:_y, 'id' : _id});
+	    context.commit('updateChrCalc', {kuri: '', chr : '', x: _x, y:_y, 'id' : _id});
 	    context.commit('registerMediator',{'x': _x, 'y': _y , 'id' : _id});
 	},
 	deleteNumeric(context,payload) {
 	    const _id = parseInt(payload.id);		
 	    const _x = context.state.mediator.last.x;
 	    const _y = context.state.mediator.last.y;
-	    context.commit('updateChrCalc', {chr : '', x: _x, y:_y, 'id' : _id});		
+	    context.commit('updateChrCalc', {kuri: '', chr : '', x: _x, y:_y, 'id' : _id});		
+	},
+	kuriageNumeric (context,payload) {
+	    const _id = parseInt(payload.id);
+	    let _x = context.state.mediator.last.x;
+	    const _y = context.state.mediator.last.y;
+	    let l = context.state.calc.findIndex( a => a.id == _id );	    
+	    let i=0;
+
+	    for(i=0;(_x-i)>-1 && i < payload.mess.length ;i++) {
+		let _payload={chr:'',kuri:'', x: _x-i, y:_y, id: _id};
+		const _pos=payload.mess.length-i-1;
+		const _chr = payload.mess[_pos];
+		if(i==0) {
+		    _payload.chr = _chr
+		    context.commit('updateChrCalc', _payload);
+		} else {
+		    _payload.kuri = _chr
+		    context.commit('updateChrCalc', _payload);
+		}
+	    }
 	},
 	pushNumeric (context,payload) {
 	    const _id = parseInt(payload.id);
@@ -212,15 +236,10 @@ export default new Vuex.Store({
 	    const _size_x =  context.state.calc[l].cd[0].length;
 	    let i=0;
 
-	    for(i=0;(i+_x)<_size_x && i < payload.chr.length ;i++) {
-		let _payload={chr : payload.chr[i], x: _x+i, y:_y, id: _id};
+	    for(i=0;(i+_x)<_size_x && i < payload.mess.length ;i++) {
+		let _payload={chr : payload.mess[i], x: _x+i, y:_y, id: _id};
 		context.commit('updateChrCalc', _payload); 
 	    }
-//	    _x = _x+i;
-//	    if(!(_x < _size_x)) {
-//		_x=_size_x-1;
-//	    }
-//	    context.commit('updateChrCalc', {chr : '', x: _x, y:_y, 'id' : _id});
 	}
     },
     modules: {

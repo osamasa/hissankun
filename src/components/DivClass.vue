@@ -1,6 +1,7 @@
 <template>
 <div @dblclick="dialog_f=!dialog_f" @click="clickDiv()" v-bind:class="d_flg ? 'isActive' : 'notActive'">
-  {{ ip }}
+  <div class="absolute_center">{{ ip }}</div>
+  <div class="absolute_kuri">{{ kuri }}</div>
 </div>
 </template>
 
@@ -29,6 +30,15 @@ export default {
 		this.$store.commit('setCalc',{x : this.x, y: this.y , 'id':this.id, 'chr' : value});
 	    }
 	},
+	kuri : {
+	    get : function() {
+		console.log(this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].kuri)
+		return this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].kuri;
+	    },
+	    set : function(value) {
+		this.$store.commit('setCalc',{x : this.x, y: this.y , 'id':this.id, 'kuri' : value});
+	    }
+	},
 	d_flg :  {
 	    get : function() {
 		return this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].isActive;
@@ -44,16 +54,30 @@ export default {
 </script>
 
 <style>
-  td>div {
-  height: 60px;
-  width: 60px;
-  text-align: center;
-  vertical-align: middle;    
-  }  
-  td>div.notActive {
-     background: #f0f0f0;
-  }
-  td>div.isActive {
-      background: #FFFF99;
-  }
+td>div {
+    height: 40px;
+    width: 40px;
+    position: relative;
+}  
+td>div.notActive {
+    background: #f0f0f0;
+}
+td>div.isActive {
+    background: #FFFF99;
+}
+div>div.absolute_kuri {
+    position: absolute;
+    right:0px;
+    top:0px;
+    width:10px;
+    height:10px;
+    border: 0.5px dashed #999;
+}
+div>div.absolute_center {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    width:20px;
+    height:20px;
+}  
 </style>
