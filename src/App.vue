@@ -3,6 +3,7 @@
   <v-app id="inspire">
     <v-app id="inspire">
       <v-app-bar
+	class="notprint"
         app
         color="indigo"
         dark
@@ -26,6 +27,7 @@
         </v-container>
       </v-main>
       <v-footer
+	class="notprint"
         color="indigo"
         app
       >
@@ -52,3 +54,9 @@ export default {
   }),
 };
 </script>
+
+<style lang="scss" scoped>
+  @media print {
+  .notprint { display : none; }
+  }
+</style>  

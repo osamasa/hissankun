@@ -32,7 +32,6 @@ export default {
 	},
 	kuri : {
 	    get : function() {
-		console.log(this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].kuri)
 		return this.$store.getters.getCalc({ 'id':this.id })[parseInt(this.y)][parseInt(this.x)].kuri;
 	    },
 	    set : function(value) {

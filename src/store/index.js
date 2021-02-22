@@ -56,6 +56,29 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	removeCalc : (state,payload) => {
+	    let i = -1;
+	    i = state.calc.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.calc.splice( i , 1 );
+	    }
+	    i = state.bairitsu.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.bairitsu.splice( i , 1 );
+	    }
+	    i = state.formula.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.formula.splice( i , 1 );
+	    }
+	    i = state.sep.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.sep.splice( i , 1 );
+	    }
+	    i = state.lawformula.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.lawformula.splice( i , 1 );
+	    }	    
+	},
 	addLastNo : (state) => {
 	    state.lastno = state.lastno + 1;
 	    state.bairitsu.push({'id': state.lastno, 'cd' : 100});
@@ -93,6 +116,22 @@ export default new Vuex.Store({
 		}
 	    }
 	    state.bairitsu[i].cd=bairitsu;
+	},
+	setBairitsuAll: (state, payload) => {
+	    let _id = parseInt(payload.id);
+	    state.bairitsu.forEach( b => {
+		let bairitsu = b.cd;
+
+		if(payload.command==='+') {
+		    bairitsu += 10;
+		} else {
+		    bairitsu -= 10;
+		    if(bairitsu < 10) {
+			bairitsu = 10
+		    }
+		}
+		b.cd=bairitsu;
+	    });
 	},	
 	setLawformula : (state, payload) => {
 	    let _id = parseInt(payload.id);
@@ -145,9 +184,12 @@ export default new Vuex.Store({
 	}
     },
     actions: {
+	removeCalc : (context,payload) => {
+	    context.commit('removeCalc', { 'id' : payload.id });
+	},
 	resetLastno : (context,payload) => {
 	    context.commit('registerMediator',{ 'id' : payload.id, 'x':0, 'y':0});
-	},	
+	},
 	addNewNumber(context) {
 	    context.commit('addLastNo');
 	    context.commit('registerMediator',{ 'id' : context.state.lastno, 'x':0, 'y':0});

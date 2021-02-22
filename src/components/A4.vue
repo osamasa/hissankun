@@ -1,25 +1,26 @@
 <template>
-<div>
+<div class="sheets">
   <div>
     <v-btn @click="dialog=!dialog">設　定</v-btn>
     <v-btn class='ml-5' @click="handlePrint">印　刷</v-btn>
+    <v-btn class='ml-5' @click="chgFontsizePlusAll">拡　大</v-btn>
+    <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>    
   </div>
-  <div>
-    <div class="sheet">
+  <div class="sheet">
+
       <h2>{{ title }}</h2>      
       <div class="mt-8">
 	<div v-for="v in this.getFormula">
 	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
 	    <viewFormula :_id=v.id></viewFormula>
 	    <div class="d-flex">
-	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="mh-5">計算</v-btn>
-	    <v-btn @click="chgFontsizePlus(v.id)" class="mh-5">+</v-btn>
-	    <v-btn @click="chgFontsizeMinuse(v.id)" class="mh-5">-</v-btn>
+	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
+	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>	      
 	    </div>
 	  </vue-draggable-resizable>
 	</div>
       </div>
-    </div>
+
   </div>
   <v-layout>
     <v-btn
@@ -194,9 +195,12 @@ export default {
 	}	
     },
     mounted() {
-	document.title = '筆算君2.0'
+	document.title = '筆算君2.5'
     },
     methods: {
+	removeCalc( _id ) {
+	    this.$store.dispatch('removeCalc',{'id': _id});
+	},	
 	resetMediator( _id ) {
 	    this.$store.dispatch('resetLastno',{'id': _id});
 	},
@@ -207,44 +211,44 @@ export default {
 	handlePrint() {
 	    window.print()
 	},
-	chgFontsizePlus(_id) {
-	    this.$store.commit('setBairitsu', { 'id' : _id, command : '+'});
+	chgFontsizePlusAll() {
+	    this.$store.commit('setBairitsuAll',{'command':'+'});
 	},
-	chgFontsizeMinuse(_id) {
-	    this.$store.commit('setBairitsu', { 'id' : _id, command : '-'});
+	chgFontsizeMinuseAll() {
+	    this.$store.commit('setBairitsuAll',{'command':'-'});
 	}
     }
 }
 </script>
 
 <style lang="scss" scoped>
+  
 .sheet {
-    page-break-after: always;
+  page-break-after: always;
 }
 
 /* hide in print */
 @media print {
-    .sheets > :not(.sheet) {
-	display: none;
-    }
-    .notprint {
-	display: none;
-    }
+  .sheets > :not(.sheet) {
+    display: none;
+  }
+  .notprint { display : none; }
 }
 
 /* for preview */
 @media screen {
-    /* mm単位で指定しているけど、vueコンポ側はpx単位なので、無理にmmにしなくてもいいかも。解像度の違いでハマるかも */
-    .sheet {
-	width: 200mm;
-	min-height: 296mm; /* 設定しなくてもいいかも。あまり印刷画面に似せすぎると、些細な違いがバグに見えてしまう */
-	margin: 5mm;
-	padding: 10mm;
-	background: white;
-	box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-    }
+  /* mm単位で指定しているけど、vueコンポ側はpx単位なので、無理にmmにしなくてもいいかも。解像度の違いでハマるかも */
+  .sheet {
+    width: 200mm;
+    min-height: 296mm; /* 設定しなくてもいいかも。あまり印刷画面に似せすぎると、些細な違いがバグに見えてしまう */
+    margin: 5mm;
+    padding: 5mm;
+    background: white;
+    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+   }
 }
 </style>
+
 <style lang="scss">
 /* for preview */
 @media screen {

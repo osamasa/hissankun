@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div :style="'font-size : ' + bairtsu + '%'">
+<div>
+  <div :style="'font-size : ' + bairtsu + '%'">
       <vue-mathjax :formula="formula"></vue-mathjax>
     </div>
   </div>
