@@ -7,7 +7,7 @@
       </td>
     </tr>
   </table>
-  <LongDivisionWithDot ref="longdivision" :id="_id"></LongDivisionWithDot>
+<!--  <LongDivisionWithDot ref="longdivision" :id="_id"></LongDivisionWithDot> -->
   <v-text-field
     @keyup.esc="backtoformula"
     @keyup.enter="pushYellow"    

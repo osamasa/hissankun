@@ -8,8 +8,9 @@
   </div>
   <div class="sheet">
 
-      <h2>{{ title }}</h2>      
-      <div class="mt-8">
+    <h2>{{ title }}</h2>
+    <div class="relative">
+      <div class="mt-8absolute">
 	<div v-for="v in this.getFormula">
 	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
 	    <viewFormula :_id=v.id></viewFormula>
@@ -20,7 +21,7 @@
 	  </vue-draggable-resizable>
 	</div>
       </div>
-
+    </div>
   </div>
   <v-layout>
     <v-btn
@@ -40,9 +41,20 @@
     max-width="600px"
     >
     <v-card>
-      <v-card-title>
-        <span class="headline">計算式の追加</span>
-      </v-card-title>
+      <v-toolbar
+          dark
+          color="primary"
+        >
+	<v-toolbar-title>計算式の追加</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn
+            icon
+            dark
+            @click="calc_dialg = false"
+          >
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-card-text>
 	<v-container>
 	  <v-row>
@@ -57,23 +69,6 @@
 	  </v-row>	    
 	</v-container>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="calc_dialg = false"
-          >
-          Close
-        </v-btn>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="calc_dialg = false"
-          >
-          Save
-        </v-btn>
-      </v-card-actions>      
     </v-card>
   </v-dialog>
   <v-dialog
@@ -82,9 +77,20 @@
     max-width="600px"
     >
     <v-card>
-      <v-card-title>
-        <span class="headline">筆算君の設定</span>
-      </v-card-title>
+      <v-toolbar
+          dark
+          color="primary"
+        >
+	<v-toolbar-title>筆算君の設定</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn
+            icon
+            dark
+            @click="dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>      
       <v-card-text>
         <v-container>
           <v-row>
@@ -139,23 +145,6 @@
 	  </v-row>	      
         </v-container>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="dialog = false"
-          >
-          Close
-        </v-btn>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="dialog = false"
-          >
-          Save
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </div>
@@ -222,9 +211,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  
 .sheet {
-  page-break-after: always;
+    page-break-after: always;
+table {
+    border-collapse: collapse;
+}
+td {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    border: 1px dashed #999;
+}    
 }
 
 /* hide in print */
