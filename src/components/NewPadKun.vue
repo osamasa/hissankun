@@ -151,7 +151,7 @@ export default {
 	    this.$refs.focusThis.focus();	    
 	},
 	deleteYellow() {
-	     this.$store.dispatch('deleteNumeric',{'id': this._id});
+	    this.$store.dispatch('deleteNumeric',{'id': this._id});
 	    this.message='';
 	    this.$store.commit('updateFormula',{'formula':'','id': this._id});
 	    this.$refs.focusThis.focus();
