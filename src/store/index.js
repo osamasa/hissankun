@@ -153,12 +153,19 @@ export default new Vuex.Store({
 	    let i = state.calc.findIndex( a => a.id == _id );
 	    state.calc[i].cd = payload.calc.concat();
 	},
+	deleteChrCalc : (state,payload) => {
+	    let _id = parseInt(payload.id);
+	    let i = state.calc.findIndex( a => a.id == _id );
+	    state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].chr = ''
+	    state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].kuri = ''
+	},
 	updateChrCalc : (state,payload) => {
 	    let _id = parseInt(payload.id);
 	    let i = state.calc.findIndex( a => a.id == _id );
 	    if(payload.chr) {
 		state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].chr = payload.chr;
-	    } else if(payload.kuri) {
+	    }
+	    if(payload.kuri) {
 		state.calc[i].cd[parseInt(payload.y)][parseInt(payload.x)].kuri = payload.kuri;
 	    }
 	},
@@ -247,8 +254,8 @@ export default new Vuex.Store({
 	deleteNumeric(context,payload) {
 	    const _id = parseInt(payload.id);		
 	    const _x = context.state.mediator.last.x;
-	    const _y = context.state.mediator.last.y;
-	    context.commit('updateChrCalc', {kuri: '', chr : '', x: _x, y:_y, 'id' : _id});		
+	    const _y = context.state.mediator.last.y;	    
+	    context.commit('deleteChrCalc', { x: _x, y:_y, 'id' : _id});		
 	},
 	kuriageNumeric (context,payload) {
 	    const _id = parseInt(payload.id);
