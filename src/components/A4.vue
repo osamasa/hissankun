@@ -86,7 +86,7 @@
 	<v-btn
             icon
             dark
-            @click="dialog = false"
+          @click="dialog = false"
           >
             <v-icon>mdi-close</v-icon>
         </v-btn>
