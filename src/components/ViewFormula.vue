@@ -26,6 +26,9 @@ export default {
 	this.mkFormula()
     },
     computed: {
+	kouban : function() {
+	    return this.$store.getters.getKouban({ 'id':this.id });
+	},
 	calc : {
 	    get () {
 		return this.$store.getters.getCalc({ 'id':this.id })
@@ -71,14 +74,19 @@ export default {
 	},
 
         divMkMultiFormula: function() {
-            let _formura='';
+	    let _formura='';
+	    if(this.kouban) {
+		_formura = '\(' + this.kouban + '\)$$ '
+	    } else {
+		_formura='$$';
+	    }
 	    let _oya = this.calc[1].map(c => c.chr).join('');
 	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[*]/,'');
 	    let _anspos = (_ko.length)+3;
 	    const _answer1=this.calc[ _anspos ].map(c => c.chr).join('');
 	    
-            _formura = '$$ \\begin{array}{r}';
-	    
+            _formura += ' \\begin{array}{r}';
+
 	    let i=0;
 	    
 	    let maxlength = this.calc.length;
@@ -113,16 +121,22 @@ export default {
 	    }
 
             _formura += '\\end{array} $$';
+	    console.log(_formura);
             this.formula=_formura;
 	},
 	
 	divPlusMkFormula: function() {
-            let _formura='';
+	    let _formura='';
+	    if(this.kouban) {
+		_formura = this.kouban + '$$ ';
+	    } else {
+		_formura='$$';
+	    }	    
 	    const _answer1=this.calc[3].map(c => c.chr).join('');	    
 	    let _oya = this.calc[1].map(c => c.chr).join('');
 	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[+-]/,'');
 	    
-            _formura = '$$ \\begin{array}{r}';
+            _formura += ' \\begin{array}{r}';
 	    
 	    let i=0;
 	    let maxlength = this.calc[0].length;
@@ -133,11 +147,17 @@ export default {
 	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
 	    _formura += _answer1;
             _formura += '\\end{array} $$';
-	    
+
+	    console.log(_formura);	    
             this.formula=_formura;
 	},
 	divMkFormula() {
-            let _formura='';	    
+	    let _formura='';
+	    if(this.kouban) {
+		_formura = this.kouban + '$$ ';
+	    } else {
+		_formura='$$';
+	    }	    	    
 	    const _answer1=this.calc[0].map(c => c.chr).join('');	    
 	    let [_ko, _oya] = this.calc[1].map(c => c.chr).join('').split(')');
 	    
@@ -163,7 +183,7 @@ export default {
 		_nagasa = 1;
 	    }
 
-            _formura = '$$ \\require{enclose} \\begin{array}{r}' + _answer1 + ' \\\\ ' + _ko + ' \\enclose{longdiv}{' + _oya + '}\\kern-.2ex \\\\[-3pt] ';
+            _formura += ' \\require{enclose} \\begin{array}{r}' + _answer1 + ' \\\\ ' + _ko + ' \\enclose{longdiv}{' + _oya + '}\\kern-.2ex \\\\[-3pt] ';
 	    let i=0;
 	    let nokori = _answer1.length;
 	    let headpad=0;
@@ -204,6 +224,7 @@ export default {
 	    })
             _formura += '\\end{array} $$'
 
+	    console.log(_formura);
 	    this.formula=_formura;
 	}
     },

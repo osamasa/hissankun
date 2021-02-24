@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
 	lastno : 0,
+	kouban : [{'id': 0, 'cd' : '(1)'}],
 	bairitsu : [{'id': 0, 'cd' : 100}],
 	sep : [{'id': 0, 'cd' : ''}],
 	formula : [{'id': 0, 'cd' : '$$$$'}],
@@ -31,6 +32,10 @@ export default new Vuex.Store({
 		]] }],
     },
     getters: {
+	getKouban: (state) => (payload) => {
+	    let _id = parseInt(payload.id);
+	    return state.kouban.find( a => a.id == _id ).cd;
+	},
 	getBairitsu: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    return state.bairitsu.find( a => a.id == _id ).cd;
@@ -78,14 +83,19 @@ export default new Vuex.Store({
 	    i = state.lawformula.findIndex( a => a.id === payload.id);
 	    if(i>-1) {
 		state.lawformula.splice( i , 1 );
-	    }	    
+	    }
+	    i = state.kouban.findIndex( a => a.id === payload.id);
+	    if(i>-1) {
+		state.kouban.splice( i , 1 );
+	    }
 	},
 	addLastNo : (state) => {
 	    state.lastno = state.lastno + 1;
 	    state.bairitsu.push({'id': state.lastno, 'cd' : 100});
 	    state.sep.push({'id': state.lastno, 'cd' : ''});
 	    state.formula.push({'id': state.lastno, 'cd' : '$$$$'});
-	    state.lawformula.push({'id': state.lastno, 'cd' : ''})
+	    state.lawformula.push({'id': state.lastno, 'cd' : ''});
+	    state.kouban.push({'id': state.lastno, 'cd' : ''});
 	    state.calc.push({'id': state.lastno, 'cd' : [
 		[
 		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
@@ -103,6 +113,11 @@ export default new Vuex.Store({
 		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
 		]
 	    ]});
+	},
+	setKouban: (state, payload) => {
+	    let _id = parseInt(payload.id);
+	    let i = state.lawformula.findIndex( a => a.id == _id );
+	    state.kouban[i].cd=payload.kouban;
 	},
 	setBairitsu: (state, payload) => {
 	    let _id = parseInt(payload.id);

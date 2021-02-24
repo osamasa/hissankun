@@ -7,16 +7,22 @@
     <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>    
   </div>
   <div class="sheet">
-
+    <div class="d-flex flex-row-reverse">
+      {{ year }}年{{ myclass }}組 {{order}}番
+    </div>
+    <div class="d-flex flex-row-reverse">
+      {{ name }}
+    </div>    
     <h2>{{ title }}</h2>
     <div class="relative">
-      <div class="mt-8absolute">
+      <div class="mt-8 absolute">
 	<div v-for="v in this.getFormula">
 	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
 	    <viewFormula :id=v.id></viewFormula>
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
-	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>	      
+	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
+	      <v-btn @click="" class="notprint mh-5">付番</v-btn>	      	      
 	    </div>
 	  </vue-draggable-resizable>
 	</div>
@@ -235,7 +241,8 @@ td {
 /* for preview */
 @media screen {
   /* mm単位で指定しているけど、vueコンポ側はpx単位なので、無理にmmにしなくてもいいかも。解像度の違いでハマるかも */
-  .sheet {
+    .sheet {
+	vertical-align:top;
     width: 200mm;
     min-height: 296mm; /* 設定しなくてもいいかも。あまり印刷画面に似せすぎると、些細な違いがバグに見えてしまう */
     margin: 5mm;
