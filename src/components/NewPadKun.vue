@@ -7,7 +7,6 @@
       </td>
     </tr>
   </table>
-<!--  <LongDivisionWithDot ref="longdivision" :id="_id"></LongDivisionWithDot> -->
   <v-text-field
     @keyup.esc="backtoformula"
     @keyup.enter="pushYellow"    
@@ -34,7 +33,6 @@
 <script>
 import { VueMathjax } from "vue-mathjax";  
 import divclass from './DivClass.vue';
-import LongDivisionWithDot from './LongDivisionWithDot.vue';
 import Vuex from "vuex";
 
 export default {
@@ -42,8 +40,7 @@ export default {
     props : ['_id'],
     components : {
 	"vue-mathjax": VueMathjax,
-	'divclass': divclass,
-	'LongDivisionWithDot' : LongDivisionWithDot
+	'divclass': divclass
     },
     data: () => ({
 	message : ''
@@ -140,6 +137,7 @@ export default {
 	pushYellow() {
 	    this.$store.dispatch('pushNumeric',{mess : this.message, 'id': this._id});
 	    this.message=this.$store.state.mediator.last.chr;
+
 	    this.$store.commit('updateFormula',{'formula':'', 'id': this._id});
 	    this.$refs.focusThis.focus();
 	    

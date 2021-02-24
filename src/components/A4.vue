@@ -13,7 +13,7 @@
       <div class="mt-8absolute">
 	<div v-for="v in this.getFormula">
 	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
-	    <viewFormula :_id=v.id></viewFormula>
+	    <viewFormula :id=v.id></viewFormula>
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>	      

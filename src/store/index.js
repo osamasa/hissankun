@@ -49,6 +49,7 @@ export default new Vuex.Store({
 	getformula :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    return state.formula.find( a => a.id == _id ).cd;
+
 	},	
 	getSep :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
