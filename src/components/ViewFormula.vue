@@ -121,7 +121,6 @@ export default {
 	    }
 
             _formura += '\\end{array} $$';
-	    console.log(_formura);
             this.formula=_formura;
 	},
 	
@@ -148,7 +147,6 @@ export default {
 	    _formura += _answer1;
             _formura += '\\end{array} $$';
 
-	    console.log(_formura);	    
             this.formula=_formura;
 	},
 	divMkFormula() {
@@ -224,11 +222,15 @@ export default {
 	    })
             _formura += '\\end{array} $$'
 
-	    console.log(_formura);
 	    this.formula=_formura;
 	}
     },
     watch: {
+	kouban :  function(n,o) {
+	    if(n!==o) {
+		this.mkFormula();
+	    }
+	},
 	formula : function(n,o) {
 	    if(n!==o) {
 		this.mkFormula();
