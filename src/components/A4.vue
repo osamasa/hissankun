@@ -22,7 +22,7 @@
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
-	      <v-btn @click="" class="notprint mh-5">付番</v-btn>	      	      
+	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>	      	      
 	    </div>
 	  </vue-draggable-resizable>
 	</div>
@@ -153,6 +153,42 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+  <v-dialog
+    v-model="k_dialog"
+    persistent
+    max-width="600px"
+    >
+    <v-card>
+      <v-toolbar
+          dark
+          color="primary"
+        >
+	<v-toolbar-title>項番の付番</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn
+            icon
+            dark
+          @click="k_dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>      
+      <v-card-text>
+        <v-container>
+          <v-row>
+	    <v-col
+              cols="4"
+	      >
+              <v-text-field
+		v-model="kouban"
+                label="カッコ付きの番号を指定"
+                ></v-text-field>
+	    </v-col>
+	  </v-row>	      
+        </v-container>
+      </v-card-text>
+    </v-card>
+  </v-dialog>  
 </div>
 </template>
 
@@ -174,6 +210,7 @@ export default {
 	return {
 	    dialog : false,
 	    calc_dialg : false,
+	    k_dialog : false,
 	    curid : 0,
 	    year : 4,
 	    myclass : 1,
@@ -187,7 +224,15 @@ export default {
     computed: {
 	getFormula : function() {
 	    return this.$store.getters.getAllFormula;
-	}	
+	},
+	kouban : {
+	    get () {
+		return this.$store.getters.getKouban({ 'id':this.curid })
+	    },
+	    set (value) {
+		this.$store.commit('setKouban',{'kouban': value,'id':this.curid} );
+	    }
+	}
     },
     mounted() {
 	document.title = '筆算君2.5'
