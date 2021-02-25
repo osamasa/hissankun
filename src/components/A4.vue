@@ -330,7 +330,6 @@ td {
     }
 }
 </style>
-
 <style lang="scss">
 /* for preview */
 @media screen {
