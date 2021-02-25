@@ -34,7 +34,11 @@ export default new Vuex.Store({
     getters: {
 	getKouban: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.kouban.find( a => a.id == _id ).cd;
+	    if(state.kouban.find( a => a.id == _id )) {
+		return state.kouban.find( a => a.id == _id ).cd;
+	    } else {
+		return ''
+	    }
 	},
 	getBairitsu: (state) => (payload) => {
 	    let _id = parseInt(payload.id);

@@ -20,7 +20,7 @@
 	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
 	    <viewFormula :id=v.id></viewFormula>
 	    <div class="d-flex">
-	      <v-btn @click="curid=v.id;resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
+	      <v-btn @click="curid=v.id;sep='';resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
 	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>	      	      
 	    </div>
@@ -61,8 +61,14 @@
             <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
+      <v-card-actions>
+	<v-switch
+	  v-model="switch1"
+	  :label="switch1 ? '筆算モード' : '計算式モード'"
+	  ></v-switch>
+      </v-card-actions>	
       <v-card-text>
-	<v-container>
+	<v-container v-if="switch1">
 	  <v-row>
 	    <v-col>
 	      <HelloWorld :_id="curid" ></HelloWorld>
@@ -73,6 +79,17 @@
 	      <NewPadKun :_id="curid"></NewPadKun>
 	    </v-col>
 	  </v-row>	    
+	</v-container>
+	<v-container v-else>
+	  <v-row>
+	    <v-col>
+	      <v-textarea
+		v-model="lawformula"
+		name="input-7-4"
+		label="答えを入力"
+		></v-textarea>
+	    </v-col>
+	  </v-row>
 	</v-container>
       </v-card-text>
     </v-card>
@@ -208,6 +225,7 @@ export default {
     },
     data() {
 	return {
+	    switch1 : true,
 	    dialog : false,
 	    calc_dialg : false,
 	    k_dialog : false,
@@ -216,15 +234,28 @@ export default {
 	    myclass : 1,
 	    order : 1,
 	    name : '長田　潤',
-	    title : '計算ドリル２ P2',
+	    title : '計算ドリル２ P2'
 	}
     },
     created() {
     },
     computed: {
-	getFormula : function() {
-	    return this.$store.getters.getAllFormula;
-	},
+	sep: {
+	    get () {
+		return this.$store.getters.getSep({'id': this.curid});
+	    },
+	    set (value) {
+		this.$store.commit('setSep',{ 'sep' : value , 'id' : this.curid});
+	    }
+	},	
+	lawformula : {
+	    get () {
+		return this.$store.getters.getLawformula({'id': this.curid});
+	    },
+	    set (value) {
+		this.$store.commit('setLawformula',{'lawformula' : value, 'id' : this.curid});
+	    }
+	},	
 	kouban : {
 	    get () {
 		return this.$store.getters.getKouban({ 'id':this.curid })
@@ -232,7 +263,10 @@ export default {
 	    set (value) {
 		this.$store.commit('setKouban',{'kouban': value,'id':this.curid} );
 	    }
-	}
+	},
+	getFormula : function() {
+	    return this.$store.getters.getAllFormula;
+	},	
     },
     mounted() {
 	document.title = '筆算君2.5'
@@ -287,14 +321,13 @@ td {
 @media screen {
   /* mm単位で指定しているけど、vueコンポ側はpx単位なので、無理にmmにしなくてもいいかも。解像度の違いでハマるかも */
     .sheet {
-	vertical-align:top;
-    width: 200mm;
-    min-height: 296mm; /* 設定しなくてもいいかも。あまり印刷画面に似せすぎると、些細な違いがバグに見えてしまう */
-    margin: 5mm;
-    padding: 5mm;
-    background: white;
-    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-   }
+	width: 200mm;
+	min-height: 296mm; /* 設定しなくてもいいかも。あまり印刷画面に似せすぎると、些細な違いがバグに見えてしまう */
+	margin: 5mm;
+	padding: 5mm;
+	background: white;
+	box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    }
 }
 </style>
 

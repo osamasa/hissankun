@@ -29,6 +29,9 @@ export default {
 	kouban : function() {
 	    return this.$store.getters.getKouban({ 'id':this.id });
 	},
+	lawformula : function() {
+	    return this.$store.getters.getLawformula({ 'id':this.id });
+	},
 	calc : {
 	    get () {
 		return this.$store.getters.getCalc({ 'id':this.id })
@@ -63,23 +66,33 @@ export default {
 	}
     },
     methods: {
-		mkFormula() {
-	    if(this.sep === '/') {
-		this.divMkFormula();
-	    } else if((this.sep === '+') || (this.sep === '-')) {
-		this.divPlusMkFormula();
-	    } else if(this.sep === '*') {
-		this.divMkMultiFormula()
-	    }
-	},
-
-        divMkMultiFormula: function() {
-	    let _formura='';
+	mkFormula : function() {
+	    let _formura=''
 	    if(this.kouban) {
 		_formura = '\(' + this.kouban + '\)$$ '
 	    } else {
 		_formura='$$';
+	    }	    
+	    if(this.sep === '/') {
+		_formura += this.divMkFormula();
+	    } else if((this.sep === '+') || (this.sep === '-')) {
+		_formura += this.divPlusMkFormula();
+	    } else if(this.sep === '*') {
+		_formura += this.divMkMultiFormula();
+	    } else {
+		_formura += this.divMkLawFormula();
 	    }
+	    _formura += '$$';
+            this.formula=_formura;
+
+	},
+
+	divMkLawFormula : function () {
+	    return this.lawformula.replace(/\r?\n/g,'\\\\');
+	},
+	
+        divMkMultiFormula: function() {
+	    let _formura ='';
 	    let _oya = this.calc[1].map(c => c.chr).join('');
 	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[*]/,'');
 	    let _anspos = (_ko.length)+3;
@@ -119,9 +132,8 @@ export default {
 		    _formura += ' \\\\[-3pt]'		
 		}
 	    }
-
-            _formura += '\\end{array} $$';
-            this.formula=_formura;
+            _formura += '\\end{array}'
+	    return _formura;
 	},
 	
 	divPlusMkFormula: function() {
@@ -145,17 +157,13 @@ export default {
 	    _formura += '\\' + 'underline{' + this.sep;
 	    _formura += '\\phantom{' + zeroPadding( maxlength - _ko.length ) + '}'+ _ko + '}\\\\[-3pt]';
 	    _formura += _answer1;
-            _formura += '\\end{array} $$';
+            _formura += '\\end{array}';
 
-            this.formula=_formura;
+	    return _formura;
 	},
 	divMkFormula() {
 	    let _formura='';
-	    if(this.kouban) {
-		_formura = this.kouban + '$$ ';
-	    } else {
-		_formura='$$';
-	    }	    	    
+
 	    const _answer1=this.calc[0].map(c => c.chr).join('');	    
 	    let [_ko, _oya] = this.calc[1].map(c => c.chr).join('').split(')');
 	    
@@ -220,9 +228,8 @@ export default {
 		    }
 		}
 	    })
-            _formura += '\\end{array} $$'
-
-	    this.formula=_formura;
+            _formura += '\\end{array}'
+	    return _formura;
 	}
     },
     watch: {
@@ -232,6 +239,11 @@ export default {
 	    }
 	},
 	formula : function(n,o) {
+	    if(n!==o) {
+		this.mkFormula();
+	    }
+	},
+	lawformula : function(n,o) {
 	    if(n!==o) {
 		this.mkFormula();
 	    }
