@@ -13,12 +13,9 @@
       </v-app-bar>
       <v-main>
         <v-container
-          class="fill-height"
           fluid
         >
           <v-row
-            align="center"
-            justify="center"
           >
             <v-col class="text-center">
 	      <router-view></router-view>

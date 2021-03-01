@@ -169,24 +169,11 @@ export default {
 	    
 	    let _oyadot = _oya.length - _oya.indexOf('.')-1
 
-	    let _answerdot=0
-	    const _karikaitou = '0'
-	    if(_karikaitou.indexOf('.') > -1) {
-		_answerdot = _karikaitou.length-_karikaitou.indexOf('.')-1;
-		if(_oya.indexOf('.')>-1) {
-		    _oyadot = _oya.length-_oya.indexOf('.')-1
-		    if(_answerdot > _oyadot) {
-			_oya = _oya + zeroPadding(_answerdot - _oyadot);
-		    }
-		} else {
-		    _oya = _oya + '.' + zeroPadding(_answerdot);
-		}		
-	    }
-            let _nagasa=_karikaitou.length-(_answerdot > -1 ? 1 : 0);
-	    _nagasa = _nagasa*2 -1;
-
-	    if(_nagasa < 0) {
-		_nagasa = 1;
+	    let _answerdot=_answer1.indexOf('.');
+	    if(_answerdot < 0) {
+		_answerdot = 0;
+	    } else {
+		_answerdot = 2;
 	    }
 
             _formura += ' \\require{enclose} \\begin{array}{r}' + _answer1 + ' \\\\ ' + _ko + ' \\enclose{longdiv}{' + _oya + '}\\kern-.2ex \\\\[-3pt] ';
@@ -209,13 +196,13 @@ export default {
 		    
 			_formura += n;
 			if(nokori > 0) {
-			    _formura +='\\phantom{' + zeroPadding(nokori)+ '}'
+			    _formura +='\\phantom{' + zeroPadding(nokori-_answerdot)+ '}'
 			}		    
 			_formura += '} \\\\[-3pt]';
 		    } else {
 			_formura += n;
 			if(nokori > 0) {
-			    _formura +='\\phantom{' + zeroPadding(nokori)+ '}'
+			    _formura +='\\phantom{' + zeroPadding(nokori-_answerdot)+ '}'
 			}		    		    
 			_formura += ' \\\\[-3pt]'
 		    }
