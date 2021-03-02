@@ -5,6 +5,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	user : {},
+	status : false,
+	title : '',
+	year : '',
+	myclass : '',
+	order : '',
+	myname : '',
 	lastno : 0,
 	kouban : [{'id': 0, 'cd' : '(1)'}],
 	bairitsu : [{'id': 0, 'cd' : 100}],
@@ -32,40 +39,102 @@ export default new Vuex.Store({
 		]] }],
     },
     getters: {
+	getUser(state) {
+	    return state.user;
+	},
+	isSignedIn(state) {
+	    return state.status;
+	},
+	getTitle:  (state) => {
+	    return state.title;
+	},
+	getYear:  (state) => {
+	    return state.year;
+	},
+	getMyclass:  (state) => {
+	    return state.myclass;
+	},
+	getOrder:  (state) => {
+	    return state.order;
+	},
+	getMyname:  (state) => {
+	    return state.myname;
+	},	
 	getKouban: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    if(state.kouban.find( a => a.id == _id )) {
 		return state.kouban.find( a => a.id == _id ).cd;
 	    } else {
-		return ''
+		return null
 	    }
 	},
 	getBairitsu: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.bairitsu.find( a => a.id == _id ).cd;
+	    if(state.bairitsu.find( a => a.id == _id )) {	    
+		return state.bairitsu.find( a => a.id == _id ).cd;
+	    } else {
+		return null		
+	    }
 	},
 	getCalc : (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.calc.find( a => a.id == _id ).cd;
+	    if(state.calc.find( a => a.id == _id )) {	    	    
+		return state.calc.find( a => a.id == _id ).cd;
+	    } else {
+		return null				
+	    }
 	},
 	getLawformula :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.lawformula.find( a => a.id == _id ).cd;
+	    if(state.lawformula.find( a => a.id == _id )) {	    
+		return state.lawformula.find( a => a.id == _id ).cd;
+	    } else {
+		return null
+	    }
 	},
 	getAllFormula : (state) => {
 	    return state.formula;
 	},
 	getformula :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.formula.find( a => a.id == _id ).cd;
+	    if(state.formula.find( a => a.id == _id )) {	    	    
+		return state.formula.find( a => a.id == _id ).cd;
+	    } else {
+		return null		
+	    }
 
 	},	
 	getSep :  (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    return state.sep.find( a => a.id === _id ).cd;
+	    if(state.sep.find( a => a.id == _id )) {	    
+		return state.sep.find( a => a.id === _id ).cd;
+	    } else {
+		return null				
+	    }
 	}	
     },
     mutations: {
+	onAuthStateChanged(state, payload) {
+	    state.user = payload.user;
+	},
+	onUserStatusChanged(state, payload) {
+	    state.status = payload.status;
+	},
+	setTitle:  (state,payload) => {
+	    state.title = payload.title;
+	},
+	setYear:  (state,payload) => {
+	    state.year = payload.year;
+	},
+	setMyclass:  (state,payload) => {
+	    state.myclass = payload.myclass;
+	},
+	setOrder:  (state,payload) => {
+	    state.order = payload.order;
+	},
+	setMyname:  (state,payload) => {
+	    state.myname = payload.myname;
+	},		
 	removeCalc : (state,payload) => {
 	    let i = -1;
 	    i = state.calc.findIndex( a => a.id === payload.id);

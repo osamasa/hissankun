@@ -1,7 +1,7 @@
 <template>
 <div id="app">
   <v-app id="inspire">
-    <v-app id="inspire">
+
       <v-app-bar
 	class="notprint"
         app
@@ -9,7 +9,9 @@
         dark
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>筆算君2.0</v-toolbar-title>
+        <v-toolbar-title>筆算君2.5</v-toolbar-title>
+	<v-spacer />
+	<Authentication />
       </v-app-bar>
       <v-main>
         <v-container
@@ -31,19 +33,21 @@
         <span class="white--text">&copy; {{ new Date().getFullYear() }} JUNPAPA</span>
       </v-footer>
     </v-app>
-  </v-app>
+
 </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld';
+import Authentication from "@/components/Authentication.vue";
 import A4 from './components/A4';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+      HelloWorld,
+          Authentication
   },
 
   data: () => ({

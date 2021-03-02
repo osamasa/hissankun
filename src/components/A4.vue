@@ -11,7 +11,7 @@
       {{ year }}年{{ myclass }}組 {{order}}番
     </div>
     <div class="d-flex flex-row-reverse">
-      {{ name }}
+      {{ myname }}
     </div>    
     <h2>{{ title }}</h2>
     <div class="relative">
@@ -149,7 +149,7 @@
 	    <v-col
 	      >
               <v-text-field
-		v-model="name"		    
+		v-model="myname"		    
                 label="お名前は？"
                 required
                 ></v-text-field>
@@ -233,7 +233,7 @@ export default {
 	    year : 4,
 	    myclass : 1,
 	    order : 1,
-	    name : '長田　潤',
+	    myname : '長田　潤',
 	    title : '計算ドリル２ P2'
 	}
     },
