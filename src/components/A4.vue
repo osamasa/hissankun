@@ -92,6 +92,13 @@
 	  </v-row>
 	</v-container>
       </v-card-text>
+      <v-card-actions>
+	<v-btn
+          @click="calc_dialg = false"
+          >
+	  閉じる
+        </v-btn>
+      </v-card-actions>      
     </v-card>
   </v-dialog>
   <v-dialog
@@ -109,7 +116,7 @@
 	<v-btn
             icon
             dark
-          @click="dialog = false"
+          @click="saveSettei();dialog = false"
           >
             <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -168,6 +175,13 @@
 	  </v-row>	      
         </v-container>
       </v-card-text>
+      <v-card-actions>
+	<v-btn
+          @click="saveSettei();dialog = false"
+          >
+	  閉じる
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
   <v-dialog
@@ -204,6 +218,13 @@
 	  </v-row>	      
         </v-container>
       </v-card-text>
+      <v-card-actions>
+	<v-btn
+          @click="k_dialog = false"
+          >
+	  閉じる
+        </v-btn>
+      </v-card-actions>      
     </v-card>
   </v-dialog>  
 </div>
@@ -214,7 +235,7 @@ import viewFormula from "./ViewFormula.vue";
 import HelloWorld from "./HelloWorld.vue";
 import NewPadKun from "./NewPadKun.vue";
 import VueDraggableResizable from 'vue-draggable-resizable'
-
+import Firebase from './../firebase';
 
 export default {
     components: {
@@ -229,17 +250,52 @@ export default {
 	    dialog : false,
 	    calc_dialg : false,
 	    k_dialog : false,
-	    curid : 0,
-	    year : 4,
-	    myclass : 1,
-	    order : 1,
-	    myname : '長田　潤',
-	    title : '計算ドリル２ P2'
+	    curid : 0
 	}
     },
     created() {
     },
     computed: {
+	title : {
+	    get () {
+		return this.$store.getters.getTitle;
+	    },
+	    set (value) {
+		this.$store.commit('setTitle',{ title : value} );
+	    },
+	},
+	year : {
+	    get () {
+		return this.$store.state.year;
+	    },
+	    set (value) {
+		this.$store.commit('setYear',{ year : value} );
+	    },
+	},	    
+	myclass :{
+	    get () {
+		return this.$store.state.myclass;
+	    },
+	    set (value) {
+		this.$store.commit('setMyclass',{ myclass : value} );
+	    },
+	},	    
+	order : {
+	    get () {
+		return this.$store.state.order;
+	    },
+	    set (value) {
+		this.$store.commit('setOrder',{ order : value} );
+	    },
+	},	    
+	myname : {
+	    get () {
+		return this.$store.state.myname;
+	    },
+	    set (value) {
+		this.$store.commit('setMyname',{ myname : value} );
+	    },
+	},	    
 	sep: {
 	    get () {
 		return this.$store.getters.getSep({'id': this.curid});
@@ -272,6 +328,9 @@ export default {
 	document.title = '筆算君2.5'
     },
     methods: {
+	saveSettei() {
+	    Firebase.saveUser();
+	},	
 	removeCalc( _id ) {
 	    this.$store.dispatch('removeCalc',{'id': _id});
 	},	
