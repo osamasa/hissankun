@@ -55,7 +55,7 @@ export default {
 		    if((snap.val()) && (snap.key !== store.state.keyid)) {
 			store.commit('setKeyid',{keyid : snap.key});
 			store.commit('setMonnum',{monnum : snap.val().monnum});
-			store.commit('setTitle',{titile : snap.val().titile});
+			store.commit('setTitle',{title : snap.val().title});
 			store.commit('setAllKouban',{kouban : snap.val().kouban});
 			store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
 			store.commit('setAllSep',{sep : snap.val().sep});
@@ -75,7 +75,7 @@ export default {
 	    if((snap.val()) && (snap.key !== store.state.keyid)) {
 		store.commit('setKeyid',{keyid : snap.key});
 		store.commit('setMonnum',{monnum : snap.val().monnum});
-		store.commit('setTitle',{titile : snap.val().titile});
+		store.commit('setTitle',{title : snap.val().title});
 		store.commit('setAllKouban',{kouban : snap.val().kouban});
 		store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
 		store.commit('setAllSep',{sep : snap.val().sep});
