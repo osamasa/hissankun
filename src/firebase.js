@@ -30,6 +30,7 @@ export default {
 	firebase.auth().onAuthStateChanged(user => {
 	    user = user ? user : {};
 	    store.commit('onAuthStateChanged', { user : user } );
+
 	    store.commit('onUserStatusChanged', { status : user.uid ? true : false });
 	    if(user.uid) {
 		let userdb = firebase.database().ref('users').child(user.uid);
@@ -50,21 +51,66 @@ export default {
 		    }
 		});
 		let mondaidb = firebase.database().ref('mondai').child(user.uid);
-		mondaidb.limitToLast(1).orderByChild('mdate').once('child_added', function(snap) {
+		mondaidb.limitToLast(1).orderByChild('mdate').once("child_added", function(snap) {
 		    if((snap.val()) && (snap.key !== store.state.keyid)) {
 			store.commit('setKeyid',{keyid : snap.key});
-			store.commit('setMonnum',snap.val());
-			store.commit('setTitle',snap.val());
-			store.commit('setAllKouban',snap.val());
-			store.commit('setAllBairitsu',snap.val());
-			store.commit('setAllSep',snap.val());			
-			store.commit('setAllFormula',snap.val());
-			store.commit('setAllLawformula',snap.val());
-			store.commit('setAllCalc',snap.val());			
+			store.commit('setMonnum',{monnum : snap.val().monnum});
+			store.commit('setTitle',{titile : snap.val().titile});
+			store.commit('setAllKouban',{kouban : snap.val().kouban});
+			store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
+			store.commit('setAllSep',{sep : snap.val().sep});
+			store.commit('setAllFormula',{formula : snap.val().formula});
+			store.commit('setAllLawformula',{lawformula : snap.val().lawformula});
+			store.commit('setAllCalc',{calc : snap.val().calc});
+
 		    }
 		})
 	    }
 	});
+    },
+    getMondai(key) {
+	const user = store.getters.getUser;
+	let mondaidb = firebase.database().ref('mondai/' + user.uid).child(key);
+	mondaidb.once("value", function(snap) {
+	    if((snap.val()) && (snap.key !== store.state.keyid)) {
+		store.commit('setKeyid',{keyid : snap.key});
+		store.commit('setMonnum',{monnum : snap.val().monnum});
+		store.commit('setTitle',{titile : snap.val().titile});
+		store.commit('setAllKouban',{kouban : snap.val().kouban});
+		store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
+		store.commit('setAllSep',{sep : snap.val().sep});
+		store.commit('setAllFormula',{formula : snap.val().formula});
+		store.commit('setAllLawformula',{lawformula : snap.val().lawformula});
+		store.commit('setAllCalc',{calc : snap.val().calc});
+		
+	    }
+	})
+    },
+    loadMondai(p) {
+	store.commit('resetRetvalue');
+	const user = store.getters.getUser;
+	if(user.uid) {
+	    let mondaidb = firebase.database().ref('mondai/' + user.uid);
+	    mondaidb.limitToLast(p*5).orderByChild('mdate').once('value', function(snap) {
+		snap.forEach(r => {
+		    store.commit('addRetvalue', { key   : r.key ,
+						  mdate : r.val().mdate ,
+						  title : r.val().title});
+		});
+	    });
+	}
+    },
+    getMondaiCount() {
+	const user = store.getters.getUser;
+	if(user.uid) {
+	    let mondaidb = firebase.database().ref('mondai/' + user.uid);	
+	    mondaidb.once('value', parent => {
+		store.commit('setAllmondainum',{
+		    'allmondainum' : parent.numChildren()
+		});
+	    });
+	}
+	    
     },
     async saveUser() {
 	const user = store.getters.getUser;

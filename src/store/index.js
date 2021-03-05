@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	allmondainum : 0,
+	retvalue : [],
 	keyid : '',
 	user : {},
 	status : false,
@@ -41,6 +43,9 @@ export default new Vuex.Store({
 		]] }],
     },
     getters: {
+	getAllmondainum(state) {
+	    return state.allmondainum;
+	},
 	getKeyid(state) {
 	    return state.keyid;
 	},
@@ -76,7 +81,7 @@ export default new Vuex.Store({
 	},
 	getKouban: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
-	    if(state.kouban.find( a => a.id == _id )) {
+	    if((state.kouban) && (state.kouban.find( a => a.id == _id ))) {
 		return state.kouban.find( a => a.id == _id ).cd;
 	    } else {
 		return null
@@ -128,6 +133,15 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	setAllmondainum(state,payload) {
+	    state.allmondainum = payload.allmondainum;
+	},
+	resetRetvalue(state) {
+	    state.retvalue=[];
+	},
+	addRetvalue(state,payload) {
+	    state.retvalue.push(payload);
+	},
 	removeAll(state) {
 	    state.lastno=0;
 	    state.kouban=[];

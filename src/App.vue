@@ -40,7 +40,6 @@
 <script>
 import HelloWorld from './components/HelloWorld';
 import Authentication from "@/components/Authentication.vue";
-import A4 from './components/A4';
 
 export default {
   name: 'App',

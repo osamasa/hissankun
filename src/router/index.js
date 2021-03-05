@@ -4,21 +4,20 @@ import Home from '../views/Home.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import NewPadKun from '../components/NewPadKun.vue'
 import ViewFormula from '../components/ViewFormula.vue'
+import MondaiLists from '../components/MondaiLists.vue'
+
 import A4 from '../components/A4.vue'
+
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [    
+    {
       path: '/',
       name: 'Home',
-      component: A4,
-      children : [
-	  {  name : 'input', path: ':id', component: HelloWorld },
-	  {  name : 'calc' , path: 'calc/:id', component: NewPadKun },
-	  {  name : 'view' , path: 'view/:id', component: ViewFormula }
-      ]
-  }
+      component: A4
+    }
+
 ]
 
 const router = new VueRouter({

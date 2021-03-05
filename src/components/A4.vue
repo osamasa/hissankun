@@ -6,7 +6,8 @@
     <v-btn class='ml-5' @click="saveMondai">保存</v-btn>     
     <v-btn class='ml-5' @click="handlePrint">印　刷</v-btn>
     <v-btn class='ml-5' @click="chgFontsizePlusAll">拡　大</v-btn>
-    <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>    
+    <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>
+    <v-btn class='ml-5' @click="loadMondai;i_dialog=!i_dialog">一覧</v-btn>        
   </div>
   <div class="sheet">
     <div class="d-flex flex-row-reverse">
@@ -262,7 +263,39 @@
         </v-btn>
       </v-card-actions>      
     </v-card>
-  </v-dialog>  
+  </v-dialog>
+  <v-dialog
+    v-model="i_dialog"
+    persistent
+    max-width="600px"
+    >
+    <v-card>
+      <v-toolbar
+          dark
+          color="primary"
+        >
+	<v-toolbar-title>過去の問題</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn
+            icon
+            dark
+          @click="i_dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>            
+      <v-card-text>	
+	<MondaiLists :p.sync="page" :dailog.sync="i_dialog"></MondaiLists>
+      </v-card-text>
+      <v-card-actions>
+	<v-btn
+          @click="i_dialog = false"
+          >
+	  閉じる
+        </v-btn>
+      </v-card-actions>            
+    </v-card>      
+  </v-dialog>
 </div>
 </template>
 
@@ -270,6 +303,7 @@
 import viewFormula from "./ViewFormula.vue";
 import HelloWorld from "./HelloWorld.vue";
 import NewPadKun from "./NewPadKun.vue";
+import MondaiLists from "./MondaiLists.vue";
 import VueDraggableResizable from 'vue-draggable-resizable'
 import Firebase from './../firebase';
 
@@ -278,10 +312,13 @@ export default {
 	"viewFormula" : viewFormula,
 	'HelloWorld' : HelloWorld,
 	'NewPadKun' : NewPadKun,
+	'MondaiLists' : MondaiLists,
 	'vue-draggable-resizable': VueDraggableResizable
     },
     data() {
 	return {
+	    page : 1,
+	    i_dialog : false,
 	    switch1 : true,
 	    dialog : false,
 	    calc_dialg : false,
@@ -293,6 +330,9 @@ export default {
     created() {
     },
     computed: {
+	loadMondai : function(){
+	    Firebase.loadMondai(this.page);
+	},	
 	mitems : function() {
 	    return [...Array(60).keys()].map(i => ++i);
 	},
@@ -373,7 +413,6 @@ export default {
 	},	
     },
     mounted() {
-	document.title = '筆算君2.5'
     },
     methods: {
 	createNewMondai() {
