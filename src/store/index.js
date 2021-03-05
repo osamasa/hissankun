@@ -5,8 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	keyid : '',
 	user : {},
 	status : false,
+	monnum : -1,
 	title : '',
 	year : '',
 	myclass : '',
@@ -39,6 +41,15 @@ export default new Vuex.Store({
 		]] }],
     },
     getters: {
+	getKeyid(state) {
+	    return state.keyid;
+	},
+	getLastno(state) {
+	    return state.lastno;
+	},
+	getMonnum(state) {
+	    return state.monnum;
+	},
 	getUser(state) {
 	    return state.user;
 	},
@@ -59,7 +70,10 @@ export default new Vuex.Store({
 	},
 	getMyname:  (state) => {
 	    return state.myname;
-	},	
+	},
+	getAllKouban : (state) => {
+	    return state.kouban;
+	},
 	getKouban: (state) => (payload) => {
 	    let _id = parseInt(payload.id);
 	    if(state.kouban.find( a => a.id == _id )) {
@@ -114,6 +128,25 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	removeAll(state) {
+	    state.lastno=0;
+	    state.kouban=[];
+	    state.bairitsu=[];
+	    state.sep=[];
+	    state.formula=[];
+	    state.mediator= {last : null};
+	    state.lawformula=[];
+	    state.calc=[];
+	},
+	setKeyid(state,payload) {
+	    state.keyid = payload.keyid;
+	},	
+	setLastno(state,payload) {
+	    state.lastno=payload.lastno;
+	},
+	setMonnum(state,payload) {
+	    state.monnum = payload.monnum;
+	},
 	onAuthStateChanged(state, payload) {
 	    state.user = payload.user;
 	},
@@ -162,13 +195,16 @@ export default new Vuex.Store({
 		state.kouban.splice( i , 1 );
 	    }
 	},
-	addLastNo : (state) => {
+	addLastNo : (state,payload) => {
 	    state.lastno = state.lastno + 1;
 	    state.bairitsu.push({'id': state.lastno, 'cd' : 100});
 	    state.sep.push({'id': state.lastno, 'cd' : ''});
 	    state.formula.push({'id': state.lastno, 'cd' : '$$$$'});
 	    state.lawformula.push({'id': state.lastno, 'cd' : ''});
-	    state.kouban.push({'id': state.lastno, 'cd' : ''});
+	    if((payload) && (payload.isKouban)) {
+	    } else {
+		state.kouban.push({'id': state.lastno, 'cd' : '(' + state.lastno + ')'});
+	    }
 	    state.calc.push({'id': state.lastno, 'cd' : [
 		[
 		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
@@ -186,6 +222,9 @@ export default new Vuex.Store({
 		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
 		]
 	    ]});
+	},
+	setAllKouban : (state, payload) => {
+	    state.kouban = payload.kouban;
 	},
 	setKouban: (state, payload) => {
 	    let _id = parseInt(payload.id);
@@ -221,7 +260,22 @@ export default new Vuex.Store({
 		}
 		b.cd=bairitsu;
 	    });
-	},	
+	},
+	setAllSep : (state , payload) => {
+	    state.sep = payload.sep;
+	},
+	setAllBairitsu : (state , payload) => {
+	    state.bairitsu = payload.bairitsu;
+	},
+	setAllLawformula : (state , payload) => {
+	    state.lawformula = payload.lawformula;
+	},
+	setAllFormula : (state , payload) => {
+	    state.formula = payload.formula;
+	},
+	setAllCalc : (state , payload) => {
+	    state.calc = payload.calc;
+	},
 	setLawformula : (state, payload) => {
 	    let _id = parseInt(payload.id);
 	    let i = state.lawformula.findIndex( a => a.id == _id );
@@ -283,6 +337,7 @@ export default new Vuex.Store({
 	removeCalc : (context,payload) => {
 	    context.commit('removeCalc', { 'id' : payload.id });
 	},
+
 	resetLastno : (context,payload) => {
 	    context.commit('registerMediator',{ 'id' : payload.id, 'x':0, 'y':0});
 	},
@@ -377,6 +432,13 @@ export default new Vuex.Store({
 	    for(i=0;(i+_x)<_size_x && i < payload.mess.length ;i++) {
 		let _payload={chr : payload.mess[i], x: _x+i, y:_y, id: _id};
 		context.commit('updateChrCalc', _payload); 
+	    }
+	},
+	async createNewMondai(context) {
+	    context.commit('setKeyid', {keyid : ''});
+	    context.commit('removeAll');
+	    for(let i = 0 ; i<　context.getters.getMonnum;i++) {
+		context.commit('addLastNo');
 	    }
 	}
     },

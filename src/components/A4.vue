@@ -1,7 +1,9 @@
 <template>
 <div class="sheets">
   <div>
-    <v-btn @click="dialog=!dialog">設　定</v-btn>
+    <v-btn @click="dialog=!dialog">名前の設定</v-btn>
+    <v-btn class='ml-5' @click="m_dialog=!m_dialog">問題の設定</v-btn>
+    <v-btn class='ml-5' @click="saveMondai">保存</v-btn>     
     <v-btn class='ml-5' @click="handlePrint">印　刷</v-btn>
     <v-btn class='ml-5' @click="chgFontsizePlusAll">拡　大</v-btn>
     <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>    
@@ -16,31 +18,19 @@
     <h2>{{ title }}</h2>
     <div class="relative">
       <div class="mt-8 absolute">
-	<div v-for="v in this.getFormula">
-	  <vue-draggable-resizable style="background-color: white;" :w="100" :h="100" >
-	    <viewFormula :id=v.id></viewFormula>
+	<v-row>
+	  <v-col  v-for="(v,index) in this.getFormula" :key="index" class="custom3cols">
+	    <viewFormula  :id=v.id></viewFormula>
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;sep='';resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
 	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>	      	      
 	    </div>
-	  </vue-draggable-resizable>
-	</div>
+	  </v-col>
+	</v-row>
       </div>
     </div>
   </div>
-  <v-layout>
-    <v-btn
-      @click="addNewCalc();calc_dialg=!calc_dialg"
-      fixed fab
-      bottom
-      right
-      color="red darken-2"
-      dark
-      >
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-  </v-layout>
   <v-dialog
     v-model="calc_dialg"
     persistent
@@ -162,17 +152,6 @@
                 ></v-text-field>
 	    </v-col>
 	  </v-row>		      
-          <v-row>
-	    <v-col
-              cols="12"
-	      >
-              <v-text-field
-		v-model="title"
-                label="タイトルは？"
-                required
-                ></v-text-field>
-	    </v-col>
-	  </v-row>	      
         </v-container>
       </v-card-text>
       <v-card-actions>
@@ -184,6 +163,63 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-dialog
+    v-model="m_dialog"
+    persistent
+    max-width="600px"
+    >
+    <v-card>
+      <v-toolbar
+          dark
+          color="primary"
+        >
+	<v-toolbar-title>問題の設定</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn
+            icon
+            dark
+          @click="createNewMondai();m_dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>      
+      <v-card-text>
+        <v-container>
+          <v-row>
+	    <v-col
+              cols="12"
+	      >
+              <v-text-field
+		v-model="title"
+                label="タイトル"
+                required
+                ></v-text-field>
+	    </v-col>
+	  </v-row>	  
+          <v-row>
+	    <v-col
+              cols="4"
+	      >
+	      <v-select
+		v-model="monnum"
+		:items=mitems
+		label="問題数"
+		></v-select>
+	    </v-col>
+	  </v-row>
+	</v-container>
+      </v-card-text>
+      <v-card-actions>
+	<v-btn
+          @click="createNewMondai();m_dialog = false"
+          >
+	  閉じる
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  
   <v-dialog
     v-model="k_dialog"
     persistent
@@ -250,12 +286,24 @@ export default {
 	    dialog : false,
 	    calc_dialg : false,
 	    k_dialog : false,
+	    m_dialog : false,
 	    curid : 0
 	}
     },
     created() {
     },
     computed: {
+	mitems : function() {
+	    return [...Array(60).keys()].map(i => ++i);
+	},
+	monnum : {
+	    get () {
+		return this.$store.getters.getMonnum;
+	    },
+	    set (value) {
+		this.$store.commit('setMonnum',{ monnum : value} );
+	    },
+	},
 	title : {
 	    get () {
 		return this.$store.getters.getTitle;
@@ -328,6 +376,16 @@ export default {
 	document.title = '筆算君2.5'
     },
     methods: {
+	createNewMondai() {
+	    this.$store.dispatch('createNewMondai');
+	},
+	saveMondai() {
+	    if(this.$store.getters.getKeyid) {
+		Firebase.updateMondai();
+	    } else {
+		Firebase.saveMondai();
+	    }
+	},
 	saveSettei() {
 	    Firebase.saveUser();
 	},	
@@ -365,7 +423,12 @@ td {
     width: 20px;
     position: relative;
     border: 1px dashed #999;
-}    
+}
+.custom3cols {
+  width: 33%;
+  max-width: 33%;
+  flex-basis: 33%;
+}
 }
 
 /* hide in print */
