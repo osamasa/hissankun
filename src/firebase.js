@@ -57,6 +57,7 @@ export default {
 			store.commit('setMonnum',{monnum : snap.val().monnum});
 			store.commit('setTitle',{title : snap.val().title});
 			store.commit('setAllKouban',{kouban : snap.val().kouban});
+			store.commit('setLastno',{lastno : snap.val().lastno});		
 			store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
 			store.commit('setAllSep',{sep : snap.val().sep});
 			store.commit('setAllFormula',{formula : snap.val().formula});
@@ -68,6 +69,17 @@ export default {
 	    }
 	});
     },
+    deleteMondai(key) {
+	const user = store.getters.getUser;
+	let mondaidb = firebase.database().ref('mondai/' + user.uid).child(key);
+	mondaidb.remove(err => {
+	    if(err) {
+		console.log(err)
+	    } else {
+		console.log('success');
+	    }
+	})
+    },
     getMondai(key) {
 	const user = store.getters.getUser;
 	let mondaidb = firebase.database().ref('mondai/' + user.uid).child(key);
@@ -75,6 +87,7 @@ export default {
 	    if((snap.val()) && (snap.key !== store.state.keyid)) {
 		store.commit('setKeyid',{keyid : snap.key});
 		store.commit('setMonnum',{monnum : snap.val().monnum});
+		store.commit('setLastno',{lastno : snap.val().lastno});		
 		store.commit('setTitle',{title : snap.val().title});
 		store.commit('setAllKouban',{kouban : snap.val().kouban});
 		store.commit('setAllBairitsu',{bairitsu : snap.val().bairitsu});
@@ -87,11 +100,11 @@ export default {
 	})
     },
     loadMondai(p) {
-	store.commit('resetRetvalue');
 	const user = store.getters.getUser;
 	if(user.uid) {
 	    let mondaidb = firebase.database().ref('mondai/' + user.uid);
-	    mondaidb.limitToLast(p*5).orderByChild('mdate').once('value', function(snap) {
+	    mondaidb.limitToLast(p*5).orderByChild('mdate').on('value', function(snap) {
+		store.commit('resetRetvalue');		
 		snap.forEach(r => {
 		    store.commit('addRetvalue', { key   : r.key ,
 						  mdate : r.val().mdate ,
@@ -104,7 +117,7 @@ export default {
 	const user = store.getters.getUser;
 	if(user.uid) {
 	    let mondaidb = firebase.database().ref('mondai/' + user.uid);	
-	    mondaidb.once('value', parent => {
+	    mondaidb.on('value', parent => {
 		store.commit('setAllmondainum',{
 		    'allmondainum' : parent.numChildren()
 		});

@@ -17,30 +17,15 @@ export default new Vuex.Store({
 	order : '',
 	myname : '',
 	lastno : 0,
-	kouban : [{'id': 0, 'cd' : '(1)'}],
-	bairitsu : [{'id': 0, 'cd' : 100}],
-	sep : [{'id': 0, 'cd' : ''}],
-	formula : [{'id': 0, 'cd' : '$$$$'}],
+	kouban : [],
+	bairitsu : [],
+	sep : [],
+	formula : [],
 	mediator : {
 	    last : null
 	},
-	lawformula : [{'id': 0, 'cd' : ''}],
-	calc : [{'id': 0, 'cd' :[
-		[
-		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
-		],
-		[
-		    { x:0,y:1,kuri:'',chr:'',isActive:false }, { x:1,y:1,kuri:'',chr:'',isActive:false }, { x:2,y:1,kuri:'',chr:'',isActive:false }, { x:3,y:1,kuri:'',chr:'',isActive:false }, { x:4,y:1,kuri:'',chr:'',isActive:false }
-		],
-		[
-		    { x:0,y:2,kuri:'',chr:'',isActive:false }, { x:1,y:2,kuri:'',chr:'',isActive:false }, { x:2,y:2,kuri:'',chr:'',isActive:false }, { x:3,y:2,kuri:'',chr:'',isActive:false }, { x:4,y:2,kuri:'',chr:'',isActive:false }
-		],
-		[
-		    { x:0,y:3,kuri:'',chr:'',isActive:false }, { x:1,y:3,kuri:'',chr:'',isActive:false }, { x:2,y:3,kuri:'',chr:'',isActive:false }, { x:3,y:3,kuri:'',chr:'',isActive:false }, { x:4,y:3,kuri:'',chr:'',isActive:false }
-		],
-		[
-		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
-		]] }],
+	lawformula : [],
+	calc : [],
     },
     getters: {
 	getAllmondainum(state) {
@@ -209,16 +194,39 @@ export default new Vuex.Store({
 		state.kouban.splice( i , 1 );
 	    }
 	},
+	spliceMondai : (state,payload) => {
+	    const insertnum = payload.insertnum;
+	    state.lastno=state.lastno+1;
+	    state.bairitsu.splice(insertnum,0,{'id': state.lastno, 'cd' : 100});
+	    state.sep.splice(insertnum,0,{'id': state.lastno, 'cd' : ''});
+	    state.formula.splice(insertnum,0,{'id': state.lastno, 'cd' : '$$$$'});
+	    state.lawformula.splice(insertnum,0,{'id': state.lastno, 'cd' : ''});
+	    state.kouban.splice(insertnum,0,{'id': state.lastno, 'cd' : '(' + state.lastno + ')'});
+	    state.calc.splice(insertnum,0,{'id': state.lastno, 'cd' : [
+		[
+		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:1,kuri:'',chr:'',isActive:false }, { x:1,y:1,kuri:'',chr:'',isActive:false }, { x:2,y:1,kuri:'',chr:'',isActive:false }, { x:3,y:1,kuri:'',chr:'',isActive:false }, { x:4,y:1,kuri:'',chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:2,kuri:'',chr:'',isActive:false }, { x:1,y:2,kuri:'',chr:'',isActive:false }, { x:2,y:2,kuri:'',chr:'',isActive:false }, { x:3,y:2,kuri:'',chr:'',isActive:false }, { x:4,y:2,kuri:'',chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:3,kuri:'',chr:'',isActive:false }, { x:1,y:3,kuri:'',chr:'',isActive:false }, { x:2,y:3,kuri:'',chr:'',isActive:false }, { x:3,y:3,kuri:'',chr:'',isActive:false }, { x:4,y:3,kuri:'',chr:'',isActive:false }
+		],
+		[
+		    { x:0,y:4,kuri:'',chr:'',isActive:false }, { x:1,y:4,kuri:'',chr:'',isActive:false }, { x:2,y:4,kuri:'',chr:'',isActive:false }, { x:3,y:4,kuri:'',chr:'',isActive:false }, { x:4,y:4,kuri:'',chr:'',isActive:false }
+		]
+	    ]});	
+	},
 	addLastNo : (state,payload) => {
 	    state.lastno = state.lastno + 1;
 	    state.bairitsu.push({'id': state.lastno, 'cd' : 100});
 	    state.sep.push({'id': state.lastno, 'cd' : ''});
 	    state.formula.push({'id': state.lastno, 'cd' : '$$$$'});
 	    state.lawformula.push({'id': state.lastno, 'cd' : ''});
-	    if((payload) && (payload.isKouban)) {
-	    } else {
-		state.kouban.push({'id': state.lastno, 'cd' : '(' + state.lastno + ')'});
-	    }
+	    state.kouban.push({'id': state.lastno, 'cd' : '(' + state.lastno + ')'});
 	    state.calc.push({'id': state.lastno, 'cd' : [
 		[
 		    { x:0,y:0,kuri:'',chr:'',isActive:false }, { x:1,y:0,kuri:'',chr:'',isActive:false }, { x:2,y:0,kuri:'',chr:'',isActive:false }, { x:3,y:0,kuri:'',chr:'',isActive:false }, { x:4,y:0,kuri:'',chr:'',isActive:false }
@@ -454,6 +462,9 @@ export default new Vuex.Store({
 	    for(let i = 0 ; i<　context.getters.getMonnum;i++) {
 		context.commit('addLastNo');
 	    }
+	},
+	async spliceMondai(context,payload) {
+	    context.commit('spliceMondai',payload);
 	}
     },
     modules: {

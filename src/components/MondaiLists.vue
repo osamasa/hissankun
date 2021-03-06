@@ -2,7 +2,9 @@
   <div>
   <v-container>
   <v-row v-for="v in retvalue" :key="v.key">
-    <v-col><v-btn @click="curkey=v.key;getMondai;">選択</v-btn></v-col><v-col>{{ v.title }}</v-col><v-col>{{ v.mdate }}</v-col>
+    <v-col><v-btn @click="curkey=v.key;getMondai">選択</v-btn></v-col><v-col>{{ v.title }}</v-col><v-col>{{ v.mdate }}</v-col><v-col><v-btn @click="curkey=v.key;removeData();"><v-icon>mdi-delete</v-icon></v-btn>
+    </v-col>      
+  </v-row> 
   </v-row>
   <v-row>
     <v-col>
@@ -11,7 +13,7 @@
 	:length="getPages"
 	></v-pagination>
     </v-col>
-  </v-row>
+  </v-row>     
 </v-container>
 </div>
 </template>
@@ -20,7 +22,7 @@
 import Firebase from './../firebase';  
 export default {
     name: 'lists',
-    props : ['p','dialog'],
+    props : ['p','idialog'],
     components : {
     },
     data: () => ({
@@ -33,10 +35,6 @@ export default {
     mounted : function(){
     },
     computed : {
-	getMondai: function(){
-	    Firebase.getMondai(this.curkey);
-	    this.localDialog=false;
-	},
 	localPage: {
 	    get: function() {
 		return this.p
@@ -47,10 +45,10 @@ export default {
 	},
 	localDialog: {
 	    get: function() {
-		return this.dialog
+		return this.idialog
 	    },
 	    set: function(value) {
-		this.$emit('update:dialog', value)
+		this.$emit('update:idialog', value)
 	    },
 	},	
 	getPages : function() {
@@ -61,6 +59,13 @@ export default {
 	}
     },
     methods : {
+	getMondai: function(){
+	    Firebase.getMondai(this.curkey);
+	    this.$emit('update:idialog', false)
+	},	
+	removeData : function() {
+	    Firebase.deleteMondai(this.curkey);
+	}
     }
 }
 </script>

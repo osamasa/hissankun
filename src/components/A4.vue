@@ -1,5 +1,8 @@
 <template>
-<div class="sheets">
+  <div v-if="!isSignedIn">
+    右上のログインボタンを押して下さい
+  </div>
+<div v-else class="sheets">
   <div>
     <v-btn @click="dialog=!dialog">名前の設定</v-btn>
     <v-btn class='ml-5' @click="m_dialog=!m_dialog">問題の設定</v-btn>
@@ -25,7 +28,8 @@
 	    <div class="d-flex">
 	      <v-btn @click="curid=v.id;sep='';resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
-	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>	      	      
+	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>
+	      <v-btn @click="curpos=index;spliceMondai()" class="notprint mh-5">追加</v-btn>	      	      	      
 	    </div>
 	  </v-col>
 	</v-row>
@@ -285,7 +289,7 @@
         </v-btn>
       </v-toolbar>            
       <v-card-text>	
-	<MondaiLists :p.sync="page" :dailog.sync="i_dialog"></MondaiLists>
+	<MondaiLists :p.sync="page" :idialog.sync="i_dialog"></MondaiLists>
       </v-card-text>
       <v-card-actions>
 	<v-btn
@@ -317,6 +321,7 @@ export default {
     },
     data() {
 	return {
+	    curpos : 0,
 	    page : 1,
 	    i_dialog : false,
 	    switch1 : true,
@@ -335,6 +340,9 @@ export default {
 	},	
 	mitems : function() {
 	    return [...Array(60).keys()].map(i => ++i);
+	},
+	isSignedIn : function() {
+	    return this.$store.getters.isSignedIn
 	},
 	monnum : {
 	    get () {
@@ -415,6 +423,10 @@ export default {
     mounted() {
     },
     methods: {
+	spliceMondai() {
+	    console.log(this.curpos);
+	    this.$store.dispatch('spliceMondai',{ insertnum: this.curpos });
+	},
 	createNewMondai() {
 	    this.$store.dispatch('createNewMondai');
 	},
