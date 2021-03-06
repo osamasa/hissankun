@@ -424,7 +424,6 @@ export default {
     },
     methods: {
 	spliceMondai() {
-	    console.log(this.curpos);
 	    this.$store.dispatch('spliceMondai',{ insertnum: this.curpos });
 	},
 	createNewMondai() {

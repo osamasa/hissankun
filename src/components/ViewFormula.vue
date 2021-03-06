@@ -138,11 +138,7 @@ export default {
 	
 	divPlusMkFormula: function() {
 	    let _formura='';
-	    if(this.kouban) {
-		_formura = this.kouban + '$$ ';
-	    } else {
-		_formura='$$';
-	    }	    
+
 	    const _answer1=this.calc[3].map(c => c.chr).join('');	    
 	    let _oya = this.calc[1].map(c => c.chr).join('');
 	    let _ko = this.calc[2].map(c => c.chr).join('').replace(/[+-]/,'');
