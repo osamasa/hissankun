@@ -5,7 +5,7 @@
 <div v-else class="sheets">
   <div>
     <v-btn @click="dialog=!dialog">名前の設定</v-btn>
-    <v-btn class='ml-5' @click="m_dialog=!m_dialog">問題の設定</v-btn>
+    <v-btn class='ml-5' @click="m_dialog=!m_dialog">新規作成</v-btn>
     <v-btn class='ml-5' @click="saveMondai">保存</v-btn>     
     <v-btn class='ml-5' @click="handlePrint">印　刷</v-btn>
     <v-btn class='ml-5' @click="chgFontsizePlusAll">拡　大</v-btn>
