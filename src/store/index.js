@@ -30,6 +30,7 @@ export default new Vuex.Store({
 	sep : [],
 	formula : [],
 	mediator : {
+	    selectid : null,
 	    last : null
 	},
 	lawformula : [],
@@ -153,9 +154,12 @@ export default new Vuex.Store({
 	    state.bairitsu=[];
 	    state.sep=[];
 	    state.formula=[];
-	    state.mediator= {last : null};
+	    state.mediator= {last : null, selectid:null};
 	    state.lawformula=[];
 	    state.calc=[];
+	},
+	selectId(state,payload) {
+	    state.mediator.selectid = payload.selectid;
 	},
 	setKeyid(state,payload) {
 	    state.keyid = payload.keyid;

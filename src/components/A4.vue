@@ -23,9 +23,9 @@
     <div class="relative">
       <div class="mt-8 absolute">
 	<v-row>
-	  <v-col  v-for="(v,index) in this.getFormula" :key="index" class="custom3cols">
-	    <viewFormula  :id=v.id></viewFormula>
-	    <div class="d-flex">
+	  <v-col v-for="(v,index) in this.getFormula" :key="index" class="custom3cols">
+	    <viewFormula :id=v.id></viewFormula>
+	    <div class="d-flex" v-if="isSelected(v.id)">
 	      <v-btn @click="curid=v.id;sep='';resetMediator(v.id);calc_dialg=!calc_dialg" class="notprint mh-5">計算</v-btn>
 	      <v-btn @click="removeCalc(v.id)" class="notprint mh-5">削除</v-btn>
 	      <v-btn @click="curid=v.id;k_dialog=!k_dialog" class="notprint mh-5">付番</v-btn>
@@ -337,6 +337,11 @@ export default {
     created() {
     },
     computed: {
+	isSelected : function() {
+	    return function( id ) {
+		return this.$store.state.mediator.selectid === id;
+	    }
+	},	
 	loadMondai : function(){
 	    Firebase.loadMondai(this.page);
 	},	
@@ -483,6 +488,7 @@ td {
   max-width: 33%;
   flex-basis: 33%;
 }
+
 }
 
 /* hide in print */

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div @click="setId()" :class="isSelected ? 'sample3' : ''">
   <div class="d-flex justify-start" :style="'font-size : ' + bairtsu + '%'">
     <vue-mathjax :formula="formula"></vue-mathjax>
     </div>
@@ -63,9 +63,15 @@ export default {
 	    set (value) {
 		this.$store.commit('updatebairitsu',{'id': this.id });
 	    }	
-	}
+	},
+	isSelected : function() {
+	    return this.$store.state.mediator.selectid === this.id
+	}	
     },
     methods: {
+	setId : function() {
+	    this.$store.commit('selectId',{selectid : this.id});
+	},
 	mkFormula : function() {
 	    let _formura=''
 	    if(this.kouban) {
@@ -235,3 +241,8 @@ export default {
 }
 
 </script>
+<style>
+.sample3 {
+  border: medium solid #ff00ff;
+}
+</style>
