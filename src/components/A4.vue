@@ -179,7 +179,7 @@
           dark
           color="primary"
         >
-	<v-toolbar-title>問題の設定</v-toolbar-title>
+	<v-toolbar-title>新規作成</v-toolbar-title>
 	<v-spacer></v-spacer>
 	<v-btn
 	  @click="m_dialog=!m_dialog"
@@ -219,7 +219,7 @@
 	<v-btn
           @click="createNewMondai();m_dialog = false"
           >
-	  保存する
+	  作成する
         </v-btn>
       </v-card-actions>
     </v-card>
