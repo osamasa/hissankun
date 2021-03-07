@@ -55,7 +55,7 @@ export default {
 	    return Math.round(this.$store.state.allmondainum / 5);
 	},
 	retvalue : function() {
-	    return this.$store.state.retvalue.reverse();
+	    return this.$store.state.retvalue.slice( (this.localPage-1)*5, (this.localPage-1)*5+5) ;
 	}
     },
     methods : {

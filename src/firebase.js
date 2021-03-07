@@ -103,7 +103,7 @@ export default {
 	const user = store.getters.getUser;
 	if(user.uid) {
 	    let mondaidb = firebase.database().ref('mondai/' + user.uid);
-	    mondaidb.limitToLast(p*5).orderByChild('mdate').on('value', function(snap) {
+	    mondaidb.orderByChild('mdate').on('value', function(snap) {
 		store.commit('resetRetvalue');		
 		snap.forEach(r => {
 		    store.commit('addRetvalue', { key   : r.key ,
