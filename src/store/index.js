@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	dialog : false,
 	isSuccess : false,
 	isInfo : false,
 	isWarning : false,
@@ -127,6 +128,9 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	setDialog(state,payload) {
+	    state.dialog = payload.dialog;
+	},
 	AppMessage(state,payload) {
 	    if(payload.mtype) {
 		state['is' + payload.mtype]=true;

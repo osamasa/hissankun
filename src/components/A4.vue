@@ -4,13 +4,13 @@
   </div>
   <div v-else class="sheets">
   <div>
-    <v-btn @click="dialog=!dialog">名前の設定</v-btn>
-    <v-btn class='ml-5' @click="m_dialog=!m_dialog">新規作成</v-btn>
+    <v-btn @click="m_dialog=!m_dialog">新規作成</v-btn>
     <v-btn class='ml-5' @click="saveMondai">保存</v-btn>     
     <v-btn class='ml-5' @click="handlePrint">印　刷</v-btn>
     <v-btn class='ml-5' @click="chgFontsizePlusAll">拡　大</v-btn>
     <v-btn class='ml-5' @click="chgFontsizeMinuseAll">縮　小</v-btn>
-    <v-btn class='ml-5' @click="loadMondai;i_dialog=!i_dialog">一覧</v-btn>        
+    <v-btn class='ml-5' @click="loadMondai;i_dialog=!i_dialog">一覧</v-btn>
+    <v-btn class='ml-5' @click="dialog=!dialog">名前の設定</v-btn>    
   </div>
   <div class="sheet">
     <div class="d-flex flex-row-reverse">
@@ -327,7 +327,6 @@ export default {
 	    page : 1,
 	    i_dialog : false,
 	    switch1 : true,
-	    dialog : false,
 	    calc_dialg : false,
 	    k_dialog : false,
 	    m_dialog : false,
@@ -337,6 +336,14 @@ export default {
     created() {
     },
     computed: {
+	dialog : {
+	    get : function() {
+		return this.$store.state.dialog;
+	    },
+	    set : function(value) {
+		this.$store.commit('setDialog',{ dialog : value} );
+	    }
+	},
 	isSelected : function() {
 	    return function( id ) {
 		return this.$store.state.mediator.selectid === id;

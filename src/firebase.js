@@ -48,6 +48,8 @@ export default {
 			if(snap.val().order) {
 			    store.commit('setOrder', snap.val() );
 			}
+		    } else {
+			store.commit('setDialog', { dialog : true });
 		    }
 		});
 		let mondaidb = firebase.database().ref('mondai').child(user.uid);
