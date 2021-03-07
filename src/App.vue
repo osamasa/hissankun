@@ -63,7 +63,8 @@ export default {
           Authentication
   },
 
-  data: () => ({
+    data: () => ({
+	drawer: false
     //
   }),
     computed : {
