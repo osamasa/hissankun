@@ -9,7 +9,7 @@
         dark
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>筆算君2.5</v-toolbar-title>
+        <v-toolbar-title>筆算君2.8</v-toolbar-title>
 	<v-spacer />
 	<Authentication />
       </v-app-bar>
@@ -21,16 +21,16 @@
           >
             <v-col class="text-center">
     <div>
-      <v-alert v-show="isSuccess" type="success" @click="resetMessage('Success')">
+      <v-alert transition="scale-transition" v-show="isSuccess" type="success" @click="resetMessage('Success')">
 	{{ SuccessMessage }}
       </v-alert>
-      <v-alert  v-show="isInfo" type="info" @click="resetMessage('Info')">
+      <v-alert  transition="scale-transition" v-show="isInfo" type="info" @click="resetMessage('Info')">
 	{{ InfoMessage }}
       </v-alert>
-      <v-alert  v-show="isWarning" type="warning" @click="resetMessage('Warning')">
+      <v-alert transition="scale-transition" v-show="isWarning" type="warning" @click="resetMessage('Warning')">
 	{{ WarningMessage }}
       </v-alert>
-      <v-alert  v-show="isError" type="error" @click="resetMessage('Error')">
+      <v-alert transition="scale-transition" v-show="isError" type="error" @click="resetMessage('Error')">
 	{{ ErrorMessage }}
       </v-alert>
     </div>	      
