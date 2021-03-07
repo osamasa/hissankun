@@ -74,9 +74,9 @@ export default {
 	let mondaidb = firebase.database().ref('mondai/' + user.uid).child(key);
 	mondaidb.remove(err => {
 	    if(err) {
-		console.log(err)
+		store.commit('AppMessage' ,{'mtype' : 'Error', 'message' : 'Error ' + err});
 	    } else {
-		console.log('success');
+		store.commit('AppMessage' ,{'mtype' : 'Success', 'message' : '削除完了'});
 	    }
 	})
     },
@@ -136,7 +136,7 @@ export default {
 		'order' : store.getters.getOrder
 	    }, function(error) {
 		if(error) {
-		    console.log(error);
+		    store.commit('AppMessage' ,{'mtype' : 'Errro', 'message' : 'ユーザ名保存エラー ' + error});		    
 		}
 	    })
     },
@@ -159,11 +159,13 @@ export default {
 	    cdate : now,
 	    mdate : now			       
 	},
-			     function(error) {
-				 if(error) {
-				     console.log(error);
-				 }
-			     })
+		      function(error) {
+			  if(error) {
+			      store.commit('AppMessage' ,{'mtype' : 'Errro', 'message' : '問題保存エラー ' + error});		    
+			  } else {
+			      store.commit('AppMessage' ,{'mtype' : 'Success', 'message' : '保存完了'});
+			  }
+		      })
 	store.commit('setKeyid', {keyid : keyid});
     },
     async updateMondai() {
@@ -184,10 +186,13 @@ export default {
 	    calc : store.state.calc,
 	    mdate : now			       
 	},
-			     function(error) {
-				 if(error) {
-				     console.log(error);
-				 }
-			     })
-    }        
+			 function(error) {
+			  if(error) {
+			      store.commit('AppMessage' ,{'mtype' : 'Errro', 'message' : '問題更新エラー ' + error});		    
+			  } else {
+			      store.commit('AppMessage' ,{'mtype' : 'Success', 'message' : '更新完了'});
+			  }
+			 }
+		       )
+    }
 };

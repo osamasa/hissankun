@@ -5,6 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+	isSuccess : false,
+	isInfo : false,
+	isWarning : false,
+	isError : false,
+	SuccessMessage : '',
+	InfoMessage : '',
+	WarningMessage :'',
+	ErrorMessage : '',
 	allmondainum : 0,
 	retvalue : [],
 	keyid : '',
@@ -118,6 +126,18 @@ export default new Vuex.Store({
 	}	
     },
     mutations: {
+	AppMessage(state,payload) {
+	    if(payload.mtype) {
+		state['is' + payload.mtype]=true;
+		state[payload.mtype+'Message']=payload.message;
+	    }
+	},
+	resetMessage(state,payload) {
+	    if(payload.mtype) {
+		state['is' + payload.mtype]=false;
+		state[payload.mtype+'Message']='';
+	    }
+	},
 	setAllmondainum(state,payload) {
 	    state.allmondainum = payload.allmondainum;
 	},
@@ -456,7 +476,9 @@ export default new Vuex.Store({
 		context.commit('updateChrCalc', _payload); 
 	    }
 	},
-	async createNewMondai(context) {
+	async createNewMondai(context,payload) {
+	    context.commit('setTitle',{title : payload.title});
+	    context.commit('setMonnum',{monnum : payload.monnum});
 	    context.commit('setKeyid', {keyid : ''});
 	    context.commit('removeAll');
 	    for(let i = 0 ; i<　context.getters.getMonnum;i++) {

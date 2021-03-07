@@ -2,7 +2,7 @@
   <div>
   <v-container>
   <v-row v-for="v in retvalue" :key="v.key">
-    <v-col><v-btn @click="curkey=v.key;getMondai">選択</v-btn></v-col><v-col>{{ v.title }}</v-col><v-col>{{ v.mdate }}</v-col><v-col><v-btn @click="curkey=v.key;removeData();"><v-icon>mdi-delete</v-icon></v-btn>
+    <v-col><v-btn @click="curkey=v.key;getMondai()">選択</v-btn></v-col><v-col>{{ v.title }}</v-col><v-col>{{ v.mdate }}</v-col><v-col><v-btn @click="curkey=v.key;removeData();"><v-icon>mdi-delete</v-icon></v-btn>
     </v-col>      
   </v-row> 
   </v-row>

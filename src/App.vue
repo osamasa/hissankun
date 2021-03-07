@@ -20,6 +20,20 @@
           <v-row
           >
             <v-col class="text-center">
+    <div>
+      <v-alert v-show="isSuccess" type="success" @click="resetMessage('Success')">
+	{{ SuccessMessage }}
+      </v-alert>
+      <v-alert  v-show="isInfo" type="info" @click="resetMessage('Info')">
+	{{ InfoMessage }}
+      </v-alert>
+      <v-alert  v-show="isWarning" type="warning" @click="resetMessage('Warning')">
+	{{ WarningMessage }}
+      </v-alert>
+      <v-alert  v-show="isError" type="error" @click="resetMessage('Error')">
+	{{ ErrorMessage }}
+      </v-alert>
+    </div>	      
 	      <router-view></router-view>
             </v-col>
           </v-row>
@@ -52,6 +66,37 @@ export default {
   data: () => ({
     //
   }),
+    computed : {
+	isSuccess : function() {
+	    return this.$store.state.isSuccess;
+	},
+	isInfo : function() {
+	    return this.$store.state.isInfo;
+	}	,
+	isWarning : function() {
+	    return this.$store.state.isWarning;
+	}	,
+	isError : function() {
+	    return this.$store.state.isError;
+	},
+	SuccessMessage : function() {
+	    return this.$store.state.SuccessMessage
+	},
+	InfoMessage : function() {
+	    return this.$store.state.InfoMessage
+	},
+	WarningMessage : function() {
+	    return this.$store.state.WarningMessage
+	},
+	ErrorMessage : function() {
+	    return this.$store.state.ErrorMessage
+	},		
+    },
+    methods : {
+	resetMessage : function( mtype) {
+	    this.$store.commit('resetMessage',{ mtype : mtype });
+	}
+    }
 };
 </script>
 

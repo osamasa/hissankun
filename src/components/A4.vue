@@ -2,7 +2,7 @@
   <div v-if="!isSignedIn">
     右上のログインボタンを押して下さい
   </div>
-<div v-else class="sheets">
+  <div v-else class="sheets">
   <div>
     <v-btn @click="dialog=!dialog">名前の設定</v-btn>
     <v-btn class='ml-5' @click="m_dialog=!m_dialog">新規作成</v-btn>
@@ -182,9 +182,9 @@
 	<v-toolbar-title>問題の設定</v-toolbar-title>
 	<v-spacer></v-spacer>
 	<v-btn
+	  @click="m_dialog=!m_dialog"
             icon
             dark
-          @click="createNewMondai();m_dialog = false"
           >
             <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -196,7 +196,7 @@
               cols="12"
 	      >
               <v-text-field
-		v-model="title"
+		v-model="l_title"
                 label="タイトル"
                 required
                 ></v-text-field>
@@ -207,7 +207,7 @@
               cols="4"
 	      >
 	      <v-select
-		v-model="monnum"
+		v-model="l_monnum"
 		:items=mitems
 		label="問題数"
 		></v-select>
@@ -219,7 +219,7 @@
 	<v-btn
           @click="createNewMondai();m_dialog = false"
           >
-	  閉じる
+	  保存する
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -321,6 +321,8 @@ export default {
     },
     data() {
 	return {
+	    l_monnum : 0,
+	    l_title : '',
 	    curpos : 0,
 	    page : 1,
 	    i_dialog : false,
@@ -427,7 +429,9 @@ export default {
 	    this.$store.dispatch('spliceMondai',{ insertnum: this.curpos });
 	},
 	createNewMondai() {
-	    this.$store.dispatch('createNewMondai');
+	    this.$store.dispatch('createNewMondai',{title : this.l_title,
+						    monnum : this.l_monnum
+						   });
 	},
 	saveMondai() {
 	    if(this.$store.getters.getKeyid) {
