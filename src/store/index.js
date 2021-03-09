@@ -150,7 +150,7 @@ export default new Vuex.Store({
 	    state.retvalue=[];
 	},
 	addRetvalue(state,payload) {
-	    state.retvalue.push(payload);
+	    state.retvalue.unshift(payload);
 	},
 	removeAll(state) {
 	    state.lastno=0;

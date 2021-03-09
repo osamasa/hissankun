@@ -350,7 +350,6 @@ export default {
 	    }
 	},	
 	loadMondai : function(){
-	    Firebase.loadMondai(this.page);
 	},	
 	mitems : function() {
 	    return [...Array(60).keys()].map(i => ++i);

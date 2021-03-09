@@ -30,7 +30,8 @@ export default {
 	lists : [],
     }),
     created : function(){
-	Firebase.getMondaiCount();
+	Firebase.getMondaiCount();	    
+	Firebase.loadMondai(this.page);
     },
     mounted : function(){
     },
@@ -52,7 +53,7 @@ export default {
 	    },
 	},	
 	getPages : function() {
-	    return Math.round(this.$store.state.allmondainum / 5);
+	    return Math.ceil(this.$store.state.allmondainum / 5);
 	},
 	retvalue : function() {
 	    return this.$store.state.retvalue.slice( (this.localPage-1)*5, (this.localPage-1)*5+5) ;
